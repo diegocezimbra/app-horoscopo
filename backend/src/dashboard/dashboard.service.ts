@@ -50,12 +50,12 @@ export class DashboardService {
     const greeting = this.getGreeting(userProfile.name);
 
     // Get moon info from lunar service
-    const lunarData = this.lunarService.getTodayMoon();
+    const lunarPhase = this.lunarService.getCurrentPhase();
     const moon: MoonInfoDto = {
-      phase: lunarData.phase as any,
-      sign: lunarData.sign as ZodiacSignId,
-      signName: this.zodiacNames[lunarData.sign as ZodiacSignId]?.name || lunarData.sign,
-      description: lunarData.description,
+      phase: lunarPhase.phase.id as any,
+      sign: this.getMoonSign(new Date()),
+      signName: this.zodiacNames[this.getMoonSign(new Date())]?.name || '',
+      description: lunarPhase.phase.energy,
     };
 
     // Get daily horoscope from astrology service
@@ -64,22 +64,27 @@ export class DashboardService {
       sign: sunSign,
       signName: this.zodiacNames[sunSign]?.name || sunSign,
       symbol: this.zodiacNames[sunSign]?.symbol || '',
-      title: horoscopeData.title,
-      preview: horoscopeData.summary,
-      fullText: horoscopeData.fullReading,
+      title: `Horoscopo de ${this.zodiacNames[sunSign]?.name || sunSign}`,
+      preview: horoscopeData.general.substring(0, 150) + '...',
+      fullText: horoscopeData.general,
       date: new Date().toISOString().split('T')[0],
-      energyRating: Math.round((horoscopeData.love + horoscopeData.career + horoscopeData.health) / 60),
+      energyRating: Math.ceil(horoscopeData.luckyNumber / 20),
     };
+
+    // Calculate energy scores based on horoscope text lengths (as proxy for intensity)
+    const loveScore = this.calculateTextScore(horoscopeData.love);
+    const careerScore = this.calculateTextScore(horoscopeData.career);
+    const healthScore = this.calculateTextScore(horoscopeData.health);
 
     // Get daily energy ratings
     const energy: DailyEnergyDto = {
-      overall: Math.round((horoscopeData.love + horoscopeData.career + horoscopeData.health) / 3),
-      sentiment: this.getSentiment(horoscopeData.love + horoscopeData.career + horoscopeData.health),
+      overall: Math.round((loveScore + careerScore + healthScore) / 3),
+      sentiment: this.getSentiment(loveScore + careerScore + healthScore),
       ratings: [
-        { category: 'love', label: 'Amor', stars: Math.ceil(horoscopeData.love / 20), icon: '\u2764\uFE0F' },
-        { category: 'work', label: 'Trabalho', stars: Math.ceil(horoscopeData.career / 20), icon: '\uD83D\uDCBC' },
-        { category: 'health', label: 'Saude', stars: Math.ceil(horoscopeData.health / 20), icon: '\uD83D\uDC9A' },
-        { category: 'money', label: 'Dinheiro', stars: Math.ceil((horoscopeData.career * 0.8 + horoscopeData.luck * 0.2) / 20), icon: '\uD83D\uDCB0' },
+        { category: 'love', label: 'Amor', stars: Math.ceil(loveScore / 20), icon: '\u2764\uFE0F' },
+        { category: 'work', label: 'Trabalho', stars: Math.ceil(careerScore / 20), icon: '\uD83D\uDCBC' },
+        { category: 'health', label: 'Saude', stars: Math.ceil(healthScore / 20), icon: '\uD83D\uDC9A' },
+        { category: 'money', label: 'Dinheiro', stars: Math.ceil((careerScore * 0.8 + horoscopeData.luckyNumber * 2) / 20), icon: '\uD83D\uDCB0' },
       ],
     };
 
@@ -214,6 +219,30 @@ export class DashboardService {
     }
 
     return { timeOfDay, message };
+  }
+
+  /**
+   * Calculate score from text content
+   */
+  private calculateTextScore(text: string): number {
+    // Base score plus variation based on text characteristics
+    const baseScore = 50;
+    const positiveWords = ['sucesso', 'amor', 'alegria', 'prosperidade', 'harmonia', 'energia', 'positiv'];
+    const negativeWords = ['cuidado', 'atencao', 'evite', 'dificuldade', 'desafio'];
+
+    let score = baseScore;
+    const lowerText = text.toLowerCase();
+
+    positiveWords.forEach((word) => {
+      if (lowerText.includes(word)) score += 10;
+    });
+
+    negativeWords.forEach((word) => {
+      if (lowerText.includes(word)) score -= 5;
+    });
+
+    // Normalize to 0-100 range
+    return Math.max(20, Math.min(100, score));
   }
 
   /**
