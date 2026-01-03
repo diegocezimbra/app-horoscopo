@@ -1,0 +1,211 @@
+/* ========================================
+   EnergyMeter Component - Cosmic Theme
+   ======================================== */
+
+.energy-meter {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(
+    145deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    rgba(16, 185, 129, 0.08) 50%,
+    rgba(6, 182, 212, 0.1) 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.energy-meter__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.energy-meter__icon {
+  font-size: 1.25rem;
+}
+
+.energy-meter__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.energy-meter__overall {
+  margin-bottom: 20px;
+}
+
+.energy-meter__bar-container {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.energy-meter__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e 0%, #10b981 50%, #06b6d4 100%);
+  border-radius: 6px;
+  position: relative;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: barGrow 1.5s ease-out;
+}
+
+@keyframes barGrow {
+  from {
+    width: 0 !important;
+  }
+}
+
+.energy-meter__bar-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.energy-meter__percentage {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.energy-meter__ratings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.energy-meter__rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.energy-meter__rating-icon {
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.energy-meter__rating-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  min-width: 80px;
+}
+
+.energy-meter__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.energy-meter__star {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.energy-meter__star--filled {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.5));
+  animation: starPop 0.3s ease-out;
+}
+
+@keyframes starPop {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Stagger animation for stars */
+.energy-meter__rating:nth-child(1) .energy-meter__star--filled {
+  animation-delay: 0.5s;
+}
+.energy-meter__rating:nth-child(2) .energy-meter__star--filled {
+  animation-delay: 0.6s;
+}
+.energy-meter__rating:nth-child(3) .energy-meter__star--filled {
+  animation-delay: 0.7s;
+}
+.energy-meter__rating:nth-child(4) .energy-meter__star--filled {
+  animation-delay: 0.8s;
+}
+
+/* Responsive */
+@media (min-width: 481px) {
+  .energy-meter {
+    padding: 24px;
+  }
+
+  .energy-meter__title {
+    font-size: 1.2rem;
+  }
+
+  .energy-meter__ratings {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 769px) {
+  .energy-meter {
+    padding: 28px;
+  }
+
+  .energy-meter__bar-container {
+    height: 14px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .energy-meter,
+  .energy-meter__bar,
+  .energy-meter__bar-glow,
+  .energy-meter__star--filled {
+    animation: none;
+  }
+
+  .energy-meter__bar {
+    transition: none;
+  }
+}

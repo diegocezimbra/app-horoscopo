@@ -1,0 +1,336 @@
+/* ========================================
+   ShareCard Component - Instagram Stories Format
+   ======================================== */
+
+.share-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.share-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 9/16;
+  border-radius: 24px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(107, 70, 193, 0.3);
+}
+
+/* Stars decoration */
+.share-card__stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.share-card__star {
+  position: absolute;
+  font-size: 24px;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.share-card__star--1 {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.share-card__star--2 {
+  top: 15%;
+  right: 15%;
+  animation-delay: 0.5s;
+}
+
+.share-card__star--3 {
+  bottom: 25%;
+  left: 8%;
+  animation-delay: 1s;
+}
+
+.share-card__star--4 {
+  bottom: 30%;
+  right: 10%;
+  animation-delay: 1.5s;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Header */
+.share-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 1;
+}
+
+.share-card__app-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.share-card__subtitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Profiles */
+.share-card__profiles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 1;
+  margin: 16px 0;
+}
+
+.share-card__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.share-card__sign-emoji {
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.share-card__name {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.share-card__sign-name {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.share-card__heart {
+  font-size: 36px;
+  animation: heartbeat 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.15);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+}
+
+/* Score */
+.share-card__score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+}
+
+.share-card__score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.share-card__score {
+  font-size: 48px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.share-card__score-message {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Categories */
+.share-card__categories {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  z-index: 1;
+}
+
+.share-card__category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.share-card__category-icon {
+  font-size: 24px;
+}
+
+.share-card__category-score {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+/* Footer */
+.share-card__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 1;
+}
+
+.share-card__cta {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.share-card__url {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: 20px;
+}
+
+/* Action buttons */
+.share-card__actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.share-card__action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.share-card__action svg {
+  width: 20px;
+  height: 20px;
+}
+
+.share-card__action--download {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.share-card__action--download:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.share-card__action--share {
+  background: linear-gradient(135deg, #E1306C 0%, #833AB4 50%, #5851DB 100%);
+  color: white;
+}
+
+.share-card__action--share:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(131, 58, 180, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .share-card {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+
+  .share-card__sign-emoji {
+    font-size: 40px;
+  }
+
+  .share-card__name {
+    font-size: 16px;
+    max-width: 80px;
+  }
+
+  .share-card__heart {
+    font-size: 28px;
+  }
+
+  .share-card__score-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .share-card__score {
+    font-size: 40px;
+  }
+
+  .share-card__score-message {
+    font-size: 18px;
+  }
+
+  .share-card__actions {
+    flex-direction: column;
+  }
+}

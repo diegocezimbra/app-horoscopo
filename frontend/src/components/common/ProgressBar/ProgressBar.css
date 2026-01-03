@@ -1,0 +1,150 @@
+/* ========================================
+   Cosmic Progress Bar Component
+   ======================================== */
+
+.cosmic-progress {
+  width: 100%;
+}
+
+/* Header */
+.cosmic-progress__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-2);
+}
+
+.cosmic-progress__label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.cosmic-progress__value {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-light);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Track */
+.cosmic-progress__track {
+  position: relative;
+  width: 100%;
+  background: var(--color-bg-glass);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+/* Sizes */
+.cosmic-progress--sm .cosmic-progress__track {
+  height: 4px;
+}
+
+.cosmic-progress--md .cosmic-progress__track {
+  height: 8px;
+}
+
+.cosmic-progress--lg .cosmic-progress__track {
+  height: 12px;
+}
+
+/* Fill */
+.cosmic-progress__fill {
+  position: relative;
+  height: 100%;
+  width: var(--progress, 0%);
+  border-radius: var(--radius-full);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Variants */
+.cosmic-progress--default .cosmic-progress__fill {
+  background: var(--color-primary);
+}
+
+.cosmic-progress--gradient .cosmic-progress__fill {
+  background: var(--gradient-aurora);
+  background-size: 200% 100%;
+}
+
+.cosmic-progress--glow .cosmic-progress__fill {
+  background: var(--gradient-aurora);
+  background-size: 200% 100%;
+  box-shadow: 0 0 10px var(--color-primary), 0 0 20px rgba(107, 70, 193, 0.3);
+}
+
+/* Animated */
+.cosmic-progress--animated .cosmic-progress__fill {
+  animation: progressFillAnim 0.6s ease-out forwards;
+}
+
+.cosmic-progress--animated.cosmic-progress--gradient .cosmic-progress__fill,
+.cosmic-progress--animated.cosmic-progress--glow .cosmic-progress__fill {
+  animation: progressFillAnim 0.6s ease-out forwards, auroraShift 3s ease infinite;
+}
+
+@keyframes progressFillAnim {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progress, 0%);
+  }
+}
+
+/* Shimmer */
+.cosmic-progress__shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnim 2s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes shimmerAnim {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Glow Animation */
+.cosmic-progress--glow .cosmic-progress__track {
+  box-shadow: inset 0 0 10px rgba(107, 70, 193, 0.2);
+}
+
+.cosmic-progress--glow .cosmic-progress__fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px #fff, 0 0 20px var(--color-primary);
+  animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.2);
+  }
+}

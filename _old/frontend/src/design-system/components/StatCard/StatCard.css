@@ -1,0 +1,86 @@
+/* ========================================
+   StatCard Component
+   ======================================== */
+
+.stat-card {
+  padding: var(--space-lg);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.stat-card-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.stat-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  border-radius: var(--radius);
+}
+
+.stat-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stat-card-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--space-sm);
+}
+
+.stat-card-change {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+.stat-card-trend-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-card-trend-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.stat-card-change-value {
+  font-weight: var(--font-weight-medium);
+}
+
+.stat-card-change-label {
+  color: var(--text-muted);
+}
+
+/* Trend colors */
+.stat-card-change-up {
+  color: var(--color-success);
+}
+
+.stat-card-change-down {
+  color: var(--color-danger);
+}
+
+.stat-card-change-neutral {
+  color: var(--text-secondary);
+}

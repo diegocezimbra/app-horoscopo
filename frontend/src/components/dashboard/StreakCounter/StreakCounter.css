@@ -1,0 +1,210 @@
+/* ========================================
+   StreakCounter Component - Cosmic Theme
+   ======================================== */
+
+.streak-counter {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(
+    145deg,
+    rgba(249, 115, 22, 0.15) 0%,
+    rgba(234, 88, 12, 0.1) 50%,
+    rgba(239, 68, 68, 0.1) 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.streak-counter--celebrating {
+  animation: celebrate 0.5s ease-out;
+  border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
+}
+
+@keyframes celebrate {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  75% {
+    transform: scale(1.01);
+  }
+}
+
+.streak-counter__content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.streak-counter__icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.streak-counter__icon {
+  font-size: 2.5rem;
+  animation: flame 1s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.5));
+}
+
+@keyframes flame {
+  0%, 100% {
+    transform: scale(1) rotate(-5deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(5deg);
+  }
+  50% {
+    transform: scale(1) rotate(-3deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(3deg);
+  }
+}
+
+.streak-counter__badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 1rem;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.streak-counter__info {
+  flex: 1;
+}
+
+.streak-counter__count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.streak-counter__number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
+}
+
+.streak-counter__label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.streak-counter__message {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Celebration particles */
+.streak-counter__celebration {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.streak-counter__particle {
+  position: absolute;
+  font-size: 1.5rem;
+  animation: particle 1s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes particle {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%)
+               rotate(var(--angle, 0deg))
+               translateY(-60px)
+               scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%)
+               rotate(var(--angle, 0deg))
+               translateY(-100px)
+               scale(0.5);
+  }
+}
+
+/* Best streak */
+.streak-counter__best {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+/* Responsive */
+@media (min-width: 481px) {
+  .streak-counter {
+    padding: 24px;
+  }
+
+  .streak-counter__icon {
+    font-size: 3rem;
+  }
+
+  .streak-counter__number {
+    font-size: 2.5rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .streak-counter,
+  .streak-counter--celebrating,
+  .streak-counter__icon,
+  .streak-counter__badge,
+  .streak-counter__particle {
+    animation: none;
+  }
+}

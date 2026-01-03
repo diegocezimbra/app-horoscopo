@@ -1,0 +1,112 @@
+/* ========================================
+   Alert Component
+   ======================================== */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  border: 1px solid;
+}
+
+.alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alert-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-xs);
+}
+
+.alert-message {
+  font-size: var(--font-size-sm);
+  color: inherit;
+  opacity: 0.9;
+}
+
+.alert-dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: calc(var(--space-xs) * -1);
+  color: currentColor;
+  opacity: 0.6;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.alert-dismiss:hover {
+  opacity: 1;
+}
+
+/* Info variant */
+.alert-info {
+  background-color: var(--color-info-light);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: var(--color-info);
+}
+
+/* Success variant */
+.alert-success {
+  background-color: var(--color-success-light);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: var(--color-success);
+}
+
+/* Warning variant */
+.alert-warning {
+  background-color: var(--color-warning-light);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: var(--color-warning);
+}
+
+/* Danger variant */
+.alert-danger {
+  background-color: var(--color-danger-light);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--color-danger);
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .alert-info {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .alert-success {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .alert-warning {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .alert-danger {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}

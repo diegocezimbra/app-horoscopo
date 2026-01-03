@@ -1,0 +1,385 @@
+/**
+ * Major Arcana Data - 22 Cards (0-21)
+ *
+ * The Major Arcana represents significant life events, spiritual lessons,
+ * and archetypal energies that shape our journey through life.
+ */
+
+export interface TarotCard {
+  /** Unique identifier */
+  id: string;
+  /** Card name in Portuguese */
+  name: string;
+  /** Card number (0-21 for Major Arcana) */
+  number: number;
+  /** Suit (null for Major Arcana) */
+  suit: 'cups' | 'pentacles' | 'swords' | 'wands' | null;
+  /** Keywords associated with the card */
+  keywords: string[];
+  /** Meaning when card appears upright */
+  uprightMeaning: string;
+  /** Meaning when card appears reversed */
+  reversedMeaning: string;
+  /** General advice from this card */
+  advice: string;
+  /** Interpretation for love/relationships */
+  loveReading: string;
+  /** Interpretation for career/work */
+  careerReading: string;
+  /** Placeholder image URL */
+  imageUrl: string;
+  /** Card element association */
+  element?: string;
+  /** Astrological association */
+  astrologicalSign?: string;
+}
+
+/**
+ * Complete Major Arcana deck with 22 cards
+ */
+export const MAJOR_ARCANA: TarotCard[] = [
+  {
+    id: 'major-0',
+    name: 'O Louco',
+    number: 0,
+    suit: null,
+    keywords: ['novos comecos', 'inocencia', 'espontaneidade', 'alma livre', 'fe'],
+    uprightMeaning: 'O Louco representa novos comecos, fe inabalavel e a coragem de dar um salto no desconhecido. E o momento de confiar no universo e seguir seu coracao, mesmo sem saber exatamente onde o caminho vai levar. A inocencia e a espontaneidade sao suas maiores forcas agora.',
+    reversedMeaning: 'Quando invertido, O Louco alerta para imprudencia, decisoes precipitadas ou medo excessivo de comecar algo novo. Voce pode estar sendo ingenuo demais ou, ao contrario, paralisado pelo medo de errar. Encontre o equilibrio entre cautela e ousadia.',
+    advice: 'De o primeiro passo com fe. O universo ampara aqueles que ousam comecar. Nao deixe o medo do desconhecido impedir sua jornada.',
+    loveReading: 'Um novo amor pode surgir de forma inesperada. Esteja aberto a conexoes inusitadas. Se esta em um relacionamento, e hora de renovar a espontaneidade e a leveza.',
+    careerReading: 'Momento favoravel para novos projetos, mudancas de carreira ou empreendimentos. Confie na sua intuicao e ouse inovar, mesmo que outros nao compreendam.',
+    imageUrl: '/images/tarot/major/the-fool.jpg',
+    element: 'Ar',
+    astrologicalSign: 'Urano',
+  },
+  {
+    id: 'major-1',
+    name: 'O Mago',
+    number: 1,
+    suit: null,
+    keywords: ['manifestacao', 'poder', 'acao', 'habilidade', 'concentracao'],
+    uprightMeaning: 'O Mago indica que voce tem todas as ferramentas necessarias para manifestar seus desejos. E um momento de poder pessoal, onde sua vontade e acao podem criar resultados extraordinarios. Use seus talentos com sabedoria e proposito.',
+    reversedMeaning: 'Invertido, O Mago sugere manipulacao, talentos mal utilizados ou falta de foco. Cuidado com pessoas que querem tirar vantagem de voce ou com sua propria tendencia a dispersar energia em muitas direcoes.',
+    advice: 'Voce e o arquiteto da sua realidade. Foque sua intencao, utilize seus recursos e manifeste o que deseja. O poder esta em suas maos.',
+    loveReading: 'Voce tem o poder de atrair o amor que deseja. Use sua comunicacao e carisma. Em relacionamentos, e hora de expressar claramente seus sentimentos.',
+    careerReading: 'Excelente momento para iniciar projetos, fechar negocios ou demonstrar suas habilidades. Sua capacidade de comunicacao e persuasao esta em alta.',
+    imageUrl: '/images/tarot/major/the-magician.jpg',
+    element: 'Ar',
+    astrologicalSign: 'Mercurio',
+  },
+  {
+    id: 'major-2',
+    name: 'A Sacerdotisa',
+    number: 2,
+    suit: null,
+    keywords: ['intuicao', 'misterio', 'sabedoria interior', 'subconsciente', 'segredos'],
+    uprightMeaning: 'A Sacerdotisa convida voce a confiar em sua intuicao e explorar os misterios do subconsciente. E tempo de ir para dentro, meditar e ouvir a voz silenciosa da sabedoria interior. Nem tudo precisa ser revelado agora.',
+    reversedMeaning: 'Invertida, indica que voce pode estar ignorando sua intuicao ou reprimindo verdades importantes. Segredos podem vir a tona de forma incomoda. Reconecte-se com sua sabedoria interior.',
+    advice: 'Confie nos seus instintos. A resposta que busca esta dentro de voce. Dedique tempo ao silencio e a reflexao antes de tomar decisoes importantes.',
+    loveReading: 'Misterio e profundidade marcam este momento. Pode haver segredos a serem revelados. Confie na sua intuicao sobre parceiros ou pretendentes.',
+    careerReading: 'Momento de observacao e planejamento estrategico. Nao revele todos os seus planos ainda. Use sua intuicao para perceber o que nao e dito.',
+    imageUrl: '/images/tarot/major/the-high-priestess.jpg',
+    element: 'Agua',
+    astrologicalSign: 'Lua',
+  },
+  {
+    id: 'major-3',
+    name: 'A Imperatriz',
+    number: 3,
+    suit: null,
+    keywords: ['abundancia', 'fertilidade', 'natureza', 'sensualidade', 'criatividade'],
+    uprightMeaning: 'A Imperatriz traz energias de abundancia, fertilidade e criacao. E um momento de crescimento, seja de projetos, relacionamentos ou da propria familia. A conexao com a natureza e o corpo traz cura e renovacao.',
+    reversedMeaning: 'Invertida, pode indicar bloqueios criativos, dependencia emocional ou negligencia com o autocuidado. Voce pode estar dando demais sem receber, ou desconectado do seu corpo e necessidades.',
+    advice: 'Nutra-se e nutra seus sonhos. A abundancia flui quando voce se conecta com sua essencia criativa. Cuide do seu corpo, do seu espaco e das suas relacoes.',
+    loveReading: 'Amor florescente e sensualidade em alta. Momento fertil para concepcao, tanto literal quanto de novos projetos em casal. Nutra seus relacionamentos.',
+    careerReading: 'Criatividade e produtividade abundantes. Projetos criativos prosperarao. E um bom momento para trabalhos ligados a beleza, natureza ou cuidado.',
+    imageUrl: '/images/tarot/major/the-empress.jpg',
+    element: 'Terra',
+    astrologicalSign: 'Venus',
+  },
+  {
+    id: 'major-4',
+    name: 'O Imperador',
+    number: 4,
+    suit: null,
+    keywords: ['autoridade', 'estrutura', 'estabilidade', 'lideranca', 'disciplina'],
+    uprightMeaning: 'O Imperador representa autoridade, estrutura e dominio sobre o mundo material. E hora de assumir o controle, estabelecer limites claros e construir bases solidas para seus objetivos. A disciplina e a chave do sucesso.',
+    reversedMeaning: 'Invertido, pode indicar autoritarismo, rigidez excessiva ou figura paterna problematica. Voce pode estar sendo controlador demais ou, ao contrario, faltando disciplina e direcao.',
+    advice: 'Assuma a lideranca da sua vida. Estabeleca regras, crie estruturas e mantenha a disciplina. O sucesso requer ordem e determinacao.',
+    loveReading: 'Estabilidade e comprometimento sao temas centrais. Pode indicar um parceiro protetor ou a necessidade de mais estrutura na relacao.',
+    careerReading: 'Momento de lideranca e conquistas materiais. Estabeleca metas claras, organize processos e assuma autoridade. Promocoes e reconhecimento sao possiveis.',
+    imageUrl: '/images/tarot/major/the-emperor.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Aries',
+  },
+  {
+    id: 'major-5',
+    name: 'O Hierofante',
+    number: 5,
+    suit: null,
+    keywords: ['tradicao', 'espiritualidade', 'educacao', 'crencas', 'conformidade'],
+    uprightMeaning: 'O Hierofante representa tradicao, ensinamentos espirituais e a busca por significado mais profundo. Pode indicar um mestre, mentor ou instituicao que guia seu caminho. E tempo de aprender com a sabedoria ancestral.',
+    reversedMeaning: 'Invertido, questiona convencoes e pode indicar rebeldia contra tradicoes ou dogmas. Voce pode estar buscando seu proprio caminho espiritual, longe de instituicoes estabelecidas.',
+    advice: 'Busque conhecimento e orientacao espiritual. Respeite as tradicoes que fazem sentido para voce, mas nao tenha medo de questionar o que nao ressoa.',
+    loveReading: 'Compromisso tradicional pode estar em foco - casamento, noivado ou formalizacao. Valores compartilhados sao importantes na relacao.',
+    careerReading: 'Educacao formal, certificacoes ou mentoria podem impulsionar sua carreira. Trabalhos em instituicoes estabelecidas sao favorecidos.',
+    imageUrl: '/images/tarot/major/the-hierophant.jpg',
+    element: 'Terra',
+    astrologicalSign: 'Touro',
+  },
+  {
+    id: 'major-6',
+    name: 'Os Amantes',
+    number: 6,
+    suit: null,
+    keywords: ['amor', 'escolhas', 'uniao', 'harmonia', 'valores'],
+    uprightMeaning: 'Os Amantes representam amor verdadeiro, escolhas importantes e a uniao de opostos. E um momento de decisoes que afetarao profundamente sua vida. Siga seu coracao, mas com consciencia das consequencias.',
+    reversedMeaning: 'Invertido, pode indicar desequilibrio em relacionamentos, escolhas dificeis ou conflito de valores. Tentacoes e decisoes mal ponderadas podem trazer arrependimento.',
+    advice: 'Escolha com o coracao e a mente alinhados. Este e um momento de definir o que realmente importa para voce e agir de acordo com seus valores mais profundos.',
+    loveReading: 'Amor profundo, conexao de almas e escolhas romanticas importantes. Pode indicar o encontro de um grande amor ou decisao crucial em um relacionamento.',
+    careerReading: 'Escolhas de carreira importantes a frente. Parcerias profissionais podem ser significativas. Alinhe seu trabalho com seus valores pessoais.',
+    imageUrl: '/images/tarot/major/the-lovers.jpg',
+    element: 'Ar',
+    astrologicalSign: 'Gemeos',
+  },
+  {
+    id: 'major-7',
+    name: 'O Carro',
+    number: 7,
+    suit: null,
+    keywords: ['vitoria', 'determinacao', 'controle', 'movimento', 'forca de vontade'],
+    uprightMeaning: 'O Carro representa vitoria atraves da determinacao e controle. Voce tem a forca de vontade para superar obstaculos e alcancar seus objetivos. Mantenha o foco e dirija sua energia com determinacao.',
+    reversedMeaning: 'Invertido, indica falta de direcao, obstaculos ou perda de controle. Voce pode estar lutando contra correntes ou deixando emocoes sabotarem seu progresso.',
+    advice: 'Tome as redeas da sua vida. Com disciplina e determinacao, a vitoria e certa. Nao deixe que nada desvie voce do seu caminho.',
+    loveReading: 'Avanco em relacionamentos atraves de esforco conjunto. Pode indicar viagens romanticas ou um relacionamento que progride rapidamente.',
+    careerReading: 'Sucesso profissional atraves de determinacao. Momento de avanco, promocoes ou conclusao vitoriosa de projetos. Mantenha o foco.',
+    imageUrl: '/images/tarot/major/the-chariot.jpg',
+    element: 'Agua',
+    astrologicalSign: 'Cancer',
+  },
+  {
+    id: 'major-8',
+    name: 'A Forca',
+    number: 8,
+    suit: null,
+    keywords: ['coragem', 'paciencia', 'compaixao', 'forca interior', 'autocontrole'],
+    uprightMeaning: 'A Forca representa o dominio gentil sobre instintos e emocoes. Nao e sobre forca bruta, mas sobre coragem interior, paciencia e compaixao - inclusive consigo mesmo. Voce tem mais forca do que imagina.',
+    reversedMeaning: 'Invertida, pode indicar inseguranca, falta de autocontrole ou medo de enfrentar desafios. Voce pode estar sendo dominado por emocoes ou subestimando sua propria capacidade.',
+    advice: 'Confie em sua forca interior. Enfrente seus medos com coragem e compaixao. A verdadeira forca vem do equilibrio entre poder e gentileza.',
+    loveReading: 'Paciencia e compreensao fortalecem o amor. Pode indicar a necessidade de domar impulsos ou lidar com situacoes desafiadoras com graca.',
+    careerReading: 'Perseveranca e paciencia levam ao sucesso. E hora de enfrentar desafios profissionais com coragem e autoconfianca.',
+    imageUrl: '/images/tarot/major/strength.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Leao',
+  },
+  {
+    id: 'major-9',
+    name: 'O Eremita',
+    number: 9,
+    suit: null,
+    keywords: ['introspeccao', 'sabedoria', 'solidao', 'busca interior', 'orientacao'],
+    uprightMeaning: 'O Eremita convida a um periodo de introspeccao e busca interior. Afaste-se do ruido externo para encontrar suas proprias respostas. A sabedoria que busca esta dentro de voce, esperando para ser descoberta.',
+    reversedMeaning: 'Invertido, pode indicar isolamento excessivo, recusa em buscar ajuda ou medo de ficar sozinho. Equilibre a reflexao solitaria com conexoes significativas.',
+    advice: 'Reserve tempo para si mesmo. A meditacao e a reflexao sao suas aliadas agora. As respostas mais profundas surgem no silencio.',
+    loveReading: 'Momento de reflexao sobre o que realmente busca em relacionamentos. Pode indicar necessidade de espaco ou um parceiro mais introvertido.',
+    careerReading: 'Tempo de planejamento e estudo. Pode indicar um mentor sabio ou a necessidade de especializacao. Qualidade sobre quantidade.',
+    imageUrl: '/images/tarot/major/the-hermit.jpg',
+    element: 'Terra',
+    astrologicalSign: 'Virgem',
+  },
+  {
+    id: 'major-10',
+    name: 'A Roda da Fortuna',
+    number: 10,
+    suit: null,
+    keywords: ['destino', 'ciclos', 'mudanca', 'sorte', 'karma'],
+    uprightMeaning: 'A Roda da Fortuna indica mudancas e ciclos do destino. O que sobe desce, e o que desce sobe. Aceite as mudancas com graca, pois fazem parte do fluxo natural da vida. A sorte pode estar a seu favor.',
+    reversedMeaning: 'Invertida, sugere resistencia a mudancas inevitaveis ou um periodo de azar temporario. Lembre-se de que a roda sempre gira - momentos dificeis sao passageiros.',
+    advice: 'Aceite o fluxo da vida. Aproveite os momentos de sorte e mantenha a fe nos momentos dificeis. Tudo passa, tudo se transforma.',
+    loveReading: 'Mudancas no amor - novos encontros ou transformacoes em relacionamentos existentes. O destino pode trazer surpresas romanticas.',
+    careerReading: 'Mudancas profissionais e novas oportunidades. Esteja aberto a reviravolta positivas. O timing e importante agora.',
+    imageUrl: '/images/tarot/major/wheel-of-fortune.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Jupiter',
+  },
+  {
+    id: 'major-11',
+    name: 'A Justica',
+    number: 11,
+    suit: null,
+    keywords: ['equilibrio', 'verdade', 'lei', 'consequencias', 'decisoes'],
+    uprightMeaning: 'A Justica representa equilibrio, verdade e as consequencias de nossas acoes. E hora de ser honesto consigo mesmo e com os outros. Decisoes justas e imparciais sao necessarias. Colhemos o que plantamos.',
+    reversedMeaning: 'Invertida, indica injustica, desonestidade ou recusa em aceitar responsabilidades. Cuidado com situacoes legais desfavoraveis ou desequilibrio nas relacoes.',
+    advice: 'Seja justo em todas as suas interacoes. Aceite a responsabilidade por suas acoes e busque equilibrio em todas as areas da vida.',
+    loveReading: 'Equilibrio e justica em relacionamentos. Pode indicar questoes legais (divorcio, casamento) ou a necessidade de equilibrar dar e receber.',
+    careerReading: 'Decisoes legais ou eticas no trabalho. Contratos e acordos requerem atencao. Justica sera feita em situacoes profissionais.',
+    imageUrl: '/images/tarot/major/justice.jpg',
+    element: 'Ar',
+    astrologicalSign: 'Libra',
+  },
+  {
+    id: 'major-12',
+    name: 'O Enforcado',
+    number: 12,
+    suit: null,
+    keywords: ['suspensao', 'sacrificio', 'nova perspectiva', 'espera', 'rendição'],
+    uprightMeaning: 'O Enforcado convida a ver as coisas de uma perspectiva diferente. As vezes, e necessario pausar, sacrificar algo ou simplesmente aceitar um periodo de espera. A sabedoria vem de olhar o mundo de cabeca para baixo.',
+    reversedMeaning: 'Invertido, indica resistencia a mudar de perspectiva, sacrificios em vao ou estagnacao. Voce pode estar preso em padroes que nao servem mais.',
+    advice: 'Renda-se ao processo. Aceite a pausa como um presente. Mude sua perspectiva e novas solucoes aparecerão.',
+    loveReading: 'Momento de reflexao sobre relacionamentos. Pode ser necessario fazer sacrificios ou ver a situacao de um novo angulo.',
+    careerReading: 'Pausa ou atraso em projetos pode trazer insights valiosos. Use este tempo para repensar estrategias e mudar abordagens.',
+    imageUrl: '/images/tarot/major/the-hanged-man.jpg',
+    element: 'Agua',
+    astrologicalSign: 'Netuno',
+  },
+  {
+    id: 'major-13',
+    name: 'A Morte',
+    number: 13,
+    suit: null,
+    keywords: ['transformacao', 'fim', 'renascimento', 'mudanca', 'liberacao'],
+    uprightMeaning: 'A Morte raramente significa morte literal - representa transformacao profunda, fins necessarios e renascimento. Algo precisa morrer para que o novo possa nascer. Aceite as transformacoes como parte do ciclo da vida.',
+    reversedMeaning: 'Invertida, indica resistencia a mudancas necessarias, medo de deixar ir ou estagnacao. Voce pode estar se apegando a algo que ja nao serve.',
+    advice: 'Deixe ir o que precisa partir. A transformacao e inevitavel e necessaria. Das cinzas do velho, o novo emerge mais forte.',
+    loveReading: 'Fim de um ciclo amoroso ou transformacao profunda em um relacionamento. Pode indicar termino ou renovacao radical.',
+    careerReading: 'Fim de um emprego, projeto ou fase profissional. Transformacao necessaria para crescimento. Nao resista as mudancas.',
+    imageUrl: '/images/tarot/major/death.jpg',
+    element: 'Agua',
+    astrologicalSign: 'Escorpiao',
+  },
+  {
+    id: 'major-14',
+    name: 'A Temperanca',
+    number: 14,
+    suit: null,
+    keywords: ['equilibrio', 'moderacao', 'paciencia', 'harmonia', 'proposito'],
+    uprightMeaning: 'A Temperanca ensina a arte do equilibrio e da moderacao. E hora de integrar opostos, encontrar o meio-termo e praticar a paciencia. A harmonia surge quando fluimos com o ritmo natural das coisas.',
+    reversedMeaning: 'Invertida, indica excessos, impaciencia ou falta de equilibrio. Voce pode estar forcando situacoes ou negligenciando areas importantes da vida.',
+    advice: 'Pratique a moderacao em tudo. Busque equilibrio entre trabalho e descanso, dar e receber, acao e reflexao. A paciencia e sua aliada.',
+    loveReading: 'Harmonia e equilibrio em relacionamentos. Momento de integrar diferencas e encontrar paz. Paciencia fortalece o amor.',
+    careerReading: 'Equilibrio entre ambicao e bem-estar. Projetos que integram diferentes habilidades ou areas sao favorecidos. Moderacao leva ao sucesso sustentavel.',
+    imageUrl: '/images/tarot/major/temperance.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Sagitario',
+  },
+  {
+    id: 'major-15',
+    name: 'O Diabo',
+    number: 15,
+    suit: null,
+    keywords: ['sombra', 'tentacao', 'apego', 'materialismo', 'escravidao'],
+    uprightMeaning: 'O Diabo representa as correntes que criamos para nos mesmos - vicios, medos, apegos excessivos. Ele nos lembra que somos nos que temos o poder de nos libertar. Enfrente suas sombras com honestidade.',
+    reversedMeaning: 'Invertido, indica libertacao de padroes destrutivos, superacao de vicios ou tomada de consciencia sobre comportamentos nocivos. A luz comeca a entrar.',
+    advice: 'Examine o que te aprisiona. Vicios, medos e apegos so tem poder enquanto voce permitir. A libertacao comeca com a consciencia.',
+    loveReading: 'Relacionamentos com dinamicas de poder desequilibradas ou padroes obsessivos. Pode indicar atracao intensa mas potencialmente destrutiva.',
+    careerReading: 'Cuidado com trabalhos que escravizam ou comprometem seus valores. Examine se o sucesso material esta custando sua alma.',
+    imageUrl: '/images/tarot/major/the-devil.jpg',
+    element: 'Terra',
+    astrologicalSign: 'Capricornio',
+  },
+  {
+    id: 'major-16',
+    name: 'A Torre',
+    number: 16,
+    suit: null,
+    keywords: ['destruicao', 'revelacao', 'caos', 'despertar', 'liberacao'],
+    uprightMeaning: 'A Torre representa destruicao subita de estruturas falsas ou limitantes. Pode ser chocante, mas abre espaco para reconstrucao mais autentica. Verdades ocultas vem a tona. O caos precede a renovacao.',
+    reversedMeaning: 'Invertida, pode indicar resistencia a mudanca inevitavel, prolongamento de situacoes insustentaveis ou medo de colapso. A transformacao vira de qualquer forma.',
+    advice: 'Nao tema a destruicao do que nao e verdadeiro. Das ruinas surge a oportunidade de construir algo mais autentico e solido.',
+    loveReading: 'Revelacoes chocantes ou fins subitos em relacionamentos. Pode ser doloroso, mas liberta para algo mais verdadeiro.',
+    careerReading: 'Mudancas abruptas no trabalho - demissoes, falencias ou revelacoes. Crise precede nova oportunidade. Esteja preparado para reconstruir.',
+    imageUrl: '/images/tarot/major/the-tower.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Marte',
+  },
+  {
+    id: 'major-17',
+    name: 'A Estrela',
+    number: 17,
+    suit: null,
+    keywords: ['esperanca', 'inspiracao', 'renovacao', 'serenidade', 'fe'],
+    uprightMeaning: 'A Estrela traz esperanca e renovacao apos periodos dificeis. E um momento de cura, inspiracao e reconexao com seu proposito superior. A fe e restaurada e o futuro parece brilhante.',
+    reversedMeaning: 'Invertida, indica perda de fe, desesperanca ou desconexao espiritual. Voce pode estar tendo dificuldade em ver a luz no fim do tunel.',
+    advice: 'Mantenha a fe, mesmo nos momentos mais escuros. A esperanca e uma forca poderosa de cura. Conecte-se com sua essencia espiritual.',
+    loveReading: 'Renovacao da esperanca no amor. Cura de coracoes partidos. Conexoes espirituais profundas com parceiros ou novos encontros inspiradores.',
+    careerReading: 'Inspiracao e renovacao profissional. Projetos criativos sao favorecidos. Siga seu chamado verdadeiro.',
+    imageUrl: '/images/tarot/major/the-star.jpg',
+    element: 'Ar',
+    astrologicalSign: 'Aquario',
+  },
+  {
+    id: 'major-18',
+    name: 'A Lua',
+    number: 18,
+    suit: null,
+    keywords: ['ilusao', 'intuicao', 'medo', 'subconsciente', 'misterio'],
+    uprightMeaning: 'A Lua revela o reino das ilusoes, medos e do subconsciente. Nem tudo e o que parece. Confie em sua intuicao para navegar por aguas turvas. Sonhos e pressentimentos trazem mensagens importantes.',
+    reversedMeaning: 'Invertida, indica que ilusoes estao sendo desfeitas, medos enfrentados ou confusao se dissipando. A clareza comeca a surgir.',
+    advice: 'Confie em sua intuicao, mas cuidado com ilusoes. Este e um tempo de sonhos e visoes - interprete-os com sabedoria.',
+    loveReading: 'Confusao ou segredos em relacionamentos. Nem tudo esta claro. Confie na intuicao, mas espere ate ter certeza antes de agir.',
+    careerReading: 'Situacoes profissionais confusas ou enganosas. Informacoes ocultas podem vir a tona. Use sua intuicao para navegar.',
+    imageUrl: '/images/tarot/major/the-moon.jpg',
+    element: 'Agua',
+    astrologicalSign: 'Peixes',
+  },
+  {
+    id: 'major-19',
+    name: 'O Sol',
+    number: 19,
+    suit: null,
+    keywords: ['alegria', 'sucesso', 'vitalidade', 'clareza', 'celebracao'],
+    uprightMeaning: 'O Sol e a carta mais positiva do Taro, trazendo alegria, sucesso e clareza. Tudo se ilumina e a vida floresce. E tempo de celebrar, expressar sua verdadeira essencia e aproveitar a abundancia.',
+    reversedMeaning: 'Invertido, pode indicar atrasos temporarios no sucesso, excesso de otimismo ou dificuldade em ver o lado positivo. A luz ainda esta la, apenas parcialmente encoberta.',
+    advice: 'Brilhe sua luz sem medo. Este e seu momento de alegria e sucesso. Celebre a vida e compartilhe sua felicidade com os outros.',
+    loveReading: 'Alegria e felicidade no amor. Relacionamentos florescem. Clareza sobre sentimentos e futuro radiante juntos.',
+    careerReading: 'Sucesso profissional garantido. Reconhecimento, promocoes e realizacoes. Projetos concluidos com exito.',
+    imageUrl: '/images/tarot/major/the-sun.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Sol',
+  },
+  {
+    id: 'major-20',
+    name: 'O Julgamento',
+    number: 20,
+    suit: null,
+    keywords: ['renascimento', 'chamado', 'avaliacao', 'absolvicao', 'despertar'],
+    uprightMeaning: 'O Julgamento representa um chamado para despertar, avaliar sua vida e renascer para um novo proposito. E um momento de reflexao profunda sobre escolhas passadas e uma oportunidade de redencao e renovacao.',
+    reversedMeaning: 'Invertido, indica recusa em ouvir o chamado, auto-julgamento excessivo ou incapacidade de perdoar a si mesmo ou aos outros. O despertar esta atrasado.',
+    advice: 'Responda ao chamado da sua alma. Avalie seu passado com compaixao, perdoe o que precisa ser perdoado e renasca para seu verdadeiro proposito.',
+    loveReading: 'Avaliacao profunda de relacionamentos. Segunda chance ou chamado para relacionamento mais elevado. Perdao e renovacao do amor.',
+    careerReading: 'Chamado para proposito maior no trabalho. Avaliacao de carreira e possivel mudanca de direcao. Reconhecimento merecido.',
+    imageUrl: '/images/tarot/major/judgement.jpg',
+    element: 'Fogo',
+    astrologicalSign: 'Plutao',
+  },
+  {
+    id: 'major-21',
+    name: 'O Mundo',
+    number: 21,
+    suit: null,
+    keywords: ['completude', 'realizacao', 'integracao', 'viagem', 'sucesso'],
+    uprightMeaning: 'O Mundo representa a conclusao bem-sucedida de um ciclo e a integracao de tudo que foi aprendido. E o momento de celebrar conquistas e se preparar para o proximo nivel. Voce chegou aonde queria.',
+    reversedMeaning: 'Invertido, indica um ciclo incompleto, falta de conclusao ou dificuldade em alcancar metas. Algo ainda precisa ser resolvido antes de seguir em frente.',
+    advice: 'Celebre suas conquistas e integre as licoes aprendidas. Um ciclo se completa, abrindo portas para novas aventuras. Voce e mais capaz do que imagina.',
+    loveReading: 'Realizacao amorosa - casamento, uniao perfeita ou conclusao de fase importante. Relacionamento integrado e harmonioso.',
+    careerReading: 'Sucesso completo - conclusao de projetos maiores, reconhecimento internacional ou realizacao de sonhos profissionais. O mundo e seu.',
+    imageUrl: '/images/tarot/major/the-world.jpg',
+    element: 'Terra',
+    astrologicalSign: 'Saturno',
+  },
+];
+
+/**
+ * Get a Major Arcana card by ID
+ */
+export function getMajorArcanaById(id: string): TarotCard | undefined {
+  return MAJOR_ARCANA.find(card => card.id === id);
+}
+
+/**
+ * Get a Major Arcana card by number
+ */
+export function getMajorArcanaByNumber(number: number): TarotCard | undefined {
+  return MAJOR_ARCANA.find(card => card.number === number);
+}

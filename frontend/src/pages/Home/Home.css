@@ -1,0 +1,230 @@
+/* ========================================
+   Home Page Styles
+   ======================================== */
+
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.home-page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-4);
+  position: relative;
+  z-index: var(--z-base);
+}
+
+/* Hero Section */
+.home-page__hero {
+  text-align: center;
+  margin-bottom: var(--spacing-10);
+}
+
+/* Decoration */
+.home-page__decoration {
+  position: relative;
+  margin-bottom: var(--spacing-6);
+}
+
+.home-page__constellation {
+  font-size: 80px;
+  display: inline-block;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+.home-page__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  transform: translate(-50%, -50%);
+  background: var(--gradient-purple-glow);
+  border-radius: 50%;
+  filter: blur(40px);
+  z-index: -1;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+/* Title */
+.home-page__title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-4);
+}
+
+.home-page__title-highlight {
+  background: var(--gradient-aurora);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  animation: auroraText 5s ease infinite;
+}
+
+@keyframes auroraText {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Subtitle */
+.home-page__subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 340px;
+  margin: 0 auto var(--spacing-8);
+}
+
+/* CTA */
+.home-page__cta {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.home-page__cta-note {
+  margin-top: var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+}
+
+.home-page__highlight {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Features */
+.home-page__features {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-8);
+}
+
+.home-page__feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.home-page__feature-icon {
+  font-size: 28px;
+  animation: featureFloat 3s ease-in-out infinite;
+}
+
+.home-page__feature:nth-child(2) .home-page__feature-icon {
+  animation-delay: 0.5s;
+}
+
+.home-page__feature:nth-child(3) .home-page__feature-icon {
+  animation-delay: 1s;
+}
+
+@keyframes featureFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.home-page__feature-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Trust */
+.home-page__trust {
+  text-align: center;
+}
+
+.home-page__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+.home-page__stars {
+  color: var(--color-accent);
+  letter-spacing: 2px;
+}
+
+.home-page__rating-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .home-page__title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .home-page__subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .home-page__constellation {
+    font-size: 60px;
+  }
+
+  .home-page__features {
+    gap: var(--spacing-4);
+  }
+
+  .home-page__feature-icon {
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-page__content {
+    padding-top: var(--spacing-12);
+  }
+
+  .home-page__title {
+    font-size: var(--font-size-5xl);
+  }
+}

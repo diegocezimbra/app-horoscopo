@@ -1,0 +1,300 @@
+/* ========================================
+   CosmicEvents Component - Cosmic Theme
+   ======================================== */
+
+.cosmic-events {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(
+    145deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.08) 50%,
+    rgba(168, 85, 247, 0.1) 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cosmic-events__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.cosmic-events__icon {
+  font-size: 1.25rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.cosmic-events__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Featured event */
+.cosmic-events__featured {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+}
+
+.cosmic-events__featured--orange {
+  border-color: rgba(249, 115, 22, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.15) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cosmic-events__featured--purple {
+  border-color: rgba(168, 85, 247, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.15) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cosmic-events__featured--blue {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.15) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cosmic-events__featured--yellow {
+  border-color: rgba(251, 191, 36, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.15) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cosmic-events__featured--pink {
+  border-color: rgba(236, 72, 153, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(236, 72, 153, 0.15) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cosmic-events__featured--teal {
+  border-color: rgba(0, 200, 186, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 200, 186, 0.15) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cosmic-events__featured-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  }
+}
+
+.cosmic-events__featured-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cosmic-events__featured-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.cosmic-events__featured-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.cosmic-events__countdown {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+
+.cosmic-events__countdown-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.cosmic-events__countdown-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Event list */
+.cosmic-events__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cosmic-events__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.cosmic-events__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cosmic-events__item--orange:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.cosmic-events__item--purple:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.cosmic-events__item--yellow:hover {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.cosmic-events__item--pink:hover {
+  border-color: rgba(236, 72, 153, 0.3);
+}
+
+.cosmic-events__item-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.cosmic-events__item-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.cosmic-events__item-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cosmic-events__item-days {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (min-width: 481px) {
+  .cosmic-events {
+    padding: 24px;
+  }
+
+  .cosmic-events__featured {
+    padding: 20px;
+  }
+
+  .cosmic-events__featured-icon {
+    font-size: 3rem;
+  }
+
+  .cosmic-events__featured-title {
+    font-size: 1.1rem;
+  }
+
+  .cosmic-events__featured-desc {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .cosmic-events {
+    padding: 28px;
+  }
+
+  .cosmic-events__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .cosmic-events__item {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .cosmic-events__item-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-events,
+  .cosmic-events__icon,
+  .cosmic-events__featured-icon,
+  .cosmic-events__item {
+    animation: none;
+  }
+
+  .cosmic-events__item {
+    transition: none;
+  }
+}

@@ -1,0 +1,27 @@
+project_name = "authify"
+aws_region   = "us-east-1"
+environment  = "prod"
+
+backend_port   = 3005
+backend_cpu    = "256"
+backend_memory = "512"
+
+cors_origin       = "https://main.xxx.amplifyapp.com"
+health_check_path = "/health"
+frontend_url      = "https://main.xxx.amplifyapp.com"
+
+# Database
+database_url = "postgresql://user:pass@host:5432/db"
+
+# JWT
+jwt_secret         = "your-jwt-secret"
+jwt_refresh_secret = "your-refresh-secret"
+
+# AWS SES
+email_from                = "Authify <noreply@yourdomain.com>"
+aws_ses_access_key_id     = "your-access-key"
+aws_ses_secret_access_key = "your-secret-key"
+
+# Payment (optional)
+asaas_api_key     = ""
+asaas_environment = "production"

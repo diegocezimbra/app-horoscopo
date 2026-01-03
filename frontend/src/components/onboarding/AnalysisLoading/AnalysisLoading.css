@@ -1,0 +1,584 @@
+/* ========================================
+   AnalysisLoading Component - Cosmic Theme
+   ======================================== */
+
+.analysis-loading {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: #0a0a1a;
+  overflow: hidden;
+}
+
+/* Background Effects */
+.analysis-loading-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cosmic-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      ellipse at 30% 20%,
+      rgba(138, 43, 226, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 70% 80%,
+      rgba(0, 200, 186, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(30, 30, 60, 1) 0%,
+      rgba(10, 10, 26, 1) 100%
+    );
+}
+
+.cosmic-star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.cosmic-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 200, 186, 0.1);
+  animation: expand-ring 8s ease-out infinite;
+}
+
+.cosmic-ring-1 {
+  width: 400px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cosmic-ring-2 {
+  width: 600px;
+  height: 600px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+}
+
+@keyframes expand-ring {
+  0% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+/* Overlay for blur effect */
+.analysis-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 26, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Content */
+.analysis-loading-content {
+  position: relative;
+  z-index: 1;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  transition: filter 0.3s ease;
+}
+
+.analysis-loading-content.blurred {
+  filter: blur(4px);
+}
+
+/* Celestial Icon */
+.analysis-celestial-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 32px;
+}
+
+.analysis-celestial-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.rotating-ring {
+  animation: rotate 20s linear infinite;
+  transform-origin: 50px 50px;
+}
+
+.rotating-ring-reverse {
+  animation: rotate 15s linear infinite reverse;
+  transform-origin: 50px 50px;
+}
+
+.pulsing-center {
+  animation: pulse-center 2s ease-in-out infinite;
+  transform-origin: 50px 50px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-center {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Title */
+.analysis-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 36px;
+  line-height: 1.4;
+}
+
+.analysis-title strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Progress Steps */
+.analysis-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.analysis-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.analysis-step-indicator {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.analysis-step-pending .analysis-step-indicator {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.analysis-step-pending .step-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.analysis-step-active .analysis-step-indicator {
+  background: rgba(0, 200, 186, 0.2);
+}
+
+.step-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 200, 186, 0.3);
+  border-top-color: #00c8ba;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.analysis-step-completed .analysis-step-indicator {
+  background: linear-gradient(135deg, #00c8ba 0%, #00a89e 100%);
+}
+
+.analysis-step-completed .analysis-step-indicator svg {
+  width: 14px;
+  height: 14px;
+  color: white;
+}
+
+.analysis-step-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.analysis-step-text {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.analysis-step-active .analysis-step-text {
+  color: #ffffff;
+}
+
+.analysis-step-completed .analysis-step-text {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.analysis-step-percent {
+  font-size: 13px;
+  font-weight: 600;
+  color: #00c8ba;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Progress Bar */
+.analysis-progress-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.analysis-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00c8ba 0%, #8a2be2 100%);
+  border-radius: 2px;
+  transition: width 0.05s linear;
+}
+
+/* Stats */
+.analysis-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.analysis-stat-icon {
+  color: #00c8ba;
+}
+
+.analysis-stat-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.analysis-stat-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.analysis-stat-text strong {
+  color: #00c8ba;
+  font-weight: 600;
+}
+
+/* Testimonials */
+.analysis-testimonials {
+  position: relative;
+}
+
+.testimonial-container {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+}
+
+.testimonial-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.testimonial-item.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.testimonial-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  color: #ffd700;
+}
+
+.testimonial-stars svg {
+  width: 16px;
+  height: 16px;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.testimonial-author {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.testimonial-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.testimonial-dot.active {
+  background: #00c8ba;
+  width: 20px;
+  border-radius: 3px;
+}
+
+/* Question Popup */
+.analysis-question-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.question-popup-content {
+  max-width: 340px;
+  width: 100%;
+  background: linear-gradient(180deg, #1a1a3a 0%, #0f0f2f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.question-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 200, 186, 0.15);
+  border-radius: 50%;
+  color: #00c8ba;
+}
+
+.question-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.question-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 24px;
+  line-height: 1.4;
+}
+
+.question-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.question-btn {
+  flex: 1;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.question-btn-yes {
+  background: linear-gradient(135deg, #00c8ba 0%, #00a89e 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 200, 186, 0.4);
+}
+
+.question-btn-yes:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 200, 186, 0.5);
+}
+
+.question-btn-no {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.question-btn-no:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .analysis-loading {
+    padding: 32px 20px;
+  }
+
+  .analysis-celestial-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 24px;
+  }
+
+  .analysis-title {
+    font-size: 18px;
+    margin-bottom: 28px;
+  }
+
+  .analysis-step {
+    gap: 12px;
+  }
+
+  .analysis-step-indicator {
+    width: 24px;
+    height: 24px;
+  }
+
+  .analysis-step-text {
+    font-size: 14px;
+  }
+
+  .analysis-step-percent {
+    font-size: 12px;
+  }
+
+  .testimonial-container {
+    height: 100px;
+  }
+
+  .testimonial-text {
+    font-size: 13px;
+  }
+
+  .question-popup-content {
+    padding: 24px;
+  }
+
+  .question-title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analysis-loading {
+    padding: 24px 16px;
+  }
+
+  .analysis-celestial-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .analysis-title {
+    font-size: 16px;
+  }
+
+  .analysis-step-text {
+    font-size: 13px;
+  }
+
+  .analysis-stats {
+    padding: 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .analysis-stat-text {
+    font-size: 13px;
+  }
+}

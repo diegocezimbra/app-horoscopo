@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio Digital - Administração</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Cropper.js - biblioteca profissional de crop -->
+    <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.js"></script>
+    <style>
+        :root {
+            --primary: hsl(240 5.9% 10%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(240 4.8% 95.9%);
+            --secondary-foreground: hsl(240 5.9% 10%);
+            --accent: hsl(240 4.8% 95.9%);
+            --accent-foreground: hsl(240 5.9% 10%);
+            --destructive: hsl(0 84.2% 60.2%);
+            --destructive-foreground: hsl(0 0% 98%);
+            --background: hsl(0 0% 100%);
+            --foreground: hsl(240 10% 3.9%);
+            --text: hsl(240 10% 3.9%);
+            --text-muted: hsl(240 3.8% 46.1%);
+            --surface: hsl(0 0% 100%);
+            --surface-elevated: hsl(0 0% 100%);
+            --border: hsl(240 5.9% 90%);
+            --input: hsl(240 5.9% 90%);
+            --ring: hsl(240 5.9% 10%);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary);
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: var(--background);
+            color: var(--foreground);
+            border: 1px solid var(--input);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: var(--accent-foreground);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-small {
+            padding: 0.5rem 0.875rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar - Configurações */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--secondary);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--foreground);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-input::placeholder {
+            color: #95a5a6;
+            opacity: 0.7;
+        }
+
+        .item-title-input::placeholder,
+        .item-subtitle-input::placeholder {
+            color: #95a5a6;
+            opacity: 0.6;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        /* Theme Selector Button */
+        .theme-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-selector-btn:hover {
+            border-color: var(--ring);
+            background: var(--accent);
+        }
+
+        .theme-selector-btn .theme-mini-preview {
+            width: 40px;
+            height: 28px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+
+        .theme-selector-btn .theme-mini-preview-bg {
+            position: absolute;
+            inset: 0;
+        }
+
+        .theme-selector-btn .theme-mini-preview-accent {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            display: flex;
+        }
+
+        .theme-selector-btn .theme-current-name {
+            flex: 1;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--foreground);
+        }
+
+        .theme-selector-btn .theme-change-icon {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Theme Modal */
+        .theme-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+
+        .theme-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .theme-modal-container {
+            background: white;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .theme-modal.active .theme-modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .theme-modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .theme-modal-header h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .theme-modal-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .theme-option {
+            position: relative;
+            border: 3px solid var(--border);
+            border-radius: 12px;
+            padding: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--surface);
+        }
+
+        .theme-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .theme-option.active {
+            border-color: var(--ring);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .theme-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .theme-preview {
+            height: 50px;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-preview-bg {
+            position: absolute;
+            inset: 0;
+        }
+
+        .theme-preview-accent {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            display: flex;
+        }
+
+        .theme-preview-accent-1 {
+            flex: 1;
+        }
+
+        .theme-preview-accent-2 {
+            flex: 1;
+        }
+
+        .theme-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--foreground);
+        }
+
+        /* Logo Upload */
+        .logo-upload {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--secondary);
+        }
+
+        .logo-upload:hover {
+            border-color: var(--ring);
+            background: var(--accent);
+        }
+
+        .logo-upload.has-logo {
+            padding: 0.75rem;
+        }
+
+        .logo-preview {
+            max-width: 100%;
+            max-height: 80px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .logo-upload-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .logo-upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        /* Main Content - Seções */
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 1.5rem;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .section-card.sortable-ghost {
+            opacity: 0.5;
+            background: var(--secondary);
+        }
+
+        .section-card.sortable-drag {
+            box-shadow: var(--shadow);
+        }
+
+        .section-card-header {
+            padding: 1rem 1.25rem;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .drag-handle {
+            cursor: grab;
+            color: var(--text-muted);
+            padding: 0.25rem;
+            font-size: 1.25rem;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .section-name-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--foreground);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 0.25rem;
+        }
+
+        .section-name-input:focus {
+            outline: none;
+            background: white;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .section-items {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-height: 60px;
+        }
+
+        .section-items-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding: 1rem;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+        }
+
+        /* Item Image Upload/Preview */
+        .item-image-upload {
+            width: 60px;
+            height: 60px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.5rem;
+            background: var(--surface);
+        }
+
+        .item-image-upload:hover {
+            border-color: var(--ring);
+            background: var(--surface-elevated);
+        }
+
+        .item-image-preview {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        .item-image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-remove-image {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 20px;
+            height: 20px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .item-image-preview:hover .btn-remove-image {
+            opacity: 1;
+        }
+
+        /* Item Cards */
+        .item-card {
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.875rem;
+            display: grid;
+            grid-template-columns: auto auto 1fr auto auto;
+            gap: 0.75rem;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .item-card:hover {
+            border-color: var(--ring);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-card.sortable-ghost {
+            opacity: 0.5;
+        }
+
+        .item-drag-handle {
+            cursor: grab;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 0;
+        }
+
+        .item-title-input {
+            background: transparent;
+            border: none;
+            color: var(--foreground);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0;
+        }
+
+        .item-title-input:focus {
+            outline: none;
+            background: white;
+            border-radius: 4px;
+            padding: 0.125rem 0.25rem;
+            margin: -0.125rem -0.25rem;
+        }
+
+        .item-subtitle-input {
+            background: transparent;
+            border: none;
+            color: var(--foreground);
+            font-size: 0.85rem;
+            padding: 0;
+            opacity: 0.8;
+        }
+
+        .item-subtitle-input:focus {
+            outline: none;
+            background: white;
+            border-radius: 4px;
+            padding: 0.125rem 0.25rem;
+            margin: -0.125rem -0.25rem;
+            opacity: 1;
+        }
+
+        .item-price-input {
+            width: 90px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--foreground);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
+            text-align: right;
+        }
+
+        .item-price-input:focus {
+            outline: none;
+            border-color: var(--ring);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+        }
+
+        .btn-delete:hover {
+            color: var(--destructive);
+            background: hsl(0 84.2% 60.2% / 0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            transform: translateY(20px);
+            transition: transform 0.2s;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .modal-body {
+            padding: 1.25rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success { border-left: 3px solid var(--success); }
+        .toast.error { border-left: 3px solid var(--destructive); }
+
+        /* Image Cropper Modal */
+        .cropper-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+
+        .cropper-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cropper-container {
+            background: white;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .cropper-modal.active .cropper-container {
+            transform: scale(1);
+        }
+
+        .cropper-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cropper-header h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .cropper-body {
+            padding: 1.25rem;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cropper-image-wrapper {
+            width: 100%;
+            max-height: 400px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cropper-image-wrapper img {
+            display: block;
+            max-width: 100%;
+            max-height: 400px;
+        }
+
+        .cropper-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Spinner para botões */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .item-card {
+                grid-template-columns: auto 1fr;
+                grid-template-rows: auto auto;
+            }
+
+            .item-price-input {
+                grid-column: 2;
+            }
+
+            .item-actions {
+                grid-column: 1 / -1;
+                justify-content: flex-end;
+            }
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🍽️ Cardápio Digital</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="openPreview()">
+                    <span>👁️</span> Visualizar
+                </button>
+                <button class="btn btn-secondary" onclick="exportData()">
+                    <span>📤</span> Exportar JSON
+                </button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importInput').click()">
+                    <span>📥</span> Importar JSON
+                </button>
+                <input type="file" id="importInput" accept=".json" style="display:none" onchange="importData(event)">
+                <button class="btn btn-primary" onclick="exportPDF()">
+                    <span>📄</span> Exportar PDF
+                </button>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <span>🚪</span> Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Sidebar - Configurações -->
+        <aside class="sidebar">
+            <!-- Configurações Gerais -->
+            <div class="card">
+                <div class="card-header">
+                    <span>⚙️</span> Configurações
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Nome do Estabelecimento</label>
+                        <input type="text" class="form-input" id="menuTitle" placeholder="Ex: Restaurante Sabor & Arte" oninput="updateConfig()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descrição</label>
+                        <textarea class="form-input" id="menuDescription" placeholder="Ex: Culinária brasileira com toque especial..." rows="3" oninput="updateConfig()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tema Visual</label>
+                        <button type="button" class="theme-selector-btn" id="themeSelectorBtn" onclick="openThemeModal()">
+                            <div class="theme-mini-preview" id="themeMiniPreview">
+                                <div class="theme-mini-preview-bg"></div>
+                                <div class="theme-mini-preview-accent">
+                                    <div style="flex:1"></div>
+                                    <div style="flex:1"></div>
+                                </div>
+                            </div>
+                            <span class="theme-current-name" id="themeCurrentName">Escuro Elegante</span>
+                            <span class="theme-change-icon">Alterar ›</span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Moeda</label>
+                        <select class="form-input" id="currency" onchange="updateConfig()">
+                            <option value="R$">R$ (Real)</option>
+                            <option value="$">$ (Dólar)</option>
+                            <option value="€">€ (Euro)</option>
+                            <option value="£">£ (Libra)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo -->
+            <div class="card">
+                <div class="card-header">
+                    <span>🖼️</span> Logo / Ícone
+                </div>
+                <div class="card-body">
+                    <div class="logo-upload" id="logoUpload" onclick="document.getElementById('logoInput').click()">
+                        <div class="logo-upload-icon">📷</div>
+                        <div class="logo-upload-text">Clique para enviar uma imagem</div>
+                    </div>
+                    <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+                    <button class="btn btn-secondary btn-small hidden" id="removeLogo" onclick="removeLogo()" style="margin-top: 0.75rem; width: 100%;">
+                        Remover Logo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estatísticas -->
+            <div class="card">
+                <div class="card-header">
+                    <span>📊</span> Estatísticas
+                </div>
+                <div class="card-body">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+                        <div>
+                            <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent);" id="statSections">0</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Seções</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent);" id="statItems">0</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Itens</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content - Seções e Itens -->
+        <div class="content">
+            <div class="section-header">
+                <h2>Seções do Cardápio</h2>
+                <button class="btn btn-primary" onclick="addSection()">
+                    <span>➕</span> Nova Seção
+                </button>
+            </div>
+
+            <div id="sectionsContainer">
+                <!-- Seções serão renderizadas aqui -->
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <h3>Nenhuma seção criada</h3>
+                <p>Comece adicionando sua primeira seção ao cardápio</p>
+                <button class="btn btn-primary" onclick="addSection()">
+                    <span>➕</span> Criar Primeira Seção
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Theme Selector Modal -->
+    <div class="theme-modal" id="themeModal">
+        <div class="theme-modal-container">
+            <div class="theme-modal-header">
+                <h3>🎨 Escolher Tema</h3>
+                <button class="btn btn-icon btn-secondary" onclick="closeThemeModal()">✕</button>
+            </div>
+            <div class="theme-modal-body">
+                <div class="theme-grid" id="themeGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Cropper Modal -->
+    <div class="cropper-modal" id="cropperModal">
+        <div class="cropper-container">
+            <div class="cropper-header">
+                <h3>Recortar Imagem</h3>
+                <button class="btn btn-icon btn-secondary" onclick="closeCropper()">✕</button>
+            </div>
+            <div class="cropper-body">
+                <div class="cropper-image-wrapper">
+                    <img id="cropperImage" src="" alt="Imagem para recortar">
+                </div>
+            </div>
+            <div class="cropper-footer">
+                <button class="btn btn-secondary" onclick="closeCropper()">Cancelar</button>
+                <button class="btn btn-primary" id="cropConfirmBtn" onclick="confirmCrop()">Recortar e Usar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Confirmar Exclusão</h3>
+                <button class="btn btn-icon btn-secondary" onclick="closeDeleteModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalText">Tem certeza que deseja excluir este item?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="btn btn-primary" id="confirmDeleteBtn">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzb1yOxW981-ylExV442BprM7RjReeWck",
+            authDomain: "cardapiodigital-1030e.firebaseapp.com",
+            projectId: "cardapiodigital-1030e",
+            storageBucket: "cardapiodigital-1030e.firebasestorage.app",
+            messagingSenderId: "271709547242",
+            appId: "1:271709547242:web:c5516395fbec2bfd4e0593",
+            measurementId: "G-X64RYX1REF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================================
+        // Estado da Aplicação
+        // ==========================================
+        const STORAGE_KEY = 'cardapio_digital_data';
+        let restaurantId = localStorage.getItem('restaurantId');
+        let restaurantPassword = localStorage.getItem('restaurantPassword');
+
+        // Verificar autenticação
+        if (!restaurantId || !restaurantPassword) {
+            window.location.href = 'register.html?mode=login';
+        }
+
+        // Temas pré-configurados
+        const THEMES = {
+            dark: {
+                name: 'Escuro Elegante',
+                background: '#1a1a2e',
+                primary: '#e74c3c',
+                secondary: '#3498db',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(255,255,255,0.05)',
+                border: 'rgba(255,255,255,0.1)'
+            },
+            midnight: {
+                name: 'Meia-Noite',
+                background: '#0f172a',
+                primary: '#f59e0b',
+                secondary: '#06b6d4',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                cardBg: 'rgba(255,255,255,0.05)',
+                border: 'rgba(255,255,255,0.1)'
+            },
+            ocean: {
+                name: 'Oceano',
+                background: '#0a192f',
+                primary: '#64ffda',
+                secondary: '#f43f5e',
+                text: '#e6f1ff',
+                textSecondary: 'rgba(230,241,255,0.7)',
+                cardBg: 'rgba(100,255,218,0.05)',
+                border: 'rgba(100,255,218,0.1)'
+            },
+            sunset: {
+                name: 'Pôr do Sol',
+                background: '#1e293b',
+                primary: '#fb923c',
+                secondary: '#ec4899',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(251,146,60,0.05)',
+                border: 'rgba(251,146,60,0.1)'
+            },
+            forest: {
+                name: 'Floresta',
+                background: '#1a2e1a',
+                primary: '#4ade80',
+                secondary: '#fbbf24',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(74,222,128,0.05)',
+                border: 'rgba(74,222,128,0.1)'
+            },
+            royal: {
+                name: 'Real',
+                background: '#1e1b4b',
+                primary: '#a78bfa',
+                secondary: '#f472b6',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(167,139,250,0.05)',
+                border: 'rgba(167,139,250,0.1)'
+            },
+            light: {
+                name: 'Claro Moderno',
+                background: '#ffffff',
+                primary: '#e74c3c',
+                secondary: '#3498db',
+                text: '#1a1a2e',
+                textSecondary: 'rgba(26,26,46,0.7)',
+                cardBg: 'rgba(0,0,0,0.03)',
+                border: 'rgba(0,0,0,0.08)'
+            },
+            cream: {
+                name: 'Creme Elegante',
+                background: '#faf8f3',
+                primary: '#d97706',
+                secondary: '#059669',
+                text: '#292524',
+                textSecondary: 'rgba(41,37,36,0.7)',
+                cardBg: 'rgba(217,119,6,0.05)',
+                border: 'rgba(217,119,6,0.12)'
+            },
+            pastel: {
+                name: 'Pastel Suave',
+                background: '#f0f9ff',
+                primary: '#0284c7',
+                secondary: '#db2777',
+                text: '#0c4a6e',
+                textSecondary: 'rgba(12,74,110,0.7)',
+                cardBg: 'rgba(2,132,199,0.05)',
+                border: 'rgba(2,132,199,0.12)'
+            }
+        };
+
+        let menuData = {
+            config: {
+                title: '',
+                description: '',
+                theme: 'dark',
+                currency: 'R$',
+                logo: null
+            },
+            sections: []
+        };
+
+        // ==========================================
+        // Inicialização
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            renderThemeSelector();
+            await loadFromFirebase();
+            renderSections();
+            updateStats();
+            initSortable();
+        });
+
+        function renderThemeSelector() {
+            // Update the button preview
+            updateThemeButton();
+
+            // Render the modal grid
+            const container = document.getElementById('themeGrid');
+            container.innerHTML = Object.entries(THEMES).map(([key, theme]) => `
+                <div class="theme-option ${menuData.config.theme === key ? 'active' : ''}" onclick="selectTheme('${key}')">
+                    <div class="theme-preview">
+                        <div class="theme-preview-bg" style="background: ${theme.background}"></div>
+                        <div class="theme-preview-accent">
+                            <div class="theme-preview-accent-1" style="background: ${theme.primary}"></div>
+                            <div class="theme-preview-accent-2" style="background: ${theme.secondary}"></div>
+                        </div>
+                    </div>
+                    <div class="theme-name">${theme.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateThemeButton() {
+            const themeKey = menuData.config.theme || 'dark';
+            const theme = THEMES[themeKey] || THEMES.dark;
+
+            const previewEl = document.getElementById('themeMiniPreview');
+            const nameEl = document.getElementById('themeCurrentName');
+
+            if (previewEl) {
+                previewEl.innerHTML = `
+                    <div class="theme-mini-preview-bg" style="background: ${theme.background}"></div>
+                    <div class="theme-mini-preview-accent">
+                        <div style="flex:1; background: ${theme.primary}"></div>
+                        <div style="flex:1; background: ${theme.secondary}"></div>
+                    </div>
+                `;
+            }
+
+            if (nameEl) {
+                nameEl.textContent = theme.name;
+            }
+        }
+
+        window.openThemeModal = function() {
+            renderThemeSelector();
+            document.getElementById('themeModal').classList.add('active');
+        }
+
+        window.closeThemeModal = function() {
+            document.getElementById('themeModal').classList.remove('active');
+        }
+
+        // Close theme modal when clicking outside
+        document.getElementById('themeModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'themeModal') {
+                closeThemeModal();
+            }
+        });
+
+        window.selectTheme = function(themeKey) {
+            menuData.config.theme = themeKey;
+            updateThemeButton();
+            renderThemeSelector();
+            saveToFirebase();
+            closeThemeModal();
+            window.showToast(`Tema "${THEMES[themeKey].name}" selecionado!`, 'success');
+        }
+
+        async function loadFromFirebase() {
+            try {
+                const restaurantRef = doc(db, 'restaurants', restaurantId);
+                const restaurantDoc = await getDoc(restaurantRef);
+
+                if (restaurantDoc.exists()) {
+                    const data = restaurantDoc.data();
+
+                    // Verificar senha
+                    if (data.password !== restaurantPassword) {
+                        localStorage.removeItem('restaurantId');
+                        localStorage.removeItem('restaurantPassword');
+                        window.location.href = 'register.html?mode=login';
+                        return;
+                    }
+
+                    // Carregar dados do cardápio
+                    if (data.menuData) {
+                        menuData = data.menuData;
+                    } else {
+                        // Migrar dados antigos se existirem
+                        menuData.config.title = data.name || '';
+                        menuData.config.theme = 'dark';
+                        menuData.config.logo = data.logo || null;
+                        menuData.sections = data.menus || [];
+                    }
+
+                    // Garantir que o tema existe
+                    if (!menuData.config.theme || !THEMES[menuData.config.theme]) {
+                        menuData.config.theme = 'dark';
+                    }
+
+                    // Aplicar configurações na UI
+                    document.getElementById('menuTitle').value = menuData.config.title || '';
+                    document.getElementById('menuDescription').value = menuData.config.description || '';
+                    document.getElementById('currency').value = menuData.config.currency || 'R$';
+                    renderThemeSelector();
+
+                    if (menuData.config.logo) {
+                        window.updateLogoPreview(menuData.config.logo);
+                    }
+
+                    // Salvar também em localStorage como backup
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(menuData));
+                } else {
+                    showToast('Restaurante não encontrado', 'error');
+                    localStorage.removeItem('restaurantId');
+                    localStorage.removeItem('restaurantPassword');
+                    window.location.href = 'register.html';
+                }
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
+                showToast('Erro ao carregar dados do Firebase. Usando dados locais.', 'error');
+
+                // Tentar carregar do localStorage como fallback
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        menuData = JSON.parse(saved);
+                        if (!menuData.config.theme) menuData.config.theme = 'dark';
+                        document.getElementById('menuTitle').value = menuData.config.title || '';
+                        document.getElementById('menuDescription').value = menuData.config.description || '';
+                        document.getElementById('currency').value = menuData.config.currency || 'R$';
+                        renderThemeSelector();
+
+                        if (menuData.config.logo) {
+                            window.updateLogoPreview(menuData.config.logo);
+                        }
+                    } catch (parseError) {
+                        console.error('Erro ao parsear dados locais:', parseError);
+                    }
+                }
+            }
+        }
+
+        async function saveToFirebase() {
+            try {
+                const restaurantRef = doc(db, 'restaurants', restaurantId);
+                await setDoc(restaurantRef, {
+                    name: menuData.config.title || '',
+                    password: restaurantPassword,
+                    theme: menuData.config.theme || 'dark',
+                    logo: menuData.config.logo || '',
+                    menuData: menuData,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+
+                // Salvar também em localStorage como backup
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(menuData));
+            } catch (e) {
+                console.error('Erro ao salvar no Firebase:', e);
+                showToast('Erro ao salvar no Firebase. Dados salvos localmente.', 'error');
+                // Salvar pelo menos em localStorage
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(menuData));
+            }
+        }
+
+        // ==========================================
+        // Configurações
+        // ==========================================
+        window.updateConfig = function() {
+            menuData.config.title = document.getElementById('menuTitle').value;
+            menuData.config.description = document.getElementById('menuDescription').value;
+            menuData.config.currency = document.getElementById('currency').value;
+            saveToFirebase();
+        }
+
+        window.handleLogoUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Limpar input imediatamente
+            event.target.value = '';
+
+            // Verificar tamanho (limite 2MB antes do recorte)
+            if (file.size > 2 * 1024 * 1024) {
+                window.showToast('Imagem muito grande. Máximo 2MB.', 'error');
+                return;
+            }
+
+            // Verificar tipo
+            if (!file.type.startsWith('image/')) {
+                window.showToast('Por favor, selecione uma imagem válida.', 'error');
+                return;
+            }
+
+            window.showToast('Carregando imagem...', 'success');
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Se imagem muito grande, redimensionar primeiro
+                    const maxSize = 800;
+                    if (img.width > maxSize || img.height > maxSize) {
+                        const canvas = document.createElement('canvas');
+                        const scale = Math.min(maxSize / img.width, maxSize / img.height);
+                        canvas.width = Math.round(img.width * scale);
+                        canvas.height = Math.round(img.height * scale);
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        openCropper(canvas.toDataURL('image/jpeg', 0.9), null, null, true);
+                    } else {
+                        openCropper(e.target.result, null, null, true);
+                    }
+                };
+                img.onerror = () => {
+                    window.showToast('Erro ao carregar imagem.', 'error');
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = () => {
+                window.showToast('Erro ao ler arquivo.', 'error');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        window.updateLogoPreview = function(src) {
+            const uploadDiv = document.getElementById('logoUpload');
+            uploadDiv.classList.add('has-logo');
+            uploadDiv.innerHTML = `<img src="${src}" alt="Logo" class="logo-preview">`;
+            document.getElementById('removeLogo').classList.remove('hidden');
+        }
+
+        window.removeLogo = function() {
+            menuData.config.logo = null;
+            const uploadDiv = document.getElementById('logoUpload');
+            uploadDiv.classList.remove('has-logo');
+            uploadDiv.innerHTML = `
+                <div class="logo-upload-icon">📷</div>
+                <div class="logo-upload-text">Clique para enviar uma imagem</div>
+            `;
+            document.getElementById('removeLogo').classList.add('hidden');
+            document.getElementById('logoInput').value = '';
+            saveToFirebase();
+            showToast('Logo removido', 'success');
+        }
+
+        // ==========================================
+        // Seções
+        // ==========================================
+        function generateId() {
+            return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        window.addSection = function() {
+            const newSection = {
+                id: generateId(),
+                name: 'Nova Seção',
+                order: menuData.sections.length,
+                items: []
+            };
+            menuData.sections.push(newSection);
+            saveToFirebase();
+            renderSections();
+            updateStats();
+            showToast('Seção criada!', 'success');
+        }
+
+        window.updateSectionName = function(sectionId, name) {
+            const section = menuData.sections.find(s => s.id === sectionId);
+            if (section) {
+                section.name = name;
+                saveToFirebase();
+            }
+        }
+
+        window.deleteSection = function(sectionId) {
+            showDeleteModal('Tem certeza que deseja excluir esta seção e todos os seus itens?', () => {
+                menuData.sections = menuData.sections.filter(s => s.id !== sectionId);
+                reorderSections();
+                saveToFirebase();
+                renderSections();
+                updateStats();
+                showToast('Seção excluída', 'success');
+            });
+        }
+
+        function reorderSections() {
+            menuData.sections.forEach((section, index) => {
+                section.order = index;
+            });
+        }
+
+        // ==========================================
+        // Itens
+        // ==========================================
+        window.addItem = function(sectionId) {
+            const section = menuData.sections.find(s => s.id === sectionId);
+            if (!section) return;
+
+            const newItem = {
+                id: generateId(),
+                title: 'Novo Item',
+                subtitle: 'Descrição do item',
+                price: 0,
+                image: null,
+                order: section.items.length
+            };
+            section.items.push(newItem);
+            saveToFirebase();
+            renderSections();
+            updateStats();
+        }
+
+        window.updateItem = function(sectionId, itemId, field, value) {
+            const section = menuData.sections.find(s => s.id === sectionId);
+            if (!section) return;
+
+            const item = section.items.find(i => i.id === itemId);
+            if (item) {
+                if (field === 'price') {
+                    value = parseFloat(value) || 0;
+                }
+                item[field] = value;
+                saveToFirebase();
+            }
+        }
+
+        // ==========================================
+        // Image Cropper - Usando Cropper.js
+        // ==========================================
+        let cropperInstance = null;
+        let cropperData = {
+            sectionId: null,
+            itemId: null,
+            isForLogo: false
+        };
+
+        function openCropper(imageSrc, sectionId, itemId, isForLogo = false) {
+            // Destruir instância anterior se existir
+            if (cropperInstance) {
+                cropperInstance.destroy();
+                cropperInstance = null;
+            }
+
+            cropperData.sectionId = sectionId;
+            cropperData.itemId = itemId;
+            cropperData.isForLogo = isForLogo;
+
+            const modal = document.getElementById('cropperModal');
+            const image = document.getElementById('cropperImage');
+
+            image.src = imageSrc;
+
+            image.onload = () => {
+                cropperInstance = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                    autoCropArea: 0.9,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                    minContainerWidth: 300,
+                    minContainerHeight: 300
+                });
+
+                modal.classList.add('active');
+            };
+        }
+
+        window.closeCropper = function() {
+            const modal = document.getElementById('cropperModal');
+            modal.classList.remove('active');
+
+            if (cropperInstance) {
+                cropperInstance.destroy();
+                cropperInstance = null;
+            }
+
+            // Restaurar botão ao estado original
+            const btn = document.getElementById('cropConfirmBtn');
+            btn.disabled = false;
+            btn.innerHTML = 'Recortar e Usar';
+
+            cropperData.sectionId = null;
+            cropperData.itemId = null;
+            cropperData.isForLogo = false;
+        }
+
+        window.confirmCrop = async function() {
+            if (!cropperInstance) {
+                window.showToast('Erro no cropper.', 'error');
+                return;
+            }
+
+            // Mostrar loading no botão
+            const btn = document.getElementById('cropConfirmBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Salvando...';
+
+            try {
+                // Obter canvas com a área recortada
+                const canvas = cropperInstance.getCroppedCanvas({
+                    width: 400,
+                    height: 400,
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high'
+                });
+
+                if (!canvas) {
+                    window.showToast('Erro ao recortar imagem.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    return;
+                }
+
+                // Converter para base64
+                const croppedImage = canvas.toDataURL('image/jpeg', 0.85);
+
+                // Verificar se é para o logo ou para um item
+                if (cropperData.isForLogo) {
+                    menuData.config.logo = croppedImage;
+                    window.updateLogoPreview(croppedImage);
+                    await saveToFirebase();
+                    window.showToast('Logo recortado e salvo!', 'success');
+                } else {
+                    const section = menuData.sections.find(s => s.id === cropperData.sectionId);
+                    const item = section?.items.find(i => i.id === cropperData.itemId);
+
+                    if (item) {
+                        item.image = croppedImage;
+                        await saveToFirebase();
+                        renderSections();
+                        window.showToast('Imagem recortada e adicionada!', 'success');
+                    }
+                }
+
+                closeCropper();
+            } catch (error) {
+                console.error('Erro ao salvar imagem:', error);
+                window.showToast('Erro ao salvar imagem.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        window.handleItemImageUpload = async function(sectionId, itemId, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Limpar input imediatamente
+            event.target.value = '';
+
+            // Verificar tamanho (limite 5MB antes de recorte/otimização)
+            if (file.size > 5 * 1024 * 1024) {
+                window.showToast('Imagem muito grande. Máximo 5MB.', 'error');
+                return;
+            }
+
+            // Verificar tipo
+            if (!file.type.startsWith('image/')) {
+                window.showToast('Por favor, selecione uma imagem válida.', 'error');
+                return;
+            }
+
+            window.showToast('Carregando imagem...', 'success');
+
+            // Ler arquivo e redimensionar se necessário antes do cropper
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Se imagem muito grande, redimensionar primeiro
+                    const maxSize = 1200;
+                    if (img.width > maxSize || img.height > maxSize) {
+                        const canvas = document.createElement('canvas');
+                        const scale = Math.min(maxSize / img.width, maxSize / img.height);
+                        canvas.width = Math.round(img.width * scale);
+                        canvas.height = Math.round(img.height * scale);
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        openCropper(canvas.toDataURL('image/jpeg', 0.9), sectionId, itemId);
+                    } else {
+                        openCropper(e.target.result, sectionId, itemId);
+                    }
+                };
+                img.onerror = () => {
+                    window.showToast('Erro ao carregar imagem.', 'error');
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = () => {
+                window.showToast('Erro ao ler arquivo.', 'error');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        window.removeItemImage = function(sectionId, itemId) {
+            const section = menuData.sections.find(s => s.id === sectionId);
+            const item = section?.items.find(i => i.id === itemId);
+            if (item) {
+                item.image = null;
+                saveToFirebase();
+                renderSections();
+                window.showToast('Imagem removida', 'success');
+            }
+        }
+
+        window.deleteItem = function(sectionId, itemId) {
+            showDeleteModal('Tem certeza que deseja excluir este item?', () => {
+                const section = menuData.sections.find(s => s.id === sectionId);
+                if (!section) return;
+
+                section.items = section.items.filter(i => i.id !== itemId);
+                reorderItems(sectionId);
+                saveToFirebase();
+                renderSections();
+                updateStats();
+                showToast('Item excluído', 'success');
+            });
+        }
+
+        function reorderItems(sectionId) {
+            const section = menuData.sections.find(s => s.id === sectionId);
+            if (!section) return;
+            
+            section.items.forEach((item, index) => {
+                item.order = index;
+            });
+        }
+
+        // ==========================================
+        // Renderização
+        // ==========================================
+        function renderSections() {
+            const container = document.getElementById('sectionsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (menuData.sections.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            // Ordenar seções
+            const sortedSections = [...menuData.sections].sort((a, b) => a.order - b.order);
+
+            container.innerHTML = sortedSections.map(section => `
+                <div class="section-card" data-section-id="${section.id}">
+                    <div class="section-card-header">
+                        <span class="drag-handle section-handle">⋮⋮</span>
+                        <input
+                            type="text"
+                            class="section-name-input"
+                            value="${window.escapeHtml(section.name)}"
+                            onchange="updateSectionName('${section.id}', this.value)"
+                        >
+                        <div class="section-actions">
+                            <button class="btn btn-secondary btn-small" onclick="addItem('${section.id}')">
+                                <span>➕</span> Item
+                            </button>
+                            <button class="btn btn-icon btn-delete" onclick="deleteSection('${section.id}')">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section-items" data-section-id="${section.id}">
+                        ${section.items.length === 0 
+                            ? '<div class="section-items-empty">Arraste itens aqui ou clique em "+ Item"</div>'
+                            : section.items
+                                .sort((a, b) => a.order - b.order)
+                                .map(item => renderItem(section.id, item))
+                                .join('')
+                        }
+                    </div>
+                </div>
+            `).join('');
+
+            initSortable();
+        }
+
+        function renderItem(sectionId, item) {
+            const imageHtml = item.image
+                ? `<div class="item-image-preview">
+                    <img src="${item.image}" alt="${item.title}">
+                    <button class="btn-remove-image" onclick="removeItemImage('${sectionId}', '${item.id}')" title="Remover imagem">✕</button>
+                   </div>`
+                : `<label class="item-image-upload">
+                    <input type="file" accept="image/*" onchange="handleItemImageUpload('${sectionId}', '${item.id}', event)" style="display:none">
+                    <span>📷</span>
+                   </label>`;
+
+            return `
+                <div class="item-card" data-item-id="${item.id}">
+                    <span class="item-drag-handle">⋮⋮</span>
+                    ${imageHtml}
+                    <div class="item-content">
+                        <input
+                            type="text"
+                            class="item-title-input"
+                            value="${window.escapeHtml(item.title)}"
+                            onchange="updateItem('${sectionId}', '${item.id}', 'title', this.value)"
+                            placeholder="Nome do item"
+                        >
+                        <input
+                            type="text"
+                            class="item-subtitle-input"
+                            value="${window.escapeHtml(item.subtitle)}"
+                            onchange="updateItem('${sectionId}', '${item.id}', 'subtitle', this.value)"
+                            placeholder="Descrição"
+                        >
+                    </div>
+                    <input
+                        type="number"
+                        class="item-price-input"
+                        value="${item.price.toFixed(2)}"
+                        step="0.01"
+                        min="0"
+                        onchange="updateItem('${sectionId}', '${item.id}', 'price', this.value)"
+                    >
+                    <div class="item-actions">
+                        <button class="btn btn-icon btn-delete" onclick="deleteItem('${sectionId}', '${item.id}')">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.escapeHtml = function(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ==========================================
+        // Drag & Drop (Sortable)
+        // ==========================================
+        let sectionsSortable = null;
+        let itemsSortables = [];
+
+        function initSortable() {
+            // Limpar sortables anteriores
+            if (sectionsSortable) {
+                sectionsSortable.destroy();
+            }
+            itemsSortables.forEach(s => s.destroy());
+            itemsSortables = [];
+
+            // Sortable para seções
+            const sectionsContainer = document.getElementById('sectionsContainer');
+            if (sectionsContainer && sectionsContainer.children.length > 0) {
+                sectionsSortable = new Sortable(sectionsContainer, {
+                    animation: 150,
+                    handle: '.section-handle',
+                    ghostClass: 'sortable-ghost',
+                    dragClass: 'sortable-drag',
+                    onEnd: function(evt) {
+                        const sectionIds = Array.from(sectionsContainer.children).map(el => el.dataset.sectionId);
+                        sectionIds.forEach((id, index) => {
+                            const section = menuData.sections.find(s => s.id === id);
+                            if (section) section.order = index;
+                        });
+                        saveToFirebase();
+                    }
+                });
+            }
+
+            // Sortable para itens dentro de cada seção
+            document.querySelectorAll('.section-items').forEach(container => {
+                const sectionId = container.dataset.sectionId;
+                const sortable = new Sortable(container, {
+                    animation: 150,
+                    handle: '.item-drag-handle',
+                    ghostClass: 'sortable-ghost',
+                    group: 'items',
+                    onEnd: function(evt) {
+                        // Atualizar ordem dos itens
+                        const newSectionId = evt.to.dataset.sectionId;
+                        const itemId = evt.item.dataset.itemId;
+                        
+                        // Se moveu para outra seção
+                        if (evt.from.dataset.sectionId !== newSectionId) {
+                            const fromSection = menuData.sections.find(s => s.id === evt.from.dataset.sectionId);
+                            const toSection = menuData.sections.find(s => s.id === newSectionId);
+                            
+                            if (fromSection && toSection) {
+                                const itemIndex = fromSection.items.findIndex(i => i.id === itemId);
+                                if (itemIndex > -1) {
+                                    const [item] = fromSection.items.splice(itemIndex, 1);
+                                    toSection.items.splice(evt.newIndex, 0, item);
+                                }
+                            }
+                        }
+
+                        // Atualizar ordem em todas as seções afetadas
+                        [evt.from.dataset.sectionId, newSectionId].forEach(sid => {
+                            const container = document.querySelector(`.section-items[data-section-id="${sid}"]`);
+                            if (container) {
+                                const section = menuData.sections.find(s => s.id === sid);
+                                if (section) {
+                                    const itemIds = Array.from(container.querySelectorAll('.item-card')).map(el => el.dataset.itemId);
+                                    itemIds.forEach((id, index) => {
+                                        const item = section.items.find(i => i.id === id);
+                                        if (item) item.order = index;
+                                    });
+                                }
+                            }
+                        });
+
+                        saveToFirebase();
+                        renderSections();
+                    }
+                });
+                itemsSortables.push(sortable);
+            });
+        }
+
+        // ==========================================
+        // Estatísticas
+        // ==========================================
+        function updateStats() {
+            const totalSections = menuData.sections.length;
+            const totalItems = menuData.sections.reduce((acc, s) => acc + s.items.length, 0);
+            
+            document.getElementById('statSections').textContent = totalSections;
+            document.getElementById('statItems').textContent = totalItems;
+        }
+
+        // ==========================================
+        // Import/Export
+        // ==========================================
+        window.exportData = function() {
+            const dataStr = JSON.stringify(menuData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cardapio_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showToast('Dados exportados com sucesso!', 'success');
+        }
+
+        window.importData = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    
+                    // Validação básica
+                    if (!imported.config || !Array.isArray(imported.sections)) {
+                        throw new Error('Formato inválido');
+                    }
+
+                    menuData = imported;
+                    saveToFirebase();
+                    
+                    // Atualizar UI
+                    document.getElementById('menuTitle').value = menuData.config.title || '';
+                    document.getElementById('menuDescription').value = menuData.config.description || '';
+                    document.getElementById('backgroundColor').value = menuData.config.backgroundColor || '#1a1a2e';
+                    document.getElementById('currency').value = menuData.config.currency || 'R$';
+
+                    if (menuData.config.logo) {
+                        window.updateLogoPreview(menuData.config.logo);
+                    } else {
+                        window.removeLogo();
+                    }
+                    
+                    renderSections();
+                    updateStats();
+                    showToast('Dados importados com sucesso!', 'success');
+                } catch (e) {
+                    console.error('Erro ao importar:', e);
+                    showToast('Erro ao importar arquivo. Verifique o formato.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ==========================================
+        // Preview & PDF
+        // ==========================================
+        window.openPreview = function() {
+            // Abrir cardápio com ID do restaurante
+            window.open(`menu.html?id=${restaurantId}`, '_blank');
+        }
+
+        window.logout = function() {
+            if (confirm('Deseja realmente sair?')) {
+                localStorage.removeItem('restaurantId');
+                localStorage.removeItem('restaurantPassword');
+                window.location.href = 'register.html?mode=login';
+            }
+        }
+
+        window.exportPDF = async function() {
+            window.showToast('Gerando PDF...', 'success');
+
+            const themeKey = menuData.config.theme || 'dark';
+            const theme = THEMES[themeKey] || THEMES.dark;
+
+            if (!menuData.sections || menuData.sections.length === 0) {
+                window.showToast('Adicione pelo menos uma seção ao cardápio', 'error');
+                return;
+            }
+
+            const sortedSections = [...menuData.sections].sort((a, b) => a.order - b.order);
+            const currency = menuData.config.currency || 'R$';
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = 210;
+                const pageHeight = 297;
+                const margin = 12;
+                const contentWidth = pageWidth - (margin * 2);
+                const colGap = 8;
+                const colWidth = (contentWidth - colGap) / 2;
+                let y = margin;
+
+                // Converter cor para RGB
+                const hexToRgb = (hex) => {
+                    if (!hex) return [128, 128, 128];
+                    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                    if (result) {
+                        return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)];
+                    }
+                    let rgba = hex.match(/rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+                    if (rgba) {
+                        return [parseInt(rgba[1]), parseInt(rgba[2]), parseInt(rgba[3])];
+                    }
+                    return [128, 128, 128];
+                };
+
+                const bgColor = hexToRgb(theme.background);
+                const textColor = hexToRgb(theme.text);
+                const textSecondary = hexToRgb(theme.textSecondary);
+                const primaryColor = hexToRgb(theme.primary);
+
+                // Função para criar imagem com bordas arredondadas
+                const createRoundedImage = (imgSrc, size, radius) => {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = size;
+                            canvas.height = size;
+                            const ctx = canvas.getContext('2d');
+
+                            // Criar clip com bordas arredondadas
+                            ctx.beginPath();
+                            ctx.moveTo(radius, 0);
+                            ctx.lineTo(size - radius, 0);
+                            ctx.quadraticCurveTo(size, 0, size, radius);
+                            ctx.lineTo(size, size - radius);
+                            ctx.quadraticCurveTo(size, size, size - radius, size);
+                            ctx.lineTo(radius, size);
+                            ctx.quadraticCurveTo(0, size, 0, size - radius);
+                            ctx.lineTo(0, radius);
+                            ctx.quadraticCurveTo(0, 0, radius, 0);
+                            ctx.closePath();
+                            ctx.clip();
+
+                            // Desenhar imagem
+                            ctx.drawImage(img, 0, 0, size, size);
+
+                            resolve(canvas.toDataURL('image/png'));
+                        };
+                        img.onerror = () => resolve(null);
+                        img.src = imgSrc;
+                    });
+                };
+
+                // Função para criar logo circular mantendo proporção
+                const createCircularLogo = (imgSrc, size) => {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = size;
+                            canvas.height = size;
+                            const ctx = canvas.getContext('2d');
+
+                            // Criar clip circular
+                            ctx.beginPath();
+                            ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+                            ctx.closePath();
+                            ctx.clip();
+
+                            // Calcular dimensões mantendo proporção (cover)
+                            const imgRatio = img.width / img.height;
+                            let drawWidth, drawHeight, drawX, drawY;
+
+                            if (imgRatio > 1) {
+                                // Imagem mais larga que alta
+                                drawHeight = size;
+                                drawWidth = size * imgRatio;
+                                drawX = -(drawWidth - size) / 2;
+                                drawY = 0;
+                            } else {
+                                // Imagem mais alta que larga
+                                drawWidth = size;
+                                drawHeight = size / imgRatio;
+                                drawX = 0;
+                                drawY = -(drawHeight - size) / 2;
+                            }
+
+                            // Desenhar imagem centralizada mantendo proporção
+                            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+
+                            resolve(canvas.toDataURL('image/png'));
+                        };
+                        img.onerror = () => resolve(null);
+                        img.src = imgSrc;
+                    });
+                };
+                const borderColor = hexToRgb(theme.border);
+                const cardBg = hexToRgb(theme.cardBg || theme.background);
+
+                // Background
+                doc.setFillColor(...bgColor);
+                doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+                // ===== LOGO CIRCULAR =====
+                if (menuData.config.logo) {
+                    try {
+                        const logoSizePdf = 30;
+                        const logoX = (pageWidth - logoSizePdf) / 2;
+                        const logoY = y;
+                        const centerX = logoX + logoSizePdf / 2;
+                        const centerY = logoY + logoSizePdf / 2;
+
+                        // Criar logo circular
+                        const circularLogo = await createCircularLogo(menuData.config.logo, 300);
+
+                        if (circularLogo) {
+                            // Desenhar logo circular
+                            doc.addImage(circularLogo, 'PNG', logoX, logoY, logoSizePdf, logoSizePdf);
+
+                            // Borda circular fina com cor primária
+                            doc.setDrawColor(...primaryColor);
+                            doc.setLineWidth(1.2);
+                            doc.circle(centerX, centerY, logoSizePdf / 2 + 0.5, 'S');
+                        }
+
+                        y += logoSizePdf + 12;
+                    } catch(e) {
+                        console.log('Logo error:', e);
+                        y += 5;
+                    }
+                }
+
+                // ===== TITULO =====
+                if (menuData.config.title) {
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(24);
+                    doc.setTextColor(...textColor);
+                    doc.text(menuData.config.title, pageWidth / 2, y, { align: 'center' });
+                    y += 8;
+                }
+
+                // ===== DESCRICAO =====
+                if (menuData.config.description) {
+                    doc.setFont('helvetica', 'italic');
+                    doc.setFontSize(11);
+                    doc.setTextColor(...textSecondary);
+                    const lines = doc.splitTextToSize(menuData.config.description, contentWidth - 40);
+                    lines.forEach(line => {
+                        doc.text(line, pageWidth / 2, y, { align: 'center' });
+                        y += 5;
+                    });
+                }
+
+                // Linha decorativa
+                y += 5;
+                doc.setDrawColor(...primaryColor);
+                doc.setLineWidth(1);
+                doc.line(pageWidth/2 - 25, y, pageWidth/2 + 25, y);
+                y += 12;
+
+                // ===== SECOES EM DUAS COLUNAS =====
+                for (const section of sortedSections) {
+                    const items = [...section.items].sort((a, b) => a.order - b.order);
+                    if (items.length === 0) continue;
+
+                    // Checar se precisa nova página
+                    if (y > pageHeight - 50) {
+                        doc.addPage();
+                        doc.setFillColor(...bgColor);
+                        doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                        y = margin;
+                    }
+
+                    // Header da seção (largura total)
+                    doc.setFillColor(...primaryColor);
+                    doc.rect(margin, y, 3, 6, 'F');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(12);
+                    doc.setTextColor(...textColor);
+                    doc.text(section.name.toUpperCase(), margin + 7, y + 4.5);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8);
+                    doc.setTextColor(...primaryColor);
+                    doc.text(`${items.length} ${items.length === 1 ? 'item' : 'itens'}`, pageWidth - margin, y + 4.5, { align: 'right' });
+
+                    y += 9;
+                    doc.setDrawColor(...primaryColor);
+                    doc.setLineWidth(0.4);
+                    doc.line(margin, y, pageWidth - margin, y);
+                    y += 6;
+
+                    // Itens em duas colunas
+                    const itemHeight = 22;
+                    let col = 0;
+                    let rowY = y;
+
+                    for (let i = 0; i < items.length; i++) {
+                        const item = items[i];
+
+                        // Calcular posição X baseado na coluna
+                        const colX = col === 0 ? margin : margin + colWidth + colGap;
+                        const maxTextWidth = colWidth - 12;
+
+                        // Checar nova página
+                        if (rowY + itemHeight > pageHeight - margin) {
+                            doc.addPage();
+                            doc.setFillColor(...bgColor);
+                            doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                            rowY = margin;
+                            col = 0;
+                        }
+
+                        // Card de fundo com borda arredondada
+                        doc.setFillColor(bgColor[0] + 12, bgColor[1] + 12, bgColor[2] + 12);
+                        doc.roundedRect(colX, rowY, colWidth, itemHeight - 2, 4, 4, 'F');
+
+                        // Imagem com bordas arredondadas
+                        const imgSize = 17;
+                        const imgX = colX + 3;
+                        const imgY = rowY + 1.5;
+
+                        if (item.image) {
+                            try {
+                                // Criar imagem com bordas arredondadas
+                                const roundedImg = await createRoundedImage(item.image, 200, 30);
+                                if (roundedImg) {
+                                    doc.addImage(roundedImg, 'PNG', imgX, imgY, imgSize, imgSize);
+                                }
+                            } catch(e) {
+                                console.log('Erro imagem:', e);
+                            }
+                        }
+
+                        // Titulo
+                        const textX = colX + imgSize + 7;
+                        const availableWidth = colWidth - imgSize - 12;
+
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(9);
+                        doc.setTextColor(...textColor);
+
+                        let title = item.title || '';
+                        while (doc.getTextWidth(title) > availableWidth && title.length > 3) {
+                            title = title.slice(0, -1);
+                        }
+                        if (title !== item.title) title += '...';
+                        doc.text(title, textX, rowY + 5);
+
+                        // Descrição
+                        if (item.subtitle) {
+                            doc.setFont('helvetica', 'normal');
+                            doc.setFontSize(7);
+                            doc.setTextColor(...textSecondary);
+                            let sub = item.subtitle;
+                            while (doc.getTextWidth(sub) > availableWidth && sub.length > 3) {
+                                sub = sub.slice(0, -1);
+                            }
+                            if (sub !== item.subtitle) sub += '...';
+                            doc.text(sub, textX, rowY + 10);
+                        }
+
+                        // Preço
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(10);
+                        doc.setTextColor(...primaryColor);
+                        const price = `${currency} ${item.price.toFixed(2)}`;
+                        doc.text(price, textX, rowY + 16);
+
+                        // Próxima coluna ou linha
+                        if (col === 0) {
+                            col = 1;
+                        } else {
+                            col = 0;
+                            rowY += itemHeight;
+                        }
+                    }
+
+                    // Atualizar Y para próxima seção
+                    y = col === 0 ? rowY : rowY + itemHeight;
+                    y += 8;
+                }
+
+                // ===== FOOTER =====
+                if (y > pageHeight - 30) {
+                    doc.addPage();
+                    doc.setFillColor(...bgColor);
+                    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                    y = margin;
+                }
+
+                y += 5;
+                doc.setDrawColor(...borderColor);
+                doc.setLineWidth(0.3);
+                doc.line(margin, y, pageWidth - margin, y);
+                y += 8;
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.setTextColor(...textSecondary);
+                doc.text('Obrigado pela preferencia!', pageWidth / 2, y, { align: 'center' });
+                y += 5;
+
+                doc.setFontSize(8);
+                doc.text(`${menuData.config.title || ''} - Cardapio Digital - ${new Date().toLocaleDateString('pt-BR')}`, pageWidth / 2, y, { align: 'center' });
+
+                // Salvar
+                const filename = `cardapio_${(menuData.config.title || 'menu').replace(/[^a-z0-9]/gi, '_')}.pdf`;
+                doc.save(filename);
+                window.showToast('PDF gerado com sucesso!', 'success');
+
+            } catch (e) {
+                console.error('Erro ao gerar PDF:', e);
+                window.showToast('Erro ao gerar PDF: ' + e.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // Modal
+        // ==========================================
+        let deleteCallback = null;
+
+        window.showDeleteModal = function(text, callback) {
+            document.getElementById('deleteModalText').textContent = text;
+            document.getElementById('deleteModal').classList.add('active');
+            deleteCallback = callback;
+        }
+
+        window.closeDeleteModal = function() {
+            document.getElementById('deleteModal').classList.remove('active');
+            deleteCallback = null;
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (deleteCallback) {
+                deleteCallback();
+            }
+            closeDeleteModal();
+        });
+
+        // Fechar modal ao clicar fora
+        document.getElementById('deleteModal').addEventListener('click', (e) => {
+            if (e.target.id === 'deleteModal') {
+                closeDeleteModal();
+            }
+        });
+
+        // ==========================================
+        // Toast Notifications
+        // ==========================================
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span>${type === 'success' ? '✅' : '❌'}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ==========================================
+        // Atalhos de Teclado
+        // ==========================================
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + S para salvar
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveToFirebase();
+                showToast('Alterações salvas!', 'success');
+            }
+            
+            // Escape para fechar modais
+            if (e.key === 'Escape') {
+                closeDeleteModal();
+                closeThemeModal();
+                closeCropper();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+/* ========================================
+   PricingPlans Component - Cosmic Theme
+   ======================================== */
+
+.pricing-plans {
+  position: relative;
+  min-height: 100vh;
+  padding: 24px 24px 100px;
+  background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0f0f2f 100%);
+  overflow: hidden;
+}
+
+/* Background */
+.pricing-plans-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cosmic-gradient-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(0, 200, 186, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 0% 100%,
+      rgba(138, 43, 226, 0.1) 0%,
+      transparent 50%
+    );
+}
+
+.cosmic-star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Content Container */
+.pricing-plans-content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Timer Header */
+.pricing-timer-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%,
+  100% {
+    border-color: rgba(220, 38, 38, 0.3);
+  }
+  50% {
+    border-color: rgba(220, 38, 38, 0.6);
+  }
+}
+
+.timer-icon {
+  color: #ef4444;
+  animation: pulse-timer 1s ease-in-out infinite;
+}
+
+.timer-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes pulse-timer {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.timer-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.timer-countdown {
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Top CTA */
+.pricing-top-cta {
+  margin-bottom: 24px;
+}
+
+/* Title */
+.pricing-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin: 0 0 24px;
+  line-height: 1.4;
+}
+
+.pricing-title strong {
+  color: #00c8ba;
+  font-weight: 700;
+}
+
+/* Pricing Cards */
+.pricing-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pricing-card {
+  position: relative;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pricing-card.selected {
+  border-color: #00c8ba;
+  background: rgba(0, 200, 186, 0.1);
+}
+
+.pricing-card.most-popular {
+  border-color: #00c8ba;
+}
+
+.pricing-card:focus-visible {
+  outline: 3px solid rgba(0, 200, 186, 0.5);
+  outline-offset: 2px;
+}
+
+/* Popular Badge */
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 16px;
+  background: linear-gradient(135deg, #00c8ba 0%, #00a89e 100%);
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Card Content */
+.pricing-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pricing-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Radio Button */
+.pricing-radio {
+  flex-shrink: 0;
+}
+
+.radio-outer {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.pricing-card.selected .radio-outer {
+  border-color: #00c8ba;
+}
+
+.radio-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00c8ba;
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+.pricing-card.selected .radio-inner {
+  transform: scale(1);
+}
+
+/* Plan Info */
+.pricing-plan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.plan-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.discount-badge {
+  display: inline-flex;
+  padding: 3px 10px;
+  background: rgba(0, 200, 186, 0.2);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #00c8ba;
+}
+
+/* Prices */
+.pricing-card-prices {
+  text-align: right;
+}
+
+.price-per-day {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.original-price {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+}
+
+.discounted-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #00c8ba;
+}
+
+.price-period {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.total-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.original-total {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+}
+
+.discounted-total {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Main CTA */
+.pricing-main-cta {
+  margin-bottom: 16px;
+}
+
+/* Disclaimer */
+.pricing-disclaimer {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+/* Security Section */
+.pricing-security {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+}
+
+.security-badge svg {
+  width: 18px;
+  height: 18px;
+  color: #00c8ba;
+}
+
+/* Payment Icons */
+.payment-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.payment-icon {
+  width: 48px;
+  height: 32px;
+  background: #ffffff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.payment-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Benefits Section */
+.pricing-benefits {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.benefits-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.benefits-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.benefit-item svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #00c8ba;
+}
+
+/* Sticky Mobile CTA */
+.pricing-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 26, 0) 0%,
+    rgba(10, 10, 26, 0.9) 30%,
+    rgba(10, 10, 26, 1) 100%
+  );
+  z-index: 100;
+}
+
+.pricing-sticky-cta .cosmic-btn {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Desktop - hide sticky CTA */
+@media (min-width: 769px) {
+  .pricing-sticky-cta {
+    display: none;
+  }
+
+  .pricing-plans {
+    padding-bottom: 40px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .pricing-plans {
+    padding: 20px 20px 120px;
+  }
+
+  .pricing-title {
+    font-size: 20px;
+  }
+
+  .pricing-card {
+    padding: 16px;
+  }
+
+  .pricing-card-content {
+    gap: 12px;
+  }
+
+  .plan-label {
+    font-size: 13px;
+  }
+
+  .discounted-price {
+    font-size: 20px;
+  }
+
+  .payment-icon {
+    width: 44px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-plans {
+    padding: 16px 16px 110px;
+  }
+
+  .pricing-timer-header {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .timer-text {
+    font-size: 13px;
+  }
+
+  .timer-countdown {
+    font-size: 14px;
+  }
+
+  .pricing-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .pricing-card {
+    padding: 14px;
+  }
+
+  .pricing-card-header {
+    gap: 10px;
+  }
+
+  .radio-outer {
+    width: 20px;
+    height: 20px;
+  }
+
+  .radio-inner {
+    width: 8px;
+    height: 8px;
+  }
+
+  .plan-label {
+    font-size: 12px;
+  }
+
+  .discount-badge {
+    padding: 2px 8px;
+    font-size: 10px;
+  }
+
+  .discounted-price {
+    font-size: 18px;
+  }
+
+  .original-price {
+    font-size: 12px;
+  }
+
+  .price-period {
+    font-size: 11px;
+  }
+
+  .security-badge {
+    font-size: 12px;
+  }
+
+  .payment-icon {
+    width: 40px;
+    height: 26px;
+  }
+
+  .pricing-benefits {
+    padding: 20px 16px;
+  }
+
+  .benefits-title {
+    font-size: 16px;
+  }
+
+  .benefit-item {
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .benefit-item svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pricing-sticky-cta {
+    padding: 12px 16px;
+  }
+}
+
+/* Animations */
+.pricing-card {
+  animation: fadeInUp 0.4s ease backwards;
+}
+
+.pricing-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.pricing-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.pricing-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

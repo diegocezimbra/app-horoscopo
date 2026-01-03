@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CardápioDigital - Cardápio online para restaurantes. QR Code, fotos dos pratos, atualização em tempo real. Sem custos de impressão.">
+  <meta name="keywords" content="cardápio digital, menu digital, qr code restaurante, cardápio online, menu online">
+  <meta name="author" content="Ohanax">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://cardapio.ohanax.com/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cardapio.ohanax.com/">
+  <meta property="og:title" content="CardápioDigital - Cardápio Online para Restaurantes">
+  <meta property="og:description" content="QR Code, fotos dos pratos, atualização em tempo real. Sem custos de impressão. Modernize seu restaurante.">
+  <meta property="og:image" content="https://cardapio.ohanax.com/og-image.png">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="CardápioDigital">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://cardapio.ohanax.com/">
+  <meta name="twitter:title" content="CardápioDigital - Cardápio Online para Restaurantes">
+  <meta name="twitter:description" content="QR Code, fotos dos pratos, atualização em tempo real. Sem custos de impressão.">
+  <meta name="twitter:image" content="https://cardapio.ohanax.com/og-image.png">
+
+  <title>CardápioDigital - Cardápio Online para Restaurantes | Ohanax</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CardápioDigital",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Cardápio online para restaurantes com QR Code, fotos e atualização em tempo real.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Cursor Glow Effect -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-text">Cardápio<span class="logo-x">Digital</span></span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#problema" class="nav-link" data-pt="Problema" data-en="Problem">Problema</a></li>
+        <li><a href="#solucao" class="nav-link" data-pt="Solução" data-en="Solution">Solução</a></li>
+        <li><a href="#recursos" class="nav-link" data-pt="Recursos" data-en="Features">Recursos</a></li>
+        <li><a href="#como-funciona" class="nav-link" data-pt="Como Funciona" data-en="How It Works">Como Funciona</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li><a href="https://ohanax.com" class="nav-link" target="_blank">Ohanax</a></li>
+        <li class="lang-switcher">
+          <button class="lang-btn active" data-lang="pt">PT</button>
+          <span class="lang-divider">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </li>
+        <li><a href="/app" class="nav-link nav-link-cta" data-pt="Criar Cardápio" data-en="Create Menu">Criar Cardápio</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+      <div class="hero-gradient"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span data-pt="Sem impressão • Sempre atualizado" data-en="No printing • Always updated">Sem impressão • Sempre atualizado</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line" data-pt="Cardápios em papel" data-en="Paper menus">Cardápios em papel</span>
+        <span class="title-line title-highlight" data-pt="custam R$300/mês" data-en="cost $60/month">custam R$300/mês</span>
+        <span class="title-line title-accent" data-pt="e ficam desatualizados" data-en="and get outdated">e ficam desatualizados</span>
+      </h1>
+      <p class="hero-description" data-pt="Cardápio digital com QR Code, fotos profissionais dos pratos e atualização em tempo real. Modernize seu restaurante em 5 minutos." data-en="Digital menu with QR Code, professional dish photos and real-time updates. Modernize your restaurant in 5 minutes.">
+        Cardápio digital com <strong>QR Code</strong>, fotos profissionais dos pratos e
+        <strong>atualização em tempo real</strong>. Modernize seu restaurante em 5 minutos.
+      </p>
+      <div class="hero-cta">
+        <a href="/app" class="btn btn-primary">
+          <span data-pt="Criar Meu Cardápio Grátis" data-en="Create My Free Menu">Criar Meu Cardápio Grátis</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="#como-funciona" class="btn btn-ghost" data-pt="Ver Como Funciona" data-en="See How It Works">Ver Como Funciona</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">527</span>
+          <span class="stat-label" data-pt="Restaurantes" data-en="Restaurants">Restaurantes</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">5min</span>
+          <span class="stat-label">Setup</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">R$0</span>
+          <span class="stat-label" data-pt="Impressão" data-en="Printing">Impressão</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span data-pt="Role" data-en="Scroll">Role</span>
+      <div class="scroll-line"></div>
+    </div>
+  </header>
+
+  <!-- Tech Stack -->
+  <section class="section tech">
+    <div class="container">
+      <div class="tech-content tech-content-center">
+        <div class="tech-text">
+          <span class="section-tag" data-pt="Recursos" data-en="Features">Recursos</span>
+          <h2 class="section-title" data-pt="Tudo que você precisa" data-en="Everything you need">Tudo que você precisa</h2>
+        </div>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <span class="tech-name">QR Code</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-name" data-pt="Fotos" data-en="Photos">Fotos</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-name">Real-time</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-name" data-pt="Temas" data-en="Themes">Temas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="section problem" id="problema">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-pt="O Problema" data-en="The Problem">O Problema</span>
+        <h2 class="section-title" data-pt="Cardápios de papel são um pesadelo" data-en="Paper menus are a nightmare">Cardápios de papel são um pesadelo</h2>
+        <p class="section-description" data-pt="Imprimir, reimprimir, plastificar, organizar. Tudo isso custa tempo e dinheiro. E no final, o cliente nem consegue ver as fotos dos pratos." data-en="Print, reprint, laminate, organize. All of this costs time and money. And in the end, the customer can't even see photos of the dishes.">
+          Imprimir, reimprimir, plastificar, organizar. Tudo isso custa tempo e dinheiro.
+          E no final, o cliente nem consegue ver as fotos dos pratos.
+        </p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card product-card-problem">
+          <div class="product-icon" style="--accent: #ef4444;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="R$300+/mês em impressão" data-en="$60+/month on printing">R$300+/mês em impressão</h3>
+            <p class="product-description" data-pt="Entre impressão, plastificação e reposição de cardápios manchados, o custo mensal é alto demais." data-en="Between printing, lamination and replacement of stained menus, the monthly cost is too high.">
+              Entre impressão, plastificação e reposição de cardápios manchados, o custo mensal é alto demais.
+            </p>
+          </div>
+        </div>
+
+        <div class="product-card product-card-problem">
+          <div class="product-icon" style="--accent: #ef4444;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Cardápio sempre desatualizado" data-en="Menu always outdated">Cardápio sempre desatualizado</h3>
+            <p class="product-description" data-pt="Mudou o preço? Acabou um prato? Tem promoção nova? Você precisa reimprimir tudo do zero." data-en="Price changed? Dish sold out? New promotion? You need to reprint everything from scratch.">
+              Mudou o preço? Acabou um prato? Tem promoção nova? Você precisa reimprimir tudo do zero.
+            </p>
+          </div>
+        </div>
+
+        <div class="product-card product-card-problem">
+          <div class="product-icon" style="--accent: #ef4444;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Sem fotos dos pratos" data-en="No dish photos">Sem fotos dos pratos</h3>
+            <p class="product-description" data-pt="Cliente não consegue visualizar o prato. Você perde vendas porque ele não sabe o que está pedindo." data-en="Customer can't visualize the dish. You lose sales because they don't know what they're ordering.">
+              Cliente não consegue visualizar o prato. Você perde vendas porque ele não sabe o que está pedindo.
+            </p>
+          </div>
+        </div>
+
+        <div class="product-card product-card-problem">
+          <div class="product-icon" style="--accent: #ef4444;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Clientes confusos" data-en="Confused customers">Clientes confusos</h3>
+            <p class="product-description" data-pt="Cardápio sujo, rasgado, difícil de ler. Cliente demora pra decidir e garçom perde tempo explicando." data-en="Dirty, torn menu, hard to read. Customer takes time to decide and waiter wastes time explaining.">
+              Cardápio sujo, rasgado, difícil de ler. Cliente demora pra decidir e garçom perde tempo explicando.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="transition-text">
+        <p data-pt="E se você nunca mais precisasse imprimir um cardápio?" data-en="What if you never had to print a menu again?">E se você nunca mais precisasse imprimir um cardápio?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Section -->
+  <section class="section solution" id="solucao">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-pt="A Solução" data-en="The Solution">A Solução</span>
+        <h2 class="section-title" data-pt="Cardápio digital que funciona de verdade" data-en="Digital menu that actually works">Cardápio digital que funciona de verdade</h2>
+        <p class="section-description" data-pt="Cliente escaneia QR Code na mesa, vê fotos lindas dos pratos e faz o pedido. Você atualiza preços e promoções em 30 segundos pelo celular." data-en="Customer scans QR Code at the table, sees beautiful dish photos and places the order. You update prices and promotions in 30 seconds from your phone.">
+          Cliente escaneia QR Code na mesa, vê fotos lindas dos pratos e faz o pedido.
+          Você atualiza preços e promoções em 30 segundos pelo celular.
+        </p>
+      </div>
+      <div class="solution-grid">
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+          </div>
+          <h3 data-pt="Atualização instantânea" data-en="Instant updates">Atualização instantânea</h3>
+          <p data-pt="Mudou preço? Acabou prato? Atualize em 30 segundos e todos veem na hora." data-en="Price changed? Dish sold out? Update in 30 seconds and everyone sees it instantly.">Mudou preço? Acabou prato? Atualize em 30 segundos e todos veem na hora.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+          </div>
+          <h3 data-pt="QR Code nas mesas" data-en="QR Code on tables">QR Code nas mesas</h3>
+          <p data-pt="Cliente escaneia e pronto. Cardápio abre no celular dele. Simples assim." data-en="Customer scans and done. Menu opens on their phone. Simple as that.">Cliente escaneia e pronto. Cardápio abre no celular dele. Simples assim.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 data-pt="Visual profissional" data-en="Professional look">Visual profissional</h3>
+          <p data-pt="Fotos lindas, descrições completas, temas personalizados com sua marca." data-en="Beautiful photos, complete descriptions, customized themes with your brand.">Fotos lindas, descrições completas, temas personalizados com sua marca.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products/Features Section -->
+  <section class="section products" id="recursos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-pt="Recursos" data-en="Features">Recursos</span>
+        <h2 class="section-title" data-pt="Tudo que você precisa num cardápio moderno" data-en="Everything you need in a modern menu">Tudo que você precisa num cardápio moderno</h2>
+        <p class="section-description" data-pt="Recursos profissionais sem complicação" data-en="Professional features without complications">
+          Recursos profissionais sem complicação
+        </p>
+      </div>
+      <div class="products-grid">
+        <!-- Feature 1 -->
+        <div class="product-card">
+          <div class="product-icon" style="--accent: #dc2626;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Economize R$3.600/ano" data-en="Save $720/year">Economize R$3.600/ano</h3>
+            <p class="product-tagline" data-pt="Zero impressão" data-en="Zero printing">Zero impressão</p>
+            <p class="product-description" data-pt="Pare de gastar com gráfica, plastificação e reimpressão. Economize mais de R$300/mês." data-en="Stop spending on printing, lamination and reprints. Save over $60/month.">
+              Pare de gastar com gráfica, plastificação e reimpressão. Economize mais de R$300/mês.
+            </p>
+            <ul class="product-features">
+              <li data-pt="Sem custos de impressão" data-en="No printing costs">Sem custos de impressão</li>
+              <li data-pt="Sem plastificação" data-en="No lamination">Sem plastificação</li>
+              <li data-pt="ROI imediato" data-en="Immediate ROI">ROI imediato</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="product-card">
+          <div class="product-icon" style="--accent: #dc2626;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Liberte seus garçons" data-en="Free up your waiters">Liberte seus garçons</h3>
+            <p class="product-tagline" data-pt="Menos perguntas" data-en="Fewer questions">Menos perguntas</p>
+            <p class="product-description" data-pt="Cliente vê fotos e descrições completas. Garçom não perde tempo explicando cada prato." data-en="Customer sees photos and complete descriptions. Waiter doesn't waste time explaining each dish.">
+              Cliente vê fotos e descrições completas. Garçom não perde tempo explicando cada prato.
+            </p>
+            <ul class="product-features">
+              <li data-pt="Fotos profissionais" data-en="Professional photos">Fotos profissionais</li>
+              <li data-pt="Descrições detalhadas" data-en="Detailed descriptions">Descrições detalhadas</li>
+              <li data-pt="Ingredientes visíveis" data-en="Visible ingredients">Ingredientes visíveis</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="product-card">
+          <div class="product-icon" style="--accent: #dc2626;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Aumente seu ticket médio" data-en="Increase your average ticket">Aumente seu ticket médio</h3>
+            <p class="product-tagline" data-pt="Venda mais" data-en="Sell more">Venda mais</p>
+            <p class="product-description" data-pt="Fotos lindas dos pratos aumentam vendas. Cliente vê a sobremesa e quer pedir." data-en="Beautiful dish photos increase sales. Customer sees the dessert and wants to order.">
+              Fotos lindas dos pratos aumentam vendas. Cliente vê a sobremesa e quer pedir.
+            </p>
+            <ul class="product-features">
+              <li data-pt="Destaque promoções" data-en="Highlight promotions">Destaque promoções</li>
+              <li data-pt="Sugestões automáticas" data-en="Automatic suggestions">Sugestões automáticas</li>
+              <li data-pt="Fotos que vendem" data-en="Photos that sell">Fotos que vendem</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="product-card">
+          <div class="product-icon" style="--accent: #dc2626;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Pronto em 5 minutos" data-en="Ready in 5 minutes">Pronto em 5 minutos</h3>
+            <p class="product-tagline" data-pt="Rápido e fácil" data-en="Fast and easy">Rápido e fácil</p>
+            <p class="product-description" data-pt="Cadastre seu restaurante, monte o cardápio e imprima os QR Codes. Simples assim." data-en="Register your restaurant, build the menu and print the QR Codes. Simple as that.">
+              Cadastre seu restaurante, monte o cardápio e imprima os QR Codes. Simples assim.
+            </p>
+            <ul class="product-features">
+              <li data-pt="Cadastro rápido" data-en="Quick registration">Cadastro rápido</li>
+              <li data-pt="Interface intuitiva" data-en="Intuitive interface">Interface intuitiva</li>
+              <li data-pt="QR Code pronto" data-en="QR Code ready">QR Code pronto</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="product-card">
+          <div class="product-icon" style="--accent: #dc2626;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Analytics em tempo real" data-en="Real-time analytics">Analytics em tempo real</h3>
+            <p class="product-tagline" data-pt="Dados valiosos" data-en="Valuable data">Dados valiosos</p>
+            <p class="product-description" data-pt="Veja quais pratos são mais vistos, em que horários e quais fotos chamam mais atenção." data-en="See which dishes are most viewed, at what times and which photos get the most attention.">
+              Veja quais pratos são mais vistos, em que horários e quais fotos chamam mais atenção.
+            </p>
+            <ul class="product-features">
+              <li data-pt="Pratos mais vistos" data-en="Most viewed dishes">Pratos mais vistos</li>
+              <li data-pt="Horários de pico" data-en="Peak hours">Horários de pico</li>
+              <li data-pt="Dashboard completo" data-en="Complete dashboard">Dashboard completo</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="product-card">
+          <div class="product-icon" style="--accent: #dc2626;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title" data-pt="Sempre atualizado" data-en="Always updated">Sempre atualizado</h3>
+            <p class="product-tagline" data-pt="Em tempo real" data-en="In real-time">Em tempo real</p>
+            <p class="product-description" data-pt="Atualize preços, disponibilidade e promoções pelo celular. Cliente vê na hora." data-en="Update prices, availability and promotions from your phone. Customer sees it instantly.">
+              Atualize preços, disponibilidade e promoções pelo celular. Cliente vê na hora.
+            </p>
+            <ul class="product-features">
+              <li data-pt="Atualização instantânea" data-en="Instant updates">Atualização instantânea</li>
+              <li data-pt="Gestão pelo celular" data-en="Mobile management">Gestão pelo celular</li>
+              <li data-pt="Promoções relâmpago" data-en="Flash promotions">Promoções relâmpago</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section how-it-works" id="como-funciona">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-pt="Processo" data-en="Process">Processo</span>
+        <h2 class="section-title" data-pt="Como criar seu cardápio digital" data-en="How to create your digital menu">Como criar seu cardápio digital</h2>
+        <p class="section-description" data-pt="3 passos simples para modernizar seu restaurante" data-en="3 simple steps to modernize your restaurant">
+          3 passos simples para modernizar seu restaurante
+        </p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <h3 data-pt="Cadastre seu restaurante" data-en="Register your restaurant">Cadastre seu restaurante</h3>
+          <p data-pt="Nome, logo, cores da marca. Personalize seu cardápio em 2 minutos." data-en="Name, logo, brand colors. Customize your menu in 2 minutes.">Nome, logo, cores da marca. Personalize seu cardápio em 2 minutos.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+            </svg>
+          </div>
+          <h3 data-pt="Monte seu cardápio" data-en="Build your menu">Monte seu cardápio</h3>
+          <p data-pt="Adicione pratos, fotos, preços e descrições. Organize em categorias." data-en="Add dishes, photos, prices and descriptions. Organize into categories.">Adicione pratos, fotos, preços e descrições. Organize em categorias.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+          </div>
+          <h3 data-pt="Imprima os QR Codes" data-en="Print the QR Codes">Imprima os QR Codes</h3>
+          <p data-pt="Baixe e imprima os QR Codes. Coloque nas mesas. Pronto!" data-en="Download and print the QR Codes. Place them on tables. Done!">Baixe e imprima os QR Codes. Coloque nas mesas. Pronto!</p>
+        </div>
+      </div>
+      <div class="cta-center">
+        <a href="/app" class="btn btn-primary btn-large">
+          <span data-pt="Criar Meu Cardápio" data-en="Create My Menu">Criar Meu Cardápio</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="section comparison" id="comparativo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-pt="Comparativo" data-en="Comparison">Comparativo</span>
+        <h2 class="section-title" data-pt="Cardápio de papel vs. CardápioDigital" data-en="Paper menu vs. CardápioDigital">Cardápio de papel vs. CardápioDigital</h2>
+      </div>
+      <div class="comparison-grid">
+        <div class="comparison-card comparison-before">
+          <h3 class="comparison-title" data-pt="Papel" data-en="Paper">Papel</h3>
+          <p class="comparison-subtitle" data-pt="Cardápio tradicional" data-en="Traditional menu">Cardápio tradicional</p>
+          <ul class="comparison-list">
+            <li><span class="icon-x">✗</span> <span data-pt="R$300+/mês impressão" data-en="$60+/month printing">R$300+/mês impressão</span></li>
+            <li><span class="icon-x">✗</span> <span data-pt="Sempre desatualizado" data-en="Always outdated">Sempre desatualizado</span></li>
+            <li><span class="icon-x">✗</span> <span data-pt="Sem fotos dos pratos" data-en="No dish photos">Sem fotos dos pratos</span></li>
+            <li><span class="icon-x">✗</span> <span data-pt="Fica sujo e rasgado" data-en="Gets dirty and torn">Fica sujo e rasgado</span></li>
+            <li><span class="icon-x">✗</span> <span data-pt="Dificulta mudanças" data-en="Makes changes difficult">Dificulta mudanças</span></li>
+            <li><span class="icon-x">✗</span> <span data-pt="Cliente confuso" data-en="Confused customer">Cliente confuso</span></li>
+          </ul>
+        </div>
+        <div class="comparison-card comparison-after">
+          <h3 class="comparison-title" data-pt="Digital" data-en="Digital">Digital</h3>
+          <p class="comparison-subtitle">CardápioDigital</p>
+          <ul class="comparison-list">
+            <li><span class="icon-check">✓</span> <span data-pt="R$0 em impressão" data-en="$0 in printing">R$0 em impressão</span></li>
+            <li><span class="icon-check">✓</span> <span data-pt="Atualização instantânea" data-en="Instant updates">Atualização instantânea</span></li>
+            <li><span class="icon-check">✓</span> <span data-pt="Fotos profissionais" data-en="Professional photos">Fotos profissionais</span></li>
+            <li><span class="icon-check">✓</span> <span data-pt="Sempre limpo e novo" data-en="Always clean and new">Sempre limpo e novo</span></li>
+            <li><span class="icon-check">✓</span> <span data-pt="Mude quando quiser" data-en="Change whenever you want">Mude quando quiser</span></li>
+            <li><span class="icon-check">✓</span> <span data-pt="Cliente informado" data-en="Informed customer">Cliente informado</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guarantee -->
+  <section class="section guarantee" id="garantia">
+    <div class="container">
+      <div class="guarantee-content">
+        <div class="guarantee-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h2 class="section-title" data-pt="Garantia de 30 dias" data-en="30-day guarantee">Garantia de 30 dias</h2>
+        <p class="section-description" data-pt="Teste sem compromisso. Se não gostar, devolvemos 100% do valor investido." data-en="Test without commitment. If you don't like it, we'll refund 100% of your investment.">
+          Teste sem compromisso. Se não gostar, devolvemos 100% do valor investido.
+        </p>
+        <ul class="guarantee-list">
+          <li data-pt="Teste grátis por 14 dias" data-en="Free trial for 14 days">Teste grátis por 14 dias</li>
+          <li data-pt="Cancelamento a qualquer momento" data-en="Cancel anytime">Cancelamento a qualquer momento</li>
+          <li data-pt="Suporte em português" data-en="Support in Portuguese">Suporte em português</li>
+        </ul>
+        <div class="guarantee-signature">
+          <span class="signature-name" data-pt="Equipe Ohanax" data-en="Ohanax Team">Equipe Ohanax</span>
+          <span class="signature-role" data-pt="Modernizando restaurantes do Brasil" data-en="Modernizing restaurants in Brazil">Modernizando restaurantes do Brasil</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">FAQ</span>
+        <h2 class="section-title" data-pt="Perguntas frequentes" data-en="Frequently asked questions">Perguntas frequentes</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question" data-faq="1">
+            <span data-pt="Como funciona o QR Code?" data-en="How does the QR Code work?">Como funciona o QR Code?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer" data-faq="1">
+            <p data-pt="Cliente escaneia o QR Code com a câmera do celular e o cardápio abre automaticamente no navegador. Não precisa baixar app." data-en="Customer scans the QR Code with their phone camera and the menu opens automatically in the browser. No app download needed.">Cliente escaneia o QR Code com a câmera do celular e o cardápio abre automaticamente no navegador. Não precisa baixar app.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" data-faq="2">
+            <span data-pt="Preciso saber mexer no computador?" data-en="Do I need to be tech-savvy?">Preciso saber mexer no computador?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer" data-faq="2">
+            <p data-pt="Não! A interface é super simples. Se você usa WhatsApp, consegue usar o CardápioDigital. Tem tutorial em vídeo também." data-en="No! The interface is super simple. If you use WhatsApp, you can use CardápioDigital. Video tutorials are also available.">Não! A interface é super simples. Se você usa WhatsApp, consegue usar o CardápioDigital. Tem tutorial em vídeo também.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" data-faq="3">
+            <span data-pt="E se o cliente não tem internet?" data-en="What if the customer doesn't have internet?">E se o cliente não tem internet?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer" data-faq="3">
+            <p data-pt="Você pode ter alguns cardápios físicos de reserva. Mas hoje 95% dos clientes têm internet no celular e preferem o digital." data-en="You can have some physical menus as backup. But today 95% of customers have internet on their phones and prefer digital.">Você pode ter alguns cardápios físicos de reserva. Mas hoje 95% dos clientes têm internet no celular e preferem o digital.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" data-faq="4">
+            <span data-pt="Posso colocar fotos dos meus pratos?" data-en="Can I upload photos of my dishes?">Posso colocar fotos dos meus pratos?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer" data-faq="4">
+            <p data-pt="Sim! Você pode fazer upload de quantas fotos quiser. Fotos profissionais aumentam as vendas em até 40%." data-en="Yes! You can upload as many photos as you want. Professional photos increase sales by up to 40%.">Sim! Você pode fazer upload de quantas fotos quiser. Fotos profissionais aumentam as vendas em até 40%.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" data-faq="5">
+            <span data-pt="Quanto custa?" data-en="How much does it cost?">Quanto custa?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer" data-faq="5">
+            <p data-pt="Teste grátis por 14 dias. Depois, planos a partir de R$49/mês. Muito mais barato que imprimir cardápios todo mês." data-en="Free trial for 14 days. After that, plans starting at $10/month. Much cheaper than printing menus every month.">Teste grátis por 14 dias. Depois, planos a partir de R$49/mês. Muito mais barato que imprimir cardápios todo mês.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" data-faq="6">
+            <span data-pt="Posso atualizar o cardápio pelo celular?" data-en="Can I update the menu from my phone?">Posso atualizar o cardápio pelo celular?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer" data-faq="6">
+            <p data-pt="Sim! O sistema funciona perfeitamente no celular. Mude preços, disponibilidade e promoções em 30 segundos de qualquer lugar." data-en="Yes! The system works perfectly on mobile. Change prices, availability and promotions in 30 seconds from anywhere.">Sim! O sistema funciona perfeitamente no celular. Mude preços, disponibilidade e promoções em 30 segundos de qualquer lugar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="section cta" id="contato">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title" data-pt="Pronto para parar de imprimir cardápios?" data-en="Ready to stop printing menus?">Pronto para parar de imprimir cardápios?</h2>
+        <p class="cta-description" data-pt="Crie seu cardápio digital em 5 minutos e economize R$3.600/ano" data-en="Create your digital menu in 5 minutes and save $720/year">
+          Crie seu cardápio digital em 5 minutos e economize R$3.600/ano
+        </p>
+        <div class="cta-actions">
+          <a href="/app" class="btn btn-primary btn-large">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+            <span data-pt="Criar Meu Cardápio Grátis" data-en="Create My Free Menu">Criar Meu Cardápio Grátis</span>
+          </a>
+        </div>
+        <div class="trust-signals">
+          <span data-pt="✓ 14 dias grátis" data-en="✓ 14 days free">✓ 14 dias grátis</span>
+          <span data-pt="✓ Sem cartão de crédito" data-en="✓ No credit card">✓ Sem cartão de crédito</span>
+          <span data-pt="✓ Suporte em português" data-en="✓ Support in Portuguese">✓ Suporte em português</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo-text">Cardápio<span class="logo-x">Digital</span></span>
+          <p data-pt="Cardápio online para restaurantes" data-en="Online menu for restaurants">Cardápio online para restaurantes</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h3 class="footer-heading" data-pt="Plataforma" data-en="Platform">Plataforma</h3>
+            <a href="/app" data-pt="Criar Cardápio" data-en="Create Menu">Criar Cardápio</a>
+            <a href="#recursos" data-pt="Recursos" data-en="Features">Recursos</a>
+            <a href="#como-funciona" data-pt="Como Funciona" data-en="How It Works">Como Funciona</a>
+          </div>
+          <div class="footer-column">
+            <h3 class="footer-heading" data-pt="Suporte" data-en="Support">Suporte</h3>
+            <a href="#faq">FAQ</a>
+            <a href="mailto:contato@ohanax.com" data-pt="Contato" data-en="Contact">Contato</a>
+            <a href="/ajuda" data-pt="Central de Ajuda" data-en="Help Center">Central de Ajuda</a>
+          </div>
+          <div class="footer-column">
+            <h3 class="footer-heading">Ohanax</h3>
+            <a href="https://ohanax.com" target="_blank" data-pt="Sobre" data-en="About">Sobre</a>
+            <a href="https://ohanax.com/produtos" target="_blank" data-pt="Produtos" data-en="Products">Produtos</a>
+            <a href="https://ohanax.com/blog" target="_blank">Blog</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-pt="&copy; 2025 Ohanax. CardápioDigital - Cardápio Online para Restaurantes." data-en="&copy; 2025 Ohanax. CardápioDigital - Online Menu for Restaurants.">&copy; 2025 Ohanax. CardápioDigital - Cardápio Online para Restaurantes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

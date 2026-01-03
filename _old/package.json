@@ -1,0 +1,14 @@
+{
+  "name": "app-cardapio-digital",
+  "version": "1.0.0",
+  "description": "Digital Menu System for Restaurants",
+  "scripts": {
+    "start": "serve -l 4007 public",
+    "deploy": "firebase deploy"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.3"
+  },
+  "private": true
+}

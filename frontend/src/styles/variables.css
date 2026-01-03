@@ -1,0 +1,216 @@
+/**
+ * CSS Variables - Mystical/Cosmic Theme
+ * Horoscope App Design System
+ */
+
+:root {
+  /* ===== PRIMARY COLORS ===== */
+  --color-primary: #6B46C1;
+  --color-primary-light: #805AD5;
+  --color-primary-dark: #553C9A;
+  --color-primary-50: #FAF5FF;
+  --color-primary-100: #E9D8FD;
+  --color-primary-200: #D6BCFA;
+  --color-primary-300: #B794F4;
+  --color-primary-400: #9F7AEA;
+  --color-primary-500: #805AD5;
+  --color-primary-600: #6B46C1;
+  --color-primary-700: #553C9A;
+  --color-primary-800: #44337A;
+  --color-primary-900: #322659;
+
+  /* ===== SECONDARY COLORS (Cosmic Teal) ===== */
+  --color-secondary: #0D9488;
+  --color-secondary-light: #14B8A6;
+  --color-secondary-dark: #0F766E;
+  --color-secondary-50: #F0FDFA;
+  --color-secondary-100: #CCFBF1;
+  --color-secondary-200: #99F6E4;
+  --color-secondary-300: #5EEAD4;
+  --color-secondary-400: #2DD4BF;
+  --color-secondary-500: #14B8A6;
+  --color-secondary-600: #0D9488;
+  --color-secondary-700: #0F766E;
+  --color-secondary-800: #115E59;
+  --color-secondary-900: #134E4A;
+
+  /* ===== ACCENT COLORS (Golden Star) ===== */
+  --color-accent: #F59E0B;
+  --color-accent-light: #FBBF24;
+  --color-accent-dark: #D97706;
+  --color-accent-50: #FFFBEB;
+  --color-accent-100: #FEF3C7;
+  --color-accent-200: #FDE68A;
+  --color-accent-300: #FCD34D;
+  --color-accent-400: #FBBF24;
+  --color-accent-500: #F59E0B;
+  --color-accent-600: #D97706;
+  --color-accent-700: #B45309;
+  --color-accent-800: #92400E;
+  --color-accent-900: #78350F;
+
+  /* ===== BACKGROUND COLORS ===== */
+  --color-bg-dark: #0F0A1F;
+  --color-bg-darker: #080510;
+  --color-bg-card: rgba(15, 10, 31, 0.8);
+  --color-bg-card-hover: rgba(25, 18, 45, 0.9);
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+  --color-bg-glass: rgba(255, 255, 255, 0.05);
+  --color-bg-glass-hover: rgba(255, 255, 255, 0.1);
+
+  /* ===== GRADIENT BACKGROUNDS ===== */
+  --gradient-cosmic: linear-gradient(135deg, #0F0A1F 0%, #1A0F2E 50%, #0D0A1A 100%);
+  --gradient-mystical: linear-gradient(180deg, #1A0F2E 0%, #0F0A1F 50%, #080510 100%);
+  --gradient-aurora: linear-gradient(135deg, #6B46C1 0%, #0D9488 50%, #6B46C1 100%);
+  --gradient-gold: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F59E0B 100%);
+  --gradient-purple-glow: radial-gradient(ellipse at center, rgba(107, 70, 193, 0.3) 0%, transparent 70%);
+  --gradient-teal-glow: radial-gradient(ellipse at center, rgba(13, 148, 136, 0.3) 0%, transparent 70%);
+  --gradient-star-glow: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.4) 0%, transparent 60%);
+
+  /* ===== TEXT COLORS ===== */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-tertiary: rgba(255, 255, 255, 0.5);
+  --color-text-muted: rgba(255, 255, 255, 0.4);
+  --color-text-dark: #1A202C;
+  --color-text-dark-secondary: #4A5568;
+
+  /* ===== BORDER COLORS ===== */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-light: rgba(255, 255, 255, 0.15);
+  --color-border-accent: rgba(107, 70, 193, 0.5);
+  --color-border-focus: var(--color-primary);
+
+  /* ===== SEMANTIC COLORS ===== */
+  --color-success: #10B981;
+  --color-success-light: #34D399;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FBBF24;
+  --color-error: #EF4444;
+  --color-error-light: #F87171;
+  --color-info: #3B82F6;
+  --color-info-light: #60A5FA;
+
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+  --shadow-glow-purple: 0 0 20px rgba(107, 70, 193, 0.5);
+  --shadow-glow-teal: 0 0 20px rgba(13, 148, 136, 0.5);
+  --shadow-glow-gold: 0 0 20px rgba(245, 158, 11, 0.5);
+  --shadow-inner-glow: inset 0 0 20px rgba(107, 70, 193, 0.2);
+
+  /* ===== TYPOGRAPHY ===== */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-display: 'Playfair Display', Georgia, serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-6xl: 3.75rem;   /* 60px */
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* ===== SPACING ===== */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-5: 1.25rem;   /* 20px */
+  --spacing-6: 1.5rem;    /* 24px */
+  --spacing-8: 2rem;      /* 32px */
+  --spacing-10: 2.5rem;   /* 40px */
+  --spacing-12: 3rem;     /* 48px */
+  --spacing-16: 4rem;     /* 64px */
+  --spacing-20: 5rem;     /* 80px */
+  --spacing-24: 6rem;     /* 96px */
+
+  /* ===== BORDER RADIUS ===== */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;  /* 6px */
+  --radius-lg: 0.5rem;    /* 8px */
+  --radius-xl: 0.75rem;   /* 12px */
+  --radius-2xl: 1rem;     /* 16px */
+  --radius-3xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;
+
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-slower: 500ms ease;
+  --transition-spring: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ===== Z-INDEX ===== */
+  --z-background: -1;
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-toast: 80;
+
+  /* ===== BREAKPOINTS (for reference) ===== */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ===== CONTAINER ===== */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-max: 480px; /* Mobile-first onboarding */
+}
+
+/* Dark mode is default for this cosmic theme */
+[data-theme="light"] {
+  --color-bg-dark: #F8F7FC;
+  --color-bg-darker: #FFFFFF;
+  --color-bg-card: rgba(255, 255, 255, 0.9);
+  --color-bg-card-hover: rgba(255, 255, 255, 1);
+  --color-text-primary: #1A202C;
+  --color-text-secondary: #4A5568;
+  --color-text-tertiary: #718096;
+  --color-text-muted: #A0AEC0;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-light: rgba(0, 0, 0, 0.05);
+  --gradient-cosmic: linear-gradient(135deg, #F8F7FC 0%, #EDE9F9 50%, #F8F7FC 100%);
+  --gradient-mystical: linear-gradient(180deg, #EDE9F9 0%, #F8F7FC 50%, #FFFFFF 100%);
+}

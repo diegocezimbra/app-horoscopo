@@ -1,0 +1,244 @@
+/* ========================================
+   Cosmic Animated Background
+   ======================================== */
+
+.cosmic-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: var(--z-background);
+  pointer-events: none;
+}
+
+/* Base Gradient */
+.cosmic-bg__gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-mystical);
+}
+
+/* Stars */
+.cosmic-bg__stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.cosmic-bg__star {
+  position: absolute;
+  width: var(--star-size, 2px);
+  height: var(--star-size, 2px);
+  left: var(--star-x, 50%);
+  top: var(--star-y, 50%);
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: starTwinkle var(--star-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--star-delay, 0s);
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Nebula Orbs */
+.cosmic-bg__nebula {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.cosmic-bg__nebula-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: nebulaPulse 8s ease-in-out infinite;
+}
+
+.cosmic-bg__nebula-orb--1 {
+  width: 400px;
+  height: 400px;
+  background: var(--color-primary);
+  top: -10%;
+  right: -10%;
+  animation-delay: 0s;
+}
+
+.cosmic-bg__nebula-orb--2 {
+  width: 300px;
+  height: 300px;
+  background: var(--color-secondary);
+  bottom: 20%;
+  left: -5%;
+  animation-delay: 2s;
+}
+
+.cosmic-bg__nebula-orb--3 {
+  width: 250px;
+  height: 250px;
+  background: var(--color-accent);
+  top: 50%;
+  right: 20%;
+  opacity: 0.15;
+  animation-delay: 4s;
+}
+
+@keyframes nebulaPulse {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
+}
+
+/* Aurora Waves */
+.cosmic-bg__aurora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.cosmic-bg__aurora-wave {
+  position: absolute;
+  width: 200%;
+  height: 50%;
+  opacity: 0.1;
+  filter: blur(40px);
+}
+
+.cosmic-bg__aurora-wave--1 {
+  top: -20%;
+  left: -50%;
+  background: linear-gradient(90deg, transparent, var(--color-primary), var(--color-secondary), transparent);
+  animation: auroraMove 20s ease-in-out infinite;
+}
+
+.cosmic-bg__aurora-wave--2 {
+  top: 10%;
+  left: -50%;
+  background: linear-gradient(90deg, transparent, var(--color-secondary), var(--color-accent), transparent);
+  animation: auroraMove 25s ease-in-out infinite reverse;
+  animation-delay: 5s;
+}
+
+@keyframes auroraMove {
+  0%, 100% {
+    transform: translateX(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(25%) rotate(5deg);
+  }
+}
+
+/* Shooting Stars */
+.cosmic-bg__shooting-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.cosmic-bg__shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: linear-gradient(45deg, #fff, transparent);
+  opacity: 0;
+}
+
+.cosmic-bg__shooting-star--1 {
+  top: 20%;
+  left: 80%;
+  animation: shootingStar 8s linear infinite;
+  animation-delay: 3s;
+}
+
+.cosmic-bg__shooting-star--2 {
+  top: 40%;
+  left: 60%;
+  animation: shootingStar 12s linear infinite;
+  animation-delay: 8s;
+}
+
+@keyframes shootingStar {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0) scale(0);
+  }
+  5% {
+    opacity: 1;
+    transform: translateX(-10px) translateY(10px) scale(1);
+  }
+  10% {
+    opacity: 0;
+    transform: translateX(-100px) translateY(100px) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.cosmic-bg__shooting-star::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+  transform: rotate(-45deg);
+  transform-origin: left center;
+}
+
+/* Intensity Variants */
+.cosmic-bg--low .cosmic-bg__nebula-orb {
+  opacity: 0.15;
+}
+
+.cosmic-bg--low .cosmic-bg__aurora-wave {
+  opacity: 0.05;
+}
+
+.cosmic-bg--high .cosmic-bg__nebula-orb {
+  opacity: 0.4;
+}
+
+.cosmic-bg--high .cosmic-bg__aurora-wave {
+  opacity: 0.15;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-bg__star,
+  .cosmic-bg__nebula-orb,
+  .cosmic-bg__aurora-wave,
+  .cosmic-bg__shooting-star {
+    animation: none;
+    opacity: 0.3;
+  }
+}

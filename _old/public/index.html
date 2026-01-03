@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardápioDigital - Cardápio Online para Restaurantes</title>
+    <meta name="description" content="Crie cardápios digitais profissionais para seu restaurante em minutos. Grátis, simples e elegante.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        border: "hsl(240 5.9% 90%)",
+                        input: "hsl(240 5.9% 90%)",
+                        ring: "hsl(240 5.9% 10%)",
+                        background: "hsl(0 0% 100%)",
+                        foreground: "hsl(240 10% 3.9%)",
+                        primary: {
+                            DEFAULT: "hsl(240 5.9% 10%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(240 4.8% 95.9%)",
+                            foreground: "hsl(240 5.9% 10%)",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(240 4.8% 95.9%)",
+                            foreground: "hsl(240 3.8% 46.1%)",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(240 4.8% 95.9%)",
+                            foreground: "hsl(240 5.9% 10%)",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(0 84.2% 60.2%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "0.5rem",
+                        md: "calc(0.5rem - 2px)",
+                        sm: "calc(0.5rem - 4px)",
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Glass effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        /* Feature card hover */
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Button hover effect */
+        .btn-primary {
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Hero pattern */
+        .hero-pattern {
+            background-image: 
+                radial-gradient(at 40% 20%, hsla(280, 73%, 87%, 0.3) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(189, 100%, 86%, 0.2) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 85%, 93%, 0.2) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(240, 73%, 90%, 0.2) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(22, 100%, 87%, 0.2) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-foreground bg-background">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <span class="text-primary-foreground font-bold text-lg">C</span>
+                    </div>
+                    <span class="font-semibold text-lg">CardápioDigital</span>
+                </a>
+                
+                <!-- Nav -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Recursos</a>
+                    <a href="#how-it-works" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Como Funciona</a>
+                    <a href="#pricing" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Preços</a>
+                </nav>
+                
+                <!-- CTA -->
+                <div class="flex items-center gap-3">
+                    <a href="register.html?mode=login" class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
+                        Entrar
+                    </a>
+                    <a href="register.html?new=1" class="btn-primary inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                        Criar Cardápio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern min-h-screen flex items-center pt-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left: Content -->
+                <div class="text-center lg:text-left">
+                    <div class="animate-fade-in-up opacity-0">
+                        <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground mb-6">
+                            ✨ 100% Gratuito • Sem limite de itens
+                        </span>
+                    </div>
+                    
+                    <h1 class="animate-fade-in-up opacity-0 delay-100 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                        Cardápio digital
+                        <span class="gradient-text">profissional</span>
+                        em minutos
+                    </h1>
+                    
+                    <p class="animate-fade-in-up opacity-0 delay-200 text-lg text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0">
+                        Crie cardápios elegantes para seu restaurante, bar ou cafeteria. 
+                        Seus clientes acessam pelo celular via QR Code. Simples assim.
+                    </p>
+                    
+                    <div class="animate-fade-in-up opacity-0 delay-300 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="register.html?new=1" class="btn-primary inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-medium text-primary-foreground hover:bg-primary/90">
+                            Começar Agora — É Grátis
+                            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </a>
+                        <a href="#how-it-works" class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-6 py-3 text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
+                            Ver Demonstração
+                        </a>
+                    </div>
+                    
+                    <!-- Social proof -->
+                    <div class="animate-fade-in-up opacity-0 delay-400 mt-10 flex items-center gap-4 justify-center lg:justify-start">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 border-2 border-white"></div>
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white"></div>
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white"></div>
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 border-2 border-white"></div>
+                        </div>
+                        <p class="text-sm text-muted-foreground">
+                            <span class="font-semibold text-foreground">500+</span> restaurantes já usam
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Right: Mockup -->
+                <div class="animate-float relative">
+                    <div class="relative mx-auto w-72 sm:w-80">
+                        <!-- Phone frame -->
+                        <div class="relative bg-gray-900 rounded-[3rem] p-3 shadow-2xl">
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-b-2xl"></div>
+                            <div class="bg-white rounded-[2.5rem] overflow-hidden">
+                                <!-- Menu preview -->
+                                <div class="h-[500px] overflow-hidden">
+                                    <!-- Header -->
+                                    <div class="bg-gradient-to-br from-amber-600 to-orange-700 p-6 text-white text-center">
+                                        <div class="w-16 h-16 bg-white/20 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">
+                                            🍕
+                                        </div>
+                                        <h3 class="font-bold text-lg">Pizzaria Bella</h3>
+                                    </div>
+                                    <!-- Content -->
+                                    <div class="p-4 space-y-4">
+                                        <div class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Pizzas Tradicionais</div>
+                                        
+                                        <div class="flex justify-between items-start p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="font-medium text-sm">Margherita</div>
+                                                <div class="text-xs text-gray-500">Molho, mozzarella, manjericão</div>
+                                            </div>
+                                            <div class="text-sm font-semibold text-amber-600">R$ 45,00</div>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-start p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="font-medium text-sm">Calabresa</div>
+                                                <div class="text-xs text-gray-500">Calabresa, cebola, azeitona</div>
+                                            </div>
+                                            <div class="text-sm font-semibold text-amber-600">R$ 48,00</div>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-start p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="font-medium text-sm">Quatro Queijos</div>
+                                                <div class="text-xs text-gray-500">Mozzarella, gorgonzola, parmesão...</div>
+                                            </div>
+                                            <div class="text-sm font-semibold text-amber-600">R$ 52,00</div>
+                                        </div>
+                                        
+                                        <div class="text-sm font-semibold text-gray-500 uppercase tracking-wide pt-2">Bebidas</div>
+                                        
+                                        <div class="flex justify-between items-start p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="font-medium text-sm">Refrigerante 2L</div>
+                                                <div class="text-xs text-gray-500">Coca, Guaraná, Fanta</div>
+                                            </div>
+                                            <div class="text-sm font-semibold text-amber-600">R$ 12,00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl opacity-20 blur-xl"></div>
+                        <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-2xl opacity-20 blur-xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-secondary/30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Tudo que você precisa</h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Recursos profissionais para criar cardápios que impressionam seus clientes
+                </p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white rounded-xl p-6 border border-border">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-2xl">📱</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Acesso via QR Code</h3>
+                    <p class="text-muted-foreground text-sm">
+                        Gere um QR Code único para seu cardápio. Clientes escaneiam e acessam instantaneamente.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white rounded-xl p-6 border border-border">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-2xl">🎨</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Personalização Total</h3>
+                    <p class="text-muted-foreground text-sm">
+                        Logo, cores, múltiplos menus, seções e imagens dos pratos. Deixe com a cara do seu negócio.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white rounded-xl p-6 border border-border">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-2xl">↕️</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Drag & Drop</h3>
+                    <p class="text-muted-foreground text-sm">
+                        Reorganize seções e itens arrastando. A ordem que você quiser, do jeito mais fácil.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card bg-white rounded-xl p-6 border border-border">
+                    <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-2xl">📄</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Exportar PDF</h3>
+                    <p class="text-muted-foreground text-sm">
+                        Exporte seu cardápio em PDF para imprimir ou enviar por WhatsApp quando precisar.
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card bg-white rounded-xl p-6 border border-border">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-2xl">📸</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Fotos dos Pratos</h3>
+                    <p class="text-muted-foreground text-sm">
+                        Adicione fotos apetitosas dos seus pratos. Uma imagem vale mais que mil palavras.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card bg-white rounded-xl p-6 border border-border">
+                    <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Atualizações em Tempo Real</h3>
+                    <p class="text-muted-foreground text-sm">
+                        Alterou um preço? Seus clientes veem a mudança instantaneamente. Sem reimprimir nada.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section id="how-it-works" class="py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Como funciona</h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Em 3 passos simples seu cardápio digital está no ar
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                        1
+                    </div>
+                    <h3 class="font-semibold text-xl mb-3">Crie sua conta</h3>
+                    <p class="text-muted-foreground">
+                        Escolha um ID único e uma senha. Pronto, sua conta está criada em segundos.
+                    </p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                        2
+                    </div>
+                    <h3 class="font-semibold text-xl mb-3">Monte seu cardápio</h3>
+                    <p class="text-muted-foreground">
+                        Adicione menus, seções e itens. Personalize cores, logo e adicione fotos dos pratos.
+                    </p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                        3
+                    </div>
+                    <h3 class="font-semibold text-xl mb-3">Compartilhe</h3>
+                    <p class="text-muted-foreground">
+                        Gere o QR Code e coloque nas mesas. Clientes acessam pelo celular instantaneamente.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-secondary/30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Simples e gratuito</h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Sem pegadinhas. Sem limites escondidos. Use gratuitamente.
+                </p>
+            </div>
+            
+            <div class="max-w-md mx-auto">
+                <div class="bg-white rounded-2xl border-2 border-primary p-8 text-center relative overflow-hidden">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4">
+                        <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                            Mais popular
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-2">Gratuito</h3>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold">R$ 0</span>
+                        <span class="text-muted-foreground">/mês</span>
+                    </div>
+                    
+                    <ul class="space-y-3 text-left mb-8">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Menus ilimitados</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Itens ilimitados</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Upload de imagens</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>QR Code personalizado</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Exportação PDF</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Suporte por email</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="register.html?new=1" class="btn-primary w-full inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-medium text-primary-foreground hover:bg-primary/90">
+                        Criar Meu Cardápio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                Pronto para digitalizar seu cardápio?
+            </h2>
+            <p class="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Junte-se a centenas de restaurantes que já estão oferecendo uma experiência moderna para seus clientes.
+            </p>
+            <a href="register.html?new=1" class="btn-primary inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-lg font-medium text-primary-foreground hover:bg-primary/90">
+                Começar Gratuitamente
+                <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-primary-foreground py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-primary-foreground rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-lg">C</span>
+                        </div>
+                        <span class="font-semibold text-lg">CardápioDigital</span>
+                    </div>
+                    <p class="text-primary-foreground/70 text-sm max-w-sm">
+                        A forma mais simples de criar cardápios digitais profissionais para seu restaurante, bar ou cafeteria.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produto</h4>
+                    <ul class="space-y-2 text-sm text-primary-foreground/70">
+                        <li><a href="#features" class="hover:text-primary-foreground transition-colors">Recursos</a></li>
+                        <li><a href="#how-it-works" class="hover:text-primary-foreground transition-colors">Como Funciona</a></li>
+                        <li><a href="#pricing" class="hover:text-primary-foreground transition-colors">Preços</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Links</h4>
+                    <ul class="space-y-2 text-sm text-primary-foreground/70">
+                        <li><a href="register.html?mode=login" class="hover:text-primary-foreground transition-colors">Entrar</a></li>
+                        <li><a href="register.html?new=1" class="hover:text-primary-foreground transition-colors">Criar Conta</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-primary-foreground/10 mt-8 pt-8 text-center text-sm text-primary-foreground/50">
+                <p>&copy; 2025 CardápioDigital. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth reveal on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, section > div').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        // Fix initial animations
+        document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+            el.style.opacity = '';
+        });
+    </script>
+</body>
+</html>

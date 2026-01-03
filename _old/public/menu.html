@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cardápio Digital - Veja nosso menu completo">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Cardápio Digital</title>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+                        'scale-in': 'scaleIn 0.2s ease-out forwards',
+                        'pulse-subtle': 'pulseSubtle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        pulseSubtle: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.8' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* CSS Variables - shadcn/ui style (Dark theme default) */
+        :root {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            --primary: 0 72% 51%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            --accent: 217.2 32.6% 17.5%;
+            --accent-foreground: 210 40% 98%;
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 0 72% 51%;
+            --radius: 0.75rem;
+        }
+
+        /* Light theme */
+        .theme-light {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --primary: 0 72% 51%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 0 72% 51%;
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: hsl(var(--secondary));
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: hsl(var(--muted-foreground) / 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: hsl(var(--muted-foreground) / 0.5);
+        }
+
+        /* Navigation scrollbar */
+        .nav-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-scroll::-webkit-scrollbar-thumb {
+            background: hsl(var(--primary));
+            border-radius: 2px;
+        }
+
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Skip to content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md">
+        Pular para o conteúdo
+    </a>
+
+    <div id="app" class="min-h-screen">
+        <!-- Loading State -->
+        <div id="loading" class="flex flex-col items-center justify-center min-h-screen gap-4">
+            <div class="relative">
+                <div class="w-12 h-12 border-4 border-secondary rounded-full"></div>
+                <div class="absolute top-0 left-0 w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <p class="text-muted-foreground text-sm font-medium">Carregando cardápio...</p>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button
+        id="scrollTop"
+        onclick="scrollToTop()"
+        aria-label="Voltar ao topo"
+        class="no-print fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 opacity-0 invisible translate-y-4"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 15-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <!-- Admin FAB -->
+    <a
+        href="register.html?mode=login"
+        aria-label="Área administrativa"
+        class="no-print fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:scale-110 hover:shadow-xl transition-all duration-300"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+            <circle cx="12" cy="12" r="3"/>
+        </svg>
+    </a>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzb1yOxW981-ylExV442BprM7RjReeWck",
+            authDomain: "cardapiodigital-1030e.firebaseapp.com",
+            projectId: "cardapiodigital-1030e",
+            storageBucket: "cardapiodigital-1030e.firebasestorage.app",
+            messagingSenderId: "271709547242",
+            appId: "1:271709547242:web:c5516395fbec2bfd4e0593",
+            measurementId: "G-X64RYX1REF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================================
+        // Theme Configuration (matching admin.html themes)
+        // ==========================================
+        const THEMES = {
+            dark: {
+                name: 'Escuro Elegante',
+                background: '#1a1a2e',
+                primary: '#e74c3c',
+                secondary: '#3498db',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(255,255,255,0.05)',
+                border: 'rgba(255,255,255,0.1)'
+            },
+            midnight: {
+                name: 'Meia-Noite',
+                background: '#0f172a',
+                primary: '#f59e0b',
+                secondary: '#06b6d4',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                cardBg: 'rgba(255,255,255,0.05)',
+                border: 'rgba(255,255,255,0.1)'
+            },
+            ocean: {
+                name: 'Oceano',
+                background: '#0a192f',
+                primary: '#64ffda',
+                secondary: '#f43f5e',
+                text: '#e6f1ff',
+                textSecondary: 'rgba(230,241,255,0.7)',
+                cardBg: 'rgba(100,255,218,0.05)',
+                border: 'rgba(100,255,218,0.1)'
+            },
+            sunset: {
+                name: 'Por do Sol',
+                background: '#1e293b',
+                primary: '#fb923c',
+                secondary: '#ec4899',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(251,146,60,0.05)',
+                border: 'rgba(251,146,60,0.1)'
+            },
+            forest: {
+                name: 'Floresta',
+                background: '#1a2e1a',
+                primary: '#4ade80',
+                secondary: '#fbbf24',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(74,222,128,0.05)',
+                border: 'rgba(74,222,128,0.1)'
+            },
+            royal: {
+                name: 'Real',
+                background: '#1e1b4b',
+                primary: '#a78bfa',
+                secondary: '#f472b6',
+                text: '#ffffff',
+                textSecondary: 'rgba(255,255,255,0.75)',
+                cardBg: 'rgba(167,139,250,0.05)',
+                border: 'rgba(167,139,250,0.1)'
+            },
+            light: {
+                name: 'Claro Moderno',
+                background: '#ffffff',
+                primary: '#e74c3c',
+                secondary: '#3498db',
+                text: '#1a1a2e',
+                textSecondary: 'rgba(26,26,46,0.7)',
+                cardBg: 'rgba(0,0,0,0.03)',
+                border: 'rgba(0,0,0,0.08)'
+            },
+            cream: {
+                name: 'Creme Elegante',
+                background: '#faf8f3',
+                primary: '#d97706',
+                secondary: '#059669',
+                text: '#292524',
+                textSecondary: 'rgba(41,37,36,0.7)',
+                cardBg: 'rgba(217,119,6,0.05)',
+                border: 'rgba(217,119,6,0.12)'
+            },
+            pastel: {
+                name: 'Pastel Suave',
+                background: '#f0f9ff',
+                primary: '#0284c7',
+                secondary: '#db2777',
+                text: '#0c4a6e',
+                textSecondary: 'rgba(12,74,110,0.7)',
+                cardBg: 'rgba(2,132,199,0.05)',
+                border: 'rgba(2,132,199,0.12)'
+            }
+        };
+
+        // ==========================================
+        // State
+        // ==========================================
+        const STORAGE_KEY = 'cardapio_digital_data';
+        const urlParams = new URLSearchParams(window.location.search);
+        const restaurantId = urlParams.get('id');
+
+        // ==========================================
+        // Initialize
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenu();
+            initScrollObserver();
+        });
+
+        // ==========================================
+        // Apply Theme
+        // ==========================================
+        function applyTheme(themeKey) {
+            const theme = THEMES[themeKey] || THEMES.dark;
+
+            // Update meta theme color
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.primary);
+
+            // Store theme for use in render
+            window.currentTheme = theme;
+        }
+
+        // ==========================================
+        // Load Menu
+        // ==========================================
+        async function loadMenu() {
+            const appContainer = document.getElementById('app');
+
+            try {
+                let menuData = null;
+
+                if (restaurantId) {
+                    const restaurantRef = doc(db, 'restaurants', restaurantId);
+                    const restaurantDoc = await getDoc(restaurantRef);
+
+                    if (restaurantDoc.exists()) {
+                        const data = restaurantDoc.data();
+                        menuData = data.menuData;
+
+                        if (menuData) {
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(menuData));
+                        }
+                    } else {
+                        renderEmptyState(appContainer);
+                        return;
+                    }
+                } else {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        menuData = JSON.parse(saved);
+                    }
+                }
+
+                if (!menuData || !menuData.sections || menuData.sections.length === 0) {
+                    renderEmptyState(appContainer);
+                    return;
+                }
+
+                renderMenu(appContainer, menuData);
+            } catch (e) {
+                console.error('Erro ao carregar menu:', e);
+
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const menuData = JSON.parse(saved);
+                        if (menuData.sections && menuData.sections.length > 0) {
+                            renderMenu(appContainer, menuData);
+                            return;
+                        }
+                    }
+                } catch (fallbackError) {
+                    console.error('Erro no fallback:', fallbackError);
+                }
+
+                renderEmptyState(appContainer);
+            }
+        }
+
+        // ==========================================
+        // Render Menu
+        // ==========================================
+        function renderMenu(container, menuData) {
+            // Get theme
+            const themeKey = menuData.config.theme || 'dark';
+            const theme = THEMES[themeKey] || THEMES.dark;
+            applyTheme(themeKey);
+
+            // Update page title
+            if (menuData.config.title) {
+                document.title = `${menuData.config.title} - Cardápio Digital`;
+            }
+
+            // Sort sections
+            const sortedSections = [...menuData.sections].sort((a, b) => a.order - b.order);
+            const currency = menuData.config.currency || 'R$';
+
+            // Count total items
+            const totalItems = sortedSections.reduce((acc, section) => acc + section.items.length, 0);
+
+            // Helper function to render item card
+            const renderItemCard = (item, sectionName = null) => `
+                <article
+                    class="menu-item group relative flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-300"
+                    style="background: ${theme.cardBg}; border: 1px solid ${theme.border};"
+                    onmouseenter="this.style.borderColor='${theme.primary}50'; this.style.boxShadow='0 10px 25px -5px rgba(0,0,0,0.2)';"
+                    onmouseleave="this.style.borderColor='${theme.border}'; this.style.boxShadow='none';"
+                >
+                    ${item.image ? `
+                        <div class="flex-shrink-0">
+                            <img
+                                src="${item.image}"
+                                alt="${escapeHtml(item.title)}"
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover"
+                                style="border: 2px solid ${theme.border};"
+                                loading="lazy"
+                            >
+                        </div>
+                    ` : ''}
+
+                    <div class="flex-1 min-w-0 flex flex-col justify-center">
+                        <h3 class="font-semibold text-sm sm:text-base leading-tight mb-1" style="color: ${theme.text};">
+                            ${escapeHtml(item.title)}
+                        </h3>
+                        ${item.subtitle ? `
+                            <p class="text-xs sm:text-sm line-clamp-2 leading-relaxed" style="color: ${theme.textSecondary};">
+                                ${escapeHtml(item.subtitle)}
+                            </p>
+                        ` : ''}
+                        ${sectionName ? `
+                            <span class="text-xs mt-1 opacity-60" style="color: ${theme.textSecondary};">
+                                ${escapeHtml(sectionName)}
+                            </span>
+                        ` : ''}
+                    </div>
+
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="inline-flex items-center justify-center px-3 py-1.5 text-sm font-bold rounded-lg whitespace-nowrap" style="color: ${theme.primary}; background: ${theme.primary}15; border: 1.5px solid ${theme.primary}40;">
+                            ${currency} ${item.price.toFixed(2)}
+                        </span>
+                    </div>
+                </article>
+            `;
+
+            let html = `
+                <div class="min-h-screen" style="background: ${theme.background}; color: ${theme.text};">
+                    <!-- Header -->
+                    <header class="relative overflow-hidden">
+                        <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to bottom, ${theme.primary}15, transparent);"></div>
+                        <div class="relative max-w-4xl mx-auto px-4 pt-8 pb-6 sm:pt-12 sm:pb-8 text-center">
+                            ${menuData.config.logo ? `
+                                <div class="mb-6 animate-fade-in">
+                                    <img
+                                        src="${menuData.config.logo}"
+                                        alt="${escapeHtml(menuData.config.title || 'Logo')}"
+                                        class="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-full object-cover shadow-2xl"
+                                        style="border: 4px solid ${theme.cardBg}; box-shadow: 0 0 0 4px ${theme.primary}33, 0 25px 50px -12px rgba(0,0,0,0.25);"
+                                    >
+                                </div>
+                            ` : ''}
+
+                            ${menuData.config.title ? `
+                                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-3 animate-fade-in-up" style="animation-delay: 0.1s; color: ${theme.text};">
+                                    ${escapeHtml(menuData.config.title)}
+                                </h1>
+                            ` : ''}
+
+                            ${menuData.config.description ? `
+                                <p class="text-base sm:text-lg max-w-2xl mx-auto mb-6 animate-fade-in-up" style="animation-delay: 0.2s; color: ${theme.textSecondary};">
+                                    ${escapeHtml(menuData.config.description)}
+                                </p>
+                            ` : ''}
+
+                            <div class="w-20 h-1 mx-auto rounded-full animate-scale-in" style="animation-delay: 0.3s; background: ${theme.primary};"></div>
+                        </div>
+                    </header>
+
+                    <!-- Navigation -->
+                    <nav class="sticky top-0 z-40 backdrop-blur-lg no-print" role="navigation" aria-label="Categorias do cardápio" style="background: ${theme.background}ee; border-bottom: 1px solid ${theme.border};">
+                        <div class="max-w-4xl mx-auto px-4">
+                            <div class="nav-scroll flex gap-2 py-3 overflow-x-auto" role="tablist">
+                                <button
+                                    data-filter="all"
+                                    class="nav-item active flex-shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-all duration-200"
+                                    role="tab"
+                                    aria-selected="true"
+                                    style="background: ${theme.primary}; border: 1px solid ${theme.primary}; color: #fff;"
+                                >
+                                    Tudo
+                                    <span class="ml-1.5 text-xs opacity-80">(${totalItems})</span>
+                                </button>
+                                ${sortedSections.map((section, index) => `
+                                    <button
+                                        data-filter="section-${index}"
+                                        class="nav-item flex-shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-all duration-200"
+                                        role="tab"
+                                        aria-selected="false"
+                                        style="background: ${theme.cardBg}; border: 1px solid ${theme.border}; color: ${theme.text};"
+                                    >
+                                        ${escapeHtml(section.name)}
+                                        <span class="ml-1.5 text-xs opacity-60">(${section.items.length})</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </nav>
+
+                    <!-- Main Content -->
+                    <main id="main-content" class="max-w-4xl mx-auto px-4 py-8">
+                        <!-- All Items View (shown by default) -->
+                        <div id="view-all" class="menu-view">
+                            <div class="space-y-10">
+                                ${sortedSections.map((section, sectionIndex) => {
+                                    const sortedItems = [...section.items].sort((a, b) => a.order - b.order);
+                                    return `
+                                        <section class="animate-fade-in-up" style="animation-delay: ${0.1 * (sectionIndex + 1)}s">
+                                            <!-- Section Header -->
+                                            <div class="flex items-center gap-4 mb-6 p-4 rounded-xl" style="background: ${theme.cardBg}; border-left: 4px solid ${theme.primary};">
+                                                <div class="flex-1 flex items-center gap-3">
+                                                    <h2 class="text-lg sm:text-xl font-bold tracking-wide uppercase" style="color: ${theme.text}; letter-spacing: 0.05em;">
+                                                        ${escapeHtml(section.name)}
+                                                    </h2>
+                                                </div>
+                                                <span class="text-xs font-bold px-3 py-1.5 rounded-full" style="color: ${theme.primary}; background: ${theme.primary}15;">
+                                                    ${sortedItems.length} ${sortedItems.length === 1 ? 'ITEM' : 'ITENS'}
+                                                </span>
+                                            </div>
+
+                                            <!-- Items Grid -->
+                                            ${sortedItems.length > 0 ? `
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                                    ${sortedItems.map(item => renderItemCard(item)).join('')}
+                                                </div>
+                                            ` : `
+                                                <div class="text-center py-8" style="color: ${theme.textSecondary};">
+                                                    <p>Nenhum item nesta seção</p>
+                                                </div>
+                                            `}
+                                        </section>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Filtered Section Views (hidden by default) -->
+                        ${sortedSections.map((section, sectionIndex) => {
+                            const sortedItems = [...section.items].sort((a, b) => a.order - b.order);
+                            return `
+                                <div id="view-section-${sectionIndex}" class="menu-view hidden">
+                                    <section class="animate-fade-in-up">
+                                        <!-- Section Header -->
+                                        <div class="flex items-center gap-4 mb-6 p-4 rounded-xl" style="background: ${theme.cardBg}; border-left: 4px solid ${theme.primary};">
+                                            <div class="flex-1 flex items-center gap-3">
+                                                <h2 class="text-lg sm:text-xl font-bold tracking-wide uppercase" style="color: ${theme.text}; letter-spacing: 0.05em;">
+                                                    ${escapeHtml(section.name)}
+                                                </h2>
+                                            </div>
+                                            <span class="text-xs font-bold px-3 py-1.5 rounded-full" style="color: ${theme.primary}; background: ${theme.primary}15;">
+                                                ${sortedItems.length} ${sortedItems.length === 1 ? 'ITEM' : 'ITENS'}
+                                            </span>
+                                        </div>
+
+                                        <!-- Items Grid -->
+                                        ${sortedItems.length > 0 ? `
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                                ${sortedItems.map(item => renderItemCard(item)).join('')}
+                                            </div>
+                                        ` : `
+                                            <div class="text-center py-8" style="color: ${theme.textSecondary};">
+                                                <p>Nenhum item nesta seção</p>
+                                            </div>
+                                        `}
+                                    </section>
+                                </div>
+                            `;
+                        }).join('')}
+                    </main>
+
+                    <!-- Footer -->
+                    <footer class="mt-12 no-print" style="border-top: 1px solid ${theme.border};">
+                        <div class="max-w-4xl mx-auto px-4 py-8 text-center">
+                            <p class="text-sm mb-2" style="color: ${theme.textSecondary};">
+                                Cardápio atualizado em ${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                            </p>
+                            <p class="text-xs" style="color: ${theme.textSecondary}; opacity: 0.6;">
+                                Desenvolvido com Cardápio Digital
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            initNavigation(theme);
+        }
+
+        // ==========================================
+        // Empty State
+        // ==========================================
+        function renderEmptyState(container) {
+            const theme = THEMES.dark;
+            applyTheme('dark');
+
+            container.innerHTML = `
+                <div class="min-h-screen flex items-center justify-center p-4" style="background: ${theme.background}; color: ${theme.text};">
+                    <div class="max-w-md w-full text-center">
+                        <div class="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style="background: ${theme.cardBg}; border: 2px dashed ${theme.border};">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: ${theme.textSecondary};">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/>
+                                <path d="M12 11h4"/>
+                                <path d="M12 16h4"/>
+                                <path d="M8 11h.01"/>
+                                <path d="M8 16h.01"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2" style="color: ${theme.text};">Cardápio não configurado</h2>
+                        <p class="mb-6" style="color: ${theme.textSecondary};">
+                            Nenhum item foi adicionado ao cardápio ainda.
+                        </p>
+                        <a
+                            href="register.html?mode=login"
+                            class="inline-flex items-center gap-2 px-6 py-3 font-medium rounded-lg hover:opacity-90 transition-opacity"
+                            style="background: ${theme.primary}; color: #fff;"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            Configurar Cardápio
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // Update floating buttons
+            const scrollTopBtn = document.getElementById('scrollTop');
+            const adminBtn = document.querySelector('a[aria-label="Área administrativa"]');
+
+            if (scrollTopBtn) {
+                scrollTopBtn.style.background = theme.cardBg;
+                scrollTopBtn.style.borderColor = theme.border;
+                scrollTopBtn.style.color = theme.text;
+            }
+
+            if (adminBtn) {
+                adminBtn.style.background = theme.primary;
+                adminBtn.style.color = '#fff';
+            }
+        }
+
+        // ==========================================
+        // Navigation
+        // ==========================================
+        function initNavigation(theme) {
+            const navItems = document.querySelectorAll('.nav-item');
+            const menuViews = document.querySelectorAll('.menu-view');
+
+            if (navItems.length === 0) return;
+
+            // Store default styles for reset
+            const defaultBg = theme.cardBg;
+            const defaultColor = theme.text;
+            const defaultBorder = theme.border;
+
+            // Filter functionality
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const filter = item.getAttribute('data-filter');
+
+                    // Update active state on nav items
+                    navItems.forEach(navItem => {
+                        const isActive = navItem === item;
+                        if (isActive) {
+                            navItem.classList.add('active');
+                            navItem.style.background = theme.primary;
+                            navItem.style.color = '#fff';
+                            navItem.style.borderColor = theme.primary;
+                        } else {
+                            navItem.classList.remove('active');
+                            navItem.style.background = defaultBg;
+                            navItem.style.color = defaultColor;
+                            navItem.style.borderColor = defaultBorder;
+                        }
+                        navItem.setAttribute('aria-selected', isActive);
+                    });
+
+                    // Show/hide views
+                    menuViews.forEach(view => {
+                        if (filter === 'all') {
+                            // Show "all" view, hide others
+                            if (view.id === 'view-all') {
+                                view.classList.remove('hidden');
+                            } else {
+                                view.classList.add('hidden');
+                            }
+                        } else {
+                            // Show specific section view, hide others
+                            if (view.id === `view-${filter}`) {
+                                view.classList.remove('hidden');
+                            } else {
+                                view.classList.add('hidden');
+                            }
+                        }
+                    });
+
+                    // Scroll to top of main content
+                    const mainContent = document.getElementById('main-content');
+                    if (mainContent) {
+                        const navHeight = document.querySelector('nav')?.offsetHeight || 0;
+                        const targetPosition = mainContent.offsetTop - navHeight - 10;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+
+                // Hover effects
+                item.addEventListener('mouseenter', () => {
+                    if (!item.classList.contains('active')) {
+                        item.style.background = theme.primary;
+                        item.style.color = '#fff';
+                        item.style.borderColor = theme.primary;
+                    }
+                });
+
+                item.addEventListener('mouseleave', () => {
+                    if (!item.classList.contains('active')) {
+                        item.style.background = defaultBg;
+                        item.style.color = defaultColor;
+                        item.style.borderColor = defaultBorder;
+                    }
+                });
+            });
+
+            // Update floating buttons with theme colors
+            const scrollTopBtn = document.getElementById('scrollTop');
+            const adminBtn = document.querySelector('a[aria-label="Área administrativa"]');
+
+            if (scrollTopBtn) {
+                scrollTopBtn.style.background = theme.cardBg;
+                scrollTopBtn.style.borderColor = theme.border;
+                scrollTopBtn.style.color = theme.text;
+            }
+
+            if (adminBtn) {
+                adminBtn.style.background = theme.primary;
+                adminBtn.style.color = '#fff';
+            }
+        }
+
+        // ==========================================
+        // Scroll Observer
+        // ==========================================
+        function initScrollObserver() {
+            const scrollTopBtn = document.getElementById('scrollTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    scrollTopBtn.classList.remove('opacity-0', 'invisible', 'translate-y-4');
+                    scrollTopBtn.classList.add('opacity-100', 'visible', 'translate-y-0');
+                } else {
+                    scrollTopBtn.classList.add('opacity-0', 'invisible', 'translate-y-4');
+                    scrollTopBtn.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                }
+            });
+        }
+
+        window.scrollToTop = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+
+        // ==========================================
+        // Utilities
+        // ==========================================
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

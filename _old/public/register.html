@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta - CardápioDigital</title>
+    <meta name="description" content="Crie sua conta e comece a gerenciar seu cardápio digital">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        border: "hsl(240 5.9% 90%)",
+                        input: "hsl(240 5.9% 90%)",
+                        ring: "hsl(240 5.9% 10%)",
+                        background: "hsl(0 0% 100%)",
+                        foreground: "hsl(240 10% 3.9%)",
+                        primary: {
+                            DEFAULT: "hsl(240 5.9% 10%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(240 4.8% 95.9%)",
+                            foreground: "hsl(240 5.9% 10%)",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(240 4.8% 95.9%)",
+                            foreground: "hsl(240 3.8% 46.1%)",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(0 84.2% 60.2%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    </style>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        // Configure o Firebase aqui
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzb1yOxW981-ylExV442BprM7RjReeWck",
+            authDomain: "cardapiodigital-1030e.firebaseapp.com",
+            projectId: "cardapiodigital-1030e",
+            storageBucket: "cardapiodigital-1030e.firebasestorage.app",
+            messagingSenderId: "271709547242",
+            appId: "1:271709547242:web:c5516395fbec2bfd4e0593",
+            measurementId: "G-X64RYX1REF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Login ou Registro
+        window.handleAuth = async (isLogin) => {
+            const restaurantId = document.getElementById('restaurantId').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            const restaurantName = document.getElementById('restaurantName')?.value.trim();
+            const errorDiv = document.getElementById('error');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Validação
+            if (!restaurantId || !password) {
+                showError('Por favor, preencha todos os campos obrigatórios');
+                return;
+            }
+
+            if (restaurantId.length < 3) {
+                showError('O ID do restaurante deve ter pelo menos 3 caracteres');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('A senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+
+            // Verificar se o ID contém apenas caracteres válidos (letras, números, hífen)
+            if (!/^[a-z0-9-]+$/.test(restaurantId)) {
+                showError('O ID deve conter apenas letras minúsculas, números e hífens');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-2 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processando...';
+            errorDiv.classList.add('hidden');
+
+            try {
+                const restaurantRef = doc(db, 'restaurants', restaurantId);
+                const restaurantDoc = await getDoc(restaurantRef);
+
+                if (isLogin) {
+                    // LOGIN
+                    if (!restaurantDoc.exists()) {
+                        showError('Restaurante não encontrado. Verifique o ID ou crie uma conta.');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Entrar';
+                        return;
+                    }
+
+                    const data = restaurantDoc.data();
+                    if (data.password !== password) {
+                        showError('Senha incorreta');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Entrar';
+                        return;
+                    }
+
+                    // Login bem-sucedido
+                    localStorage.setItem('restaurantId', restaurantId);
+                    localStorage.setItem('restaurantPassword', password);
+                    window.location.href = 'admin.html';
+
+                } else {
+                    // REGISTRO
+                    if (restaurantDoc.exists()) {
+                        showError('Este ID já está em uso. Por favor, escolha outro.');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Criar Conta';
+                        return;
+                    }
+
+                    if (!restaurantName) {
+                        showError('Por favor, informe o nome do restaurante');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Criar Conta';
+                        return;
+                    }
+
+                    // Criar novo restaurante
+                    await setDoc(restaurantRef, {
+                        name: restaurantName,
+                        password: password,
+                        backgroundColor: '#1a1a2e',
+                        logo: '',
+                        createdAt: new Date().toISOString(),
+                        menus: []
+                    });
+
+                    // Login automático após registro
+                    localStorage.setItem('restaurantId', restaurantId);
+                    localStorage.setItem('restaurantPassword', password);
+
+                    // Redirecionar para admin
+                    window.location.href = 'admin.html';
+                }
+
+            } catch (error) {
+                console.error('Erro:', error);
+                showError('Erro ao processar solicitação. Verifique a configuração do Firebase.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = isLogin ? 'Entrar' : 'Criar Conta';
+            }
+        };
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        // Alternar entre login e registro
+        window.toggleMode = (isLogin) => {
+            const registerFields = document.getElementById('registerFields');
+            const formTitle = document.getElementById('formTitle');
+            const formSubtitle = document.getElementById('formSubtitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const toggleText = document.getElementById('toggleText');
+            const toggleBtn = document.getElementById('toggleBtn');
+
+            if (isLogin) {
+                registerFields.classList.add('hidden');
+                formTitle.textContent = 'Entrar';
+                formSubtitle.textContent = 'Acesse o painel de administração do seu restaurante';
+                submitBtn.textContent = 'Entrar';
+                submitBtn.onclick = () => handleAuth(true);
+                toggleText.textContent = 'Não tem uma conta?';
+                toggleBtn.textContent = 'Criar conta';
+                toggleBtn.onclick = () => toggleMode(false);
+            } else {
+                registerFields.classList.remove('hidden');
+                formTitle.textContent = 'Criar Conta';
+                formSubtitle.textContent = 'Comece a gerenciar seu cardápio digital gratuitamente';
+                submitBtn.textContent = 'Criar Conta';
+                submitBtn.onclick = () => handleAuth(false);
+                toggleText.textContent = 'Já tem uma conta?';
+                toggleBtn.textContent = 'Fazer login';
+                toggleBtn.onclick = () => toggleMode(true);
+            }
+
+            // Limpar erro
+            document.getElementById('error').classList.add('hidden');
+        };
+
+        // Verificar parâmetro URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isNew = urlParams.get('new') === '1';
+            const mode = urlParams.get('mode');
+
+            if (mode === 'login' || (!isNew && !mode)) {
+                toggleMode(true);
+            } else {
+                toggleMode(false);
+            }
+        });
+    </script>
+</head>
+<body class="font-sans antialiased text-foreground bg-background">
+    <!-- Header -->
+    <header class="border-b border-border/50 bg-white/70 backdrop-blur-lg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <span class="text-primary-foreground font-bold text-lg">C</span>
+                    </div>
+                    <span class="font-semibold text-lg">CardápioDigital</span>
+                </a>
+
+                <!-- Back to home -->
+                <a href="index.html" class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                    ← Voltar ao início
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div class="w-full max-w-md">
+            <!-- Form Card -->
+            <div class="bg-white border border-border rounded-xl shadow-sm p-8">
+                <!-- Form Header -->
+                <div class="text-center mb-8">
+                    <h2 id="formTitle" class="text-2xl font-bold tracking-tight mb-2">
+                        Criar Conta
+                    </h2>
+                    <p id="formSubtitle" class="text-muted-foreground text-sm">
+                        Comece a gerenciar seu cardápio digital gratuitamente
+                    </p>
+                </div>
+
+                <!-- Error Message -->
+                <div id="error" class="hidden mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
+                </div>
+
+                <!-- Form -->
+                <form onsubmit="event.preventDefault(); handleAuth(false);" class="space-y-4">
+                    <!-- Restaurant Name (only for registration) -->
+                    <div id="registerFields">
+                        <label for="restaurantName" class="block text-sm font-medium mb-2">
+                            Nome do Restaurante *
+                        </label>
+                        <input
+                            type="text"
+                            id="restaurantName"
+                            class="w-full px-4 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+                            placeholder="Ex: Pizzaria Bella"
+                        >
+                    </div>
+
+                    <!-- Restaurant ID -->
+                    <div>
+                        <label for="restaurantId" class="block text-sm font-medium mb-2">
+                            ID do Restaurante *
+                        </label>
+                        <input
+                            type="text"
+                            id="restaurantId"
+                            class="w-full px-4 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+                            placeholder="Ex: pizzaria-bella"
+                            required
+                        >
+                        <p class="mt-1 text-xs text-muted-foreground">
+                            Apenas letras minúsculas, números e hífens. Mínimo 3 caracteres.
+                        </p>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium mb-2">
+                            Senha *
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            class="w-full px-4 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+                            placeholder="Mínimo 6 caracteres"
+                            required
+                        >
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        id="submitBtn"
+                        class="w-full bg-primary text-primary-foreground font-medium py-3 px-4 rounded-lg hover:opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    >
+                        Criar Conta
+                    </button>
+                </form>
+
+                <!-- Toggle Mode -->
+                <div class="mt-6 text-center text-sm">
+                    <span id="toggleText" class="text-muted-foreground">Já tem uma conta?</span>
+                    <button
+                        id="toggleBtn"
+                        onclick="toggleMode(true)"
+                        class="ml-1 font-medium text-primary hover:underline focus:outline-none"
+                    >
+                        Fazer login
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-muted-foreground">
+                    Ao criar uma conta, seus dados serão salvos de forma segura no Firebase.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border py-6">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
+            <p>&copy; 2025 CardápioDigital. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

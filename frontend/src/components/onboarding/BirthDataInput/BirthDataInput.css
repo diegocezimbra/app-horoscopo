@@ -1,0 +1,644 @@
+/* ========================================
+   BirthDataInput Component - Cosmic Theme
+   Teal primary color (#17A398) following Impulse IQ style
+   ======================================== */
+
+/* Main Container */
+.birth-data-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 0 20px 32px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  /* Cosmic gradient background */
+  background: linear-gradient(
+    180deg,
+    #0a0a1a 0%,
+    #0d1420 20%,
+    #0f1a24 40%,
+    #0d1420 70%,
+    #0a0a1a 100%
+  );
+
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.birth-data-screen.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Progress Bar Container */
+.birth-data-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 24px;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, #0a0a1a 0%, rgba(10, 10, 26, 0.95) 100%);
+  z-index: 10;
+}
+
+.birth-data-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(23, 163, 152, 0.1);
+  border: 1px solid rgba(23, 163, 152, 0.3);
+  border-radius: 12px;
+  color: #17A398;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.birth-data-back-button:hover {
+  background: rgba(23, 163, 152, 0.2);
+  border-color: rgba(23, 163, 152, 0.5);
+}
+
+.birth-data-back-button:active {
+  transform: scale(0.95);
+}
+
+/* Progress Bar */
+.birth-data-progress {
+  flex: 1;
+  height: 6px;
+  background: rgba(23, 163, 152, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.birth-data-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #17A398 0%, #5EEAD4 100%);
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.birth-data-progress-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Decorative Stars */
+.birth-data-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.birth-data-stars .star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #5EEAD4;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(94, 234, 212, 0.4);
+}
+
+.star-1 { top: 8%; left: 10%; animation-delay: 0s; }
+.star-2 { top: 15%; right: 15%; animation-delay: 0.5s; width: 3px; height: 3px; background: #A78BFA; }
+.star-3 { top: 25%; left: 5%; animation-delay: 1s; width: 2px; height: 2px; }
+.star-4 { top: 40%; right: 8%; animation-delay: 1.5s; background: #F472B6; }
+.star-5 { top: 60%; left: 12%; animation-delay: 2s; width: 3px; height: 3px; background: #A78BFA; }
+.star-6 { top: 75%; right: 20%; animation-delay: 0.3s; width: 2px; height: 2px; }
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+/* Content */
+.birth-data-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.birth-data-header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.birth-data-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.birth-data-subtitle {
+  font-size: 0.9375rem;
+  color: rgba(248, 250, 252, 0.6);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Sections */
+.birth-data-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.birth-data-section:nth-child(2) { animation-delay: 0.3s; }
+.birth-data-section:nth-child(3) { animation-delay: 0.4s; }
+.birth-data-section:nth-child(4) { animation-delay: 0.5s; }
+
+.birth-data-section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #17A398;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.birth-data-optional {
+  color: rgba(248, 250, 252, 0.4);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Date Selects */
+.birth-data-date-selects {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.2fr;
+  gap: 10px;
+}
+
+.birth-data-select-wrapper {
+  position: relative;
+}
+
+.birth-data-select {
+  width: 100%;
+  height: 52px;
+  padding: 0 36px 0 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #F8FAFC;
+  background: rgba(23, 163, 152, 0.08);
+  border: 2px solid rgba(23, 163, 152, 0.25);
+  border-radius: 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: all 0.25s ease;
+}
+
+.birth-data-select:hover {
+  border-color: rgba(23, 163, 152, 0.4);
+  background: rgba(23, 163, 152, 0.12);
+}
+
+.birth-data-select:focus {
+  outline: none;
+  border-color: #17A398;
+  box-shadow: 0 0 0 4px rgba(23, 163, 152, 0.15);
+  background: rgba(23, 163, 152, 0.15);
+}
+
+.birth-data-select option {
+  background: #1a2332;
+  color: #F8FAFC;
+  padding: 12px;
+}
+
+.birth-data-select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #17A398;
+  pointer-events: none;
+}
+
+.month-select .birth-data-select {
+  padding-left: 14px;
+}
+
+.time-select {
+  width: 140px;
+}
+
+/* Error Message */
+.birth-data-error {
+  font-size: 0.8125rem;
+  color: #F87171;
+  padding: 8px 12px;
+  background: rgba(248, 113, 113, 0.1);
+  border-radius: 8px;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* Time Toggle */
+.birth-data-time-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.birth-data-toggle-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: rgba(248, 250, 252, 0.7);
+  background: rgba(30, 41, 59, 0.5);
+  border: 2px solid rgba(94, 234, 212, 0.15);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.birth-data-toggle-option:hover {
+  border-color: rgba(23, 163, 152, 0.3);
+  color: #F8FAFC;
+}
+
+.birth-data-toggle-option.active {
+  color: #FFFFFF;
+  background: linear-gradient(135deg, rgba(23, 163, 152, 0.25) 0%, rgba(23, 163, 152, 0.15) 100%);
+  border-color: #17A398;
+  box-shadow: 0 0 20px rgba(23, 163, 152, 0.2);
+}
+
+.birth-data-time-select-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.birth-data-time-note {
+  font-size: 0.8125rem;
+  color: rgba(248, 250, 252, 0.5);
+  text-align: center;
+  margin: 4px 0 0 0;
+  padding: 12px;
+  background: rgba(23, 163, 152, 0.06);
+  border-radius: 10px;
+  line-height: 1.4;
+}
+
+/* Place Input */
+.birth-data-place-wrapper {
+  position: relative;
+}
+
+.birth-data-place-input {
+  width: 100%;
+  height: 56px;
+  padding: 0 20px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #F8FAFC;
+  background: rgba(23, 163, 152, 0.08);
+  border: 2px solid rgba(23, 163, 152, 0.25);
+  border-radius: 14px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.birth-data-place-input::placeholder {
+  color: #64748B;
+  font-weight: 400;
+}
+
+.birth-data-place-input.focused {
+  border-color: #17A398;
+  background: rgba(23, 163, 152, 0.12);
+  box-shadow: 0 0 0 4px rgba(23, 163, 152, 0.15);
+}
+
+.birth-data-place-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, rgba(23, 163, 152, 0.2) 0%, transparent 70%);
+  border-radius: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.birth-data-place-input.focused ~ .birth-data-place-glow {
+  opacity: 1;
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.02);
+    opacity: 1;
+  }
+}
+
+/* Suggestions Dropdown */
+.birth-data-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #1a2332;
+  border: 1px solid rgba(23, 163, 152, 0.3);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  max-height: 280px;
+  overflow-y: auto;
+  animation: dropdownAppear 0.2s ease-out;
+}
+
+@keyframes dropdownAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.birth-data-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: #F8FAFC;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.birth-data-suggestion-item:first-child {
+  border-radius: 14px 14px 0 0;
+}
+
+.birth-data-suggestion-item:last-child {
+  border-radius: 0 0 14px 14px;
+}
+
+.birth-data-suggestion-item:only-child {
+  border-radius: 14px;
+}
+
+.birth-data-suggestion-item:hover {
+  background: rgba(23, 163, 152, 0.15);
+}
+
+.birth-data-suggestion-item svg {
+  color: #17A398;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.birth-data-suggestion-item:hover svg {
+  opacity: 1;
+}
+
+/* Continue Button */
+.birth-data-button {
+  width: 100%;
+  max-width: 480px;
+  height: 56px;
+  margin: 24px auto 0;
+  background: linear-gradient(135deg, #17A398 0%, #0D9488 100%);
+  border: none;
+  border-radius: 16px;
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(23, 163, 152, 0.35);
+  position: relative;
+  z-index: 1;
+}
+
+.birth-data-button:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(23, 163, 152, 0.45);
+}
+
+.birth-data-button:active:not(.disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 12px rgba(23, 163, 152, 0.35);
+}
+
+.birth-data-button:focus-visible {
+  outline: 2px solid #5EEAD4;
+  outline-offset: 2px;
+}
+
+.birth-data-button.disabled {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Scrollbar styling */
+.birth-data-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.birth-data-suggestions::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.birth-data-suggestions::-webkit-scrollbar-thumb {
+  background: rgba(23, 163, 152, 0.3);
+  border-radius: 3px;
+}
+
+.birth-data-suggestions::-webkit-scrollbar-thumb:hover {
+  background: rgba(23, 163, 152, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 380px) {
+  .birth-data-screen {
+    padding: 0 16px 24px;
+  }
+
+  .birth-data-title {
+    font-size: 1.5rem;
+  }
+
+  .birth-data-date-selects {
+    grid-template-columns: 1fr 1.6fr 1.1fr;
+    gap: 8px;
+  }
+
+  .birth-data-select {
+    height: 48px;
+    padding: 0 32px 0 12px;
+    font-size: 0.9375rem;
+  }
+
+  .birth-data-toggle-option {
+    height: 48px;
+    font-size: 0.875rem;
+  }
+
+  .birth-data-place-input {
+    height: 52px;
+  }
+}
+
+@media (min-width: 481px) {
+  .birth-data-screen {
+    padding: 0 32px 40px;
+  }
+
+  .birth-data-title {
+    font-size: 2rem;
+  }
+
+  .birth-data-content {
+    gap: 32px;
+  }
+
+  .birth-data-date-selects {
+    gap: 12px;
+  }
+
+  .birth-data-select {
+    height: 56px;
+  }
+
+  .birth-data-toggle-option {
+    height: 56px;
+  }
+
+  .birth-data-place-input {
+    height: 60px;
+  }
+}
+
+@media (min-height: 800px) {
+  .birth-data-content {
+    padding-top: 24px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .birth-data-screen,
+  .birth-data-content,
+  .birth-data-section,
+  .birth-data-select,
+  .birth-data-toggle-option,
+  .birth-data-place-input,
+  .birth-data-button,
+  .birth-data-suggestions,
+  .star {
+    animation: none;
+    transition: none;
+  }
+
+  .birth-data-progress-shimmer {
+    display: none;
+  }
+
+  .birth-data-screen.visible {
+    opacity: 1;
+    transform: none;
+  }
+}

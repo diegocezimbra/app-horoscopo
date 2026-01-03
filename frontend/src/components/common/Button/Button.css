@@ -1,0 +1,255 @@
+/* ========================================
+   Cosmic Button Component
+   ======================================== */
+
+.cosmic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+.cosmic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cosmic-btn:hover::before {
+  opacity: 1;
+}
+
+.cosmic-btn:focus-visible {
+  outline: 3px solid rgba(0, 200, 186, 0.5);
+  outline-offset: 2px;
+}
+
+.cosmic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Sizes */
+.cosmic-btn-sm {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.cosmic-btn-md {
+  height: 52px;
+  padding: 0 32px;
+  font-size: 16px;
+}
+
+.cosmic-btn-lg {
+  height: 60px;
+  padding: 0 40px;
+  font-size: 18px;
+  border-radius: 14px;
+}
+
+/* Primary Variant - Teal Cosmic Gradient */
+.cosmic-btn-primary {
+  background: linear-gradient(135deg, #00c8ba 0%, #00a89e 50%, #008f87 100%);
+  color: #ffffff;
+  box-shadow:
+    0 4px 15px rgba(0, 200, 186, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.cosmic-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 25px rgba(0, 200, 186, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.cosmic-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 10px rgba(0, 200, 186, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Secondary Variant - Outlined */
+.cosmic-btn-secondary {
+  background: transparent;
+  color: #00c8ba;
+  border: 2px solid rgba(0, 200, 186, 0.5);
+  box-shadow: 0 0 20px rgba(0, 200, 186, 0.1);
+}
+
+.cosmic-btn-secondary:hover:not(:disabled) {
+  background: rgba(0, 200, 186, 0.1);
+  border-color: #00c8ba;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 200, 186, 0.2);
+}
+
+.cosmic-btn-secondary:active:not(:disabled) {
+  transform: translateY(0);
+  background: rgba(0, 200, 186, 0.15);
+}
+
+/* Ghost Variant */
+.cosmic-btn-ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  border: none;
+}
+
+.cosmic-btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.cosmic-btn-ghost:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Full Width */
+.cosmic-btn-full {
+  width: 100%;
+}
+
+/* Loading State */
+.cosmic-btn-loading {
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.cosmic-btn-loading .cosmic-btn-text {
+  visibility: hidden;
+}
+
+.cosmic-btn-spinner {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cosmic-btn-spinner svg {
+  width: 24px;
+  height: 24px;
+  animation: cosmic-spin 1s linear infinite;
+}
+
+.cosmic-btn-primary .cosmic-btn-spinner {
+  color: #ffffff;
+}
+
+.cosmic-btn-secondary .cosmic-btn-spinner {
+  color: #00c8ba;
+}
+
+.cosmic-btn-ghost .cosmic-btn-spinner {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes cosmic-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Text */
+.cosmic-btn-text {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+/* Icons */
+.cosmic-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cosmic-btn-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.cosmic-btn-sm .cosmic-btn-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cosmic-btn-lg .cosmic-btn-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Glow Animation for Primary */
+@keyframes cosmic-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 15px rgba(0, 200, 186, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 4px 25px rgba(0, 200, 186, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+}
+
+.cosmic-btn-primary.cosmic-btn-glow {
+  animation: cosmic-glow 2s ease-in-out infinite;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .cosmic-btn-md {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 15px;
+  }
+
+  .cosmic-btn-lg {
+    height: 54px;
+    padding: 0 32px;
+    font-size: 16px;
+  }
+}

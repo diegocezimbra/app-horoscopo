@@ -1,0 +1,159 @@
+/* ========================================
+   DailyGreeting Component - Cosmic Theme
+   ======================================== */
+
+.daily-greeting {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(99, 102, 241, 0.1) 50%,
+    rgba(139, 92, 246, 0.05) 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  animation: fadeInDown 0.5s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.daily-greeting__main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.daily-greeting__icon {
+  font-size: 2rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.daily-greeting__text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.daily-greeting__date {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 16px 0;
+  padding-left: 44px;
+}
+
+.daily-greeting__moon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.daily-greeting__moon-icon {
+  font-size: 1.5rem;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+  }
+}
+
+.daily-greeting__moon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.daily-greeting__moon-sign {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.daily-greeting__moon-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive */
+@media (min-width: 481px) {
+  .daily-greeting {
+    padding: 24px;
+  }
+
+  .daily-greeting__icon {
+    font-size: 2.5rem;
+  }
+
+  .daily-greeting__text {
+    font-size: 1.75rem;
+  }
+
+  .daily-greeting__date {
+    font-size: 1rem;
+    padding-left: 52px;
+  }
+}
+
+@media (min-width: 769px) {
+  .daily-greeting {
+    padding: 28px;
+  }
+
+  .daily-greeting__text {
+    font-size: 2rem;
+  }
+}
+
+/* Dark mode (default is dark, this ensures consistency) */
+@media (prefers-color-scheme: light) {
+  .daily-greeting {
+    background: linear-gradient(
+      135deg,
+      rgba(139, 92, 246, 0.1) 0%,
+      rgba(99, 102, 241, 0.08) 50%,
+      rgba(139, 92, 246, 0.05) 100%
+    );
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .daily-greeting,
+  .daily-greeting__icon,
+  .daily-greeting__moon-icon {
+    animation: none;
+  }
+}

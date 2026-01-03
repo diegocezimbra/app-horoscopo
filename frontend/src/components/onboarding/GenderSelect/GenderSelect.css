@@ -1,0 +1,398 @@
+/* ========================================
+   GenderSelect Component - Cosmic Theme
+   Mobile-first, beautiful, mystical design
+   ======================================== */
+
+/* Container */
+.gender-select {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  position: relative;
+  overflow: hidden;
+
+  /* Cosmic gradient background */
+  background: linear-gradient(
+    180deg,
+    #0a0a1a 0%,
+    #1a0a2e 25%,
+    #2d1b4e 50%,
+    #1a0a2e 75%,
+    #0a0a1a 100%
+  );
+}
+
+/* Animated Stars */
+.gender-select__stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+}
+
+.star--1 { top: 10%; left: 15%; animation-delay: 0s; }
+.star--2 { top: 20%; left: 80%; animation-delay: 0.5s; width: 3px; height: 3px; }
+.star--3 { top: 35%; left: 5%; animation-delay: 1s; width: 2px; height: 2px; }
+.star--4 { top: 45%; left: 90%; animation-delay: 1.5s; }
+.star--5 { top: 60%; left: 25%; animation-delay: 2s; width: 3px; height: 3px; }
+.star--6 { top: 75%; left: 70%; animation-delay: 0.3s; width: 2px; height: 2px; }
+.star--7 { top: 85%; left: 40%; animation-delay: 0.8s; }
+.star--8 { top: 5%; left: 50%; animation-delay: 1.2s; width: 5px; height: 5px; }
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Content Container */
+.gender-select__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.gender-select__header {
+  text-align: center;
+  color: white;
+}
+
+.gender-select__title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff 0%, #c9a0dc 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.gender-select__subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* Cards Container */
+.gender-select__cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+/* Gender Card */
+.gender-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 16px;
+  background: linear-gradient(
+    145deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(99, 102, 241, 0.1) 50%,
+    rgba(139, 92, 246, 0.05) 100%
+  );
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  /* Reset button styles */
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.gender-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gender-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 92, 246, 0.6);
+  box-shadow:
+    0 8px 32px rgba(139, 92, 246, 0.3),
+    0 0 0 1px rgba(139, 92, 246, 0.2) inset;
+}
+
+.gender-card:hover::before {
+  opacity: 1;
+}
+
+.gender-card:active {
+  transform: translateY(-2px);
+}
+
+.gender-card--selected {
+  border-color: rgba(139, 92, 246, 0.8);
+  background: linear-gradient(
+    145deg,
+    rgba(139, 92, 246, 0.3) 0%,
+    rgba(99, 102, 241, 0.2) 50%,
+    rgba(139, 92, 246, 0.15) 100%
+  );
+  box-shadow:
+    0 8px 32px rgba(139, 92, 246, 0.4),
+    0 0 0 2px rgba(139, 92, 246, 0.4) inset;
+}
+
+.gender-card:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.8);
+  outline-offset: 2px;
+}
+
+/* Icon Wrapper */
+.gender-card__icon-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gender-card__icon {
+  position: relative;
+  z-index: 1;
+  width: 80px;
+  height: 96px;
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.gender-card:hover .gender-card__icon {
+  transform: scale(1.05);
+  color: white;
+}
+
+.gender-card__glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 92, 246, 0.4) 0%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+/* Card Content */
+.gender-card__content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.gender-card__label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.01em;
+}
+
+.gender-card__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.gender-card:hover .gender-card__arrow {
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Privacy Notice */
+.gender-select__privacy {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gender-select__privacy::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'%3E%3C/path%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Responsive - Small screens (stacked cards) */
+@media (max-width: 360px) {
+  .gender-select__cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .gender-card {
+    flex-direction: row;
+    padding: 16px 20px;
+    gap: 16px;
+  }
+
+  .gender-card__icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .gender-card__icon {
+    width: 50px;
+    height: 60px;
+  }
+
+  .gender-card__content {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .gender-select__title {
+    font-size: 1.75rem;
+  }
+}
+
+/* Responsive - Tablet and up */
+@media (min-width: 481px) {
+  .gender-select {
+    padding: 40px 24px;
+  }
+
+  .gender-select__title {
+    font-size: 2.5rem;
+  }
+
+  .gender-select__subtitle {
+    font-size: 1.125rem;
+    max-width: 400px;
+  }
+
+  .gender-select__cards {
+    gap: 24px;
+  }
+
+  .gender-card {
+    padding: 32px 24px;
+    border-radius: 24px;
+  }
+
+  .gender-card__icon-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .gender-card__icon {
+    width: 100px;
+    height: 120px;
+  }
+
+  .gender-card__label {
+    font-size: 1.25rem;
+  }
+}
+
+/* Responsive - Large screens */
+@media (min-width: 769px) {
+  .gender-select__content {
+    max-width: 600px;
+    gap: 56px;
+  }
+
+  .gender-select__title {
+    font-size: 3rem;
+  }
+
+  .gender-card {
+    padding: 40px 32px;
+    gap: 24px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .star,
+  .gender-card__glow {
+    animation: none;
+  }
+
+  .gender-select__content {
+    animation: none;
+  }
+
+  .gender-card,
+  .gender-card__icon,
+  .gender-card__arrow {
+    transition: none;
+  }
+}

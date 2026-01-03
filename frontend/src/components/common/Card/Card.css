@@ -1,0 +1,161 @@
+/* ========================================
+   Cosmic Card Component
+   ======================================== */
+
+.cosmic-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+/* Variants */
+.cosmic-card--default {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+}
+
+.cosmic-card--glass {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-light);
+}
+
+.cosmic-card--elevated {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.cosmic-card--outline {
+  background: transparent;
+  border: 2px solid var(--color-border);
+}
+
+/* Padding */
+.cosmic-card--padding-none {
+  padding: 0;
+}
+
+.cosmic-card--padding-sm {
+  padding: var(--spacing-3);
+}
+
+.cosmic-card--padding-md {
+  padding: var(--spacing-4);
+}
+
+.cosmic-card--padding-lg {
+  padding: var(--spacing-6);
+}
+
+/* Hoverable */
+.cosmic-card--hoverable {
+  cursor: pointer;
+}
+
+.cosmic-card--hoverable:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-accent);
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.cosmic-card--hoverable:active {
+  transform: translateY(0);
+}
+
+/* Selected */
+.cosmic-card--selected {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.cosmic-card--selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(107, 70, 193, 0.1) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Glow Effect */
+.cosmic-card--glow {
+  animation: cardGlow 3s ease-in-out infinite;
+}
+
+@keyframes cardGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(107, 70, 193, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(107, 70, 193, 0.4);
+  }
+}
+
+/* Card Header */
+.cosmic-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-4);
+}
+
+.cosmic-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.cosmic-card__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-1);
+}
+
+/* Card Body */
+.cosmic-card__body {
+  color: var(--color-text-secondary);
+}
+
+/* Card Footer */
+.cosmic-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Card with Icon */
+.cosmic-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-aurora);
+  margin-bottom: var(--spacing-3);
+  font-size: 24px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .cosmic-card--padding-lg {
+    padding: var(--spacing-4);
+  }
+
+  .cosmic-card--padding-md {
+    padding: var(--spacing-3);
+  }
+}

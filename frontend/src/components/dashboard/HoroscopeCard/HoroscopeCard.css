@@ -1,0 +1,238 @@
+/* ========================================
+   HoroscopeCard Component - Cosmic Theme
+   ======================================== */
+
+.horoscope-card {
+  position: relative;
+  width: 100%;
+  padding: 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(168, 85, 247, 0.25) 0%,
+    rgba(139, 92, 246, 0.2) 30%,
+    rgba(99, 102, 241, 0.15) 70%,
+    rgba(79, 70, 229, 0.2) 100%
+  );
+  border-radius: 24px;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gradient overlay */
+.horoscope-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.horoscope-card__header {
+  margin-bottom: 16px;
+}
+
+.horoscope-card__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.horoscope-card__sign {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.horoscope-card__symbol {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.horoscope-card__sign-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.horoscope-card__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 12px 0;
+}
+
+.horoscope-card__content {
+  margin-bottom: 16px;
+}
+
+.horoscope-card__text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-style: italic;
+}
+
+.horoscope-card__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.horoscope-card__toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.horoscope-card__toggle:active {
+  transform: translateY(0);
+}
+
+.horoscope-card__toggle:focus-visible {
+  outline: 2px solid rgba(168, 85, 247, 0.8);
+  outline-offset: 2px;
+}
+
+.horoscope-card__toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.horoscope-card__toggle-icon--expanded {
+  transform: rotate(180deg);
+}
+
+/* Decorative stars */
+.horoscope-card__stars {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.horoscope-card__star {
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.horoscope-card__star--1 {
+  top: 15%;
+  right: 20%;
+  animation-delay: 0s;
+}
+
+.horoscope-card__star--2 {
+  top: 45%;
+  right: 10%;
+  animation-delay: 1s;
+  font-size: 0.8rem;
+}
+
+.horoscope-card__star--3 {
+  top: 75%;
+  right: 25%;
+  animation-delay: 2s;
+  font-size: 0.7rem;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+/* Responsive */
+@media (min-width: 481px) {
+  .horoscope-card {
+    padding: 28px;
+  }
+
+  .horoscope-card__symbol {
+    font-size: 3rem;
+  }
+
+  .horoscope-card__sign-name {
+    font-size: 1.75rem;
+  }
+
+  .horoscope-card__title {
+    font-size: 1.25rem;
+  }
+
+  .horoscope-card__text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .horoscope-card {
+    padding: 32px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .horoscope-card,
+  .horoscope-card__symbol,
+  .horoscope-card__star,
+  .horoscope-card__toggle,
+  .horoscope-card__toggle-icon {
+    animation: none;
+    transition: none;
+  }
+}

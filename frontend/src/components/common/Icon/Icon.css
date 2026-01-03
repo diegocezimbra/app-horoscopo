@@ -1,0 +1,98 @@
+/* ========================================
+   Cosmic Icon Component
+   ======================================== */
+
+.cosmic-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  font-style: normal;
+}
+
+/* Sizes */
+.cosmic-icon--xs {
+  font-size: 12px;
+}
+
+.cosmic-icon--sm {
+  font-size: 16px;
+}
+
+.cosmic-icon--md {
+  font-size: 20px;
+}
+
+.cosmic-icon--lg {
+  font-size: 28px;
+}
+
+.cosmic-icon--xl {
+  font-size: 40px;
+}
+
+/* Animated */
+.cosmic-icon--animated {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Glow effect for special icons */
+.cosmic-icon--glow {
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Spin animation */
+.cosmic-icon--spin {
+  animation: iconSpin 2s linear infinite;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Float animation */
+.cosmic-icon--float {
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Twinkle animation */
+.cosmic-icon--twinkle {
+  animation: iconTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes iconTwinkle {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}

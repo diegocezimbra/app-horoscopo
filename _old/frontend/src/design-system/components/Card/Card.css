@@ -1,0 +1,130 @@
+/* ========================================
+   Card Component
+   ======================================== */
+
+.card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Variants */
+.card-default {
+  border: 1px solid var(--border-color);
+}
+
+.card-bordered {
+  border: 1px solid var(--border-color);
+}
+
+.card-elevated {
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Padding */
+.card-padding-none {
+  padding: 0;
+}
+
+.card-padding-sm {
+  padding: var(--space-md);
+}
+
+.card-padding-md {
+  padding: var(--space-lg);
+}
+
+.card-padding-lg {
+  padding: var(--space-xl);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-padding-none .card-header {
+  padding: var(--space-lg);
+}
+
+.card-header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: var(--space-xs) 0 0;
+}
+
+.card-header-action {
+  flex-shrink: 0;
+}
+
+/* Card Content */
+.card-content {
+  padding: var(--space-lg);
+}
+
+.card-padding-none .card-content {
+  padding: var(--space-lg);
+}
+
+.card-header + .card-content {
+  padding-top: var(--space-lg);
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-tertiary);
+}
+
+.card-padding-none .card-footer {
+  padding: var(--space-md) var(--space-lg);
+}
+
+/* Section Card (for dashboard sections) */
+.section-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-card-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.section-card-content {
+  padding: var(--space-lg);
+}

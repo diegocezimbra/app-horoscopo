@@ -1,0 +1,206 @@
+/* ========================================
+   AddProfile Page
+   ======================================== */
+
+.add-profile {
+  min-height: 100vh;
+  background: var(--gradient-mystical);
+  padding: 16px;
+  padding-bottom: 40px;
+}
+
+/* Header */
+.add-profile__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.add-profile__back {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.add-profile__back:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.add-profile__back svg {
+  width: 22px;
+  height: 22px;
+}
+
+.add-profile__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.add-profile__spacer {
+  width: 44px;
+}
+
+/* Form */
+.add-profile__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Celebrity Search */
+.add-profile__celebrity-search {
+  margin-bottom: 8px;
+}
+
+.add-profile__celebrity-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Field */
+.add-profile__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-profile__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.add-profile__optional {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+}
+
+.add-profile__input {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.add-profile__input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.add-profile__input:focus {
+  border-color: var(--color-primary);
+  background: rgba(107, 70, 193, 0.1);
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.2);
+}
+
+.add-profile__input--error {
+  border-color: var(--color-error);
+}
+
+.add-profile__input--error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* Date/Time input styling */
+.add-profile__input[type="date"],
+.add-profile__input[type="time"] {
+  color-scheme: dark;
+}
+
+.add-profile__input[type="date"]::-webkit-calendar-picker-indicator,
+.add-profile__input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.add-profile__error {
+  font-size: 13px;
+  color: var(--color-error);
+}
+
+.add-profile__hint {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+/* Submit */
+.add-profile__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 24px;
+  margin-top: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #6B46C1 0%, #805AD5 100%);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-profile__submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(107, 70, 193, 0.4);
+}
+
+.add-profile__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.add-profile__submit span {
+  font-size: 20px;
+}
+
+.add-profile__spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .add-profile {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+}

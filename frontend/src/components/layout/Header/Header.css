@@ -1,0 +1,118 @@
+/* ========================================
+   Cosmic Header Component
+   ======================================== */
+
+.cosmic-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgba(15, 10, 31, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cosmic-header--transparent {
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: none;
+}
+
+.cosmic-header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: var(--spacing-3) var(--spacing-4);
+}
+
+/* Left section */
+.cosmic-header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+/* Logo */
+.cosmic-header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.cosmic-header__logo-icon {
+  font-size: 24px;
+  animation: logoTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes logoTwinkle {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.cosmic-header__logo-text {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-aurora);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Titles */
+.cosmic-header__titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.cosmic-header__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.cosmic-header__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+/* Right section */
+.cosmic-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+/* Safe area */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .cosmic-header {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .cosmic-header__container {
+    padding: var(--spacing-2) var(--spacing-3);
+  }
+
+  .cosmic-header__logo-text {
+    font-size: var(--font-size-lg);
+  }
+
+  .cosmic-header__title {
+    font-size: var(--font-size-base);
+  }
+}
