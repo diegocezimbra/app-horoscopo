@@ -1,6 +1,6 @@
 /**
  * Profiles Service
- * Handles profile CRUD operations with localStorage persistence
+ * Handles profile CRUD operations via backend API
  */
 
 import {
@@ -10,18 +10,32 @@ import {
   ZodiacSignId,
 } from '../types/profiles';
 
-const STORAGE_KEY = 'horoscope_profiles';
-const MAIN_PROFILE_KEY = 'horoscope_main_profile';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
-/**
- * Generate unique ID
- */
-const generateId = (): string => {
-  return `profile_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+// Helper function for API calls
+const getAuthHeaders = (): HeadersInit => {
+  const token = localStorage.getItem('horoscope_auth_token');
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+};
+
+const handleResponse = async <T>(response: Response): Promise<T> => {
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({
+      message: 'Erro ao comunicar com o servidor',
+    }));
+    throw new Error(error.message || `HTTP error! status: ${response.status}`);
+  }
+  return response.json();
 };
 
 /**
- * Calculate zodiac sign from birth date
+ * Calculate zodiac sign from birth date (utility function)
  */
 export const getZodiacSignFromDate = (birthDate: string): ZodiacSignId => {
   const date = new Date(birthDate);
@@ -43,220 +57,120 @@ export const getZodiacSignFromDate = (birthDate: string): ZodiacSignId => {
 };
 
 /**
- * Generate personality traits based on zodiac sign
+ * Get all profiles from backend
  */
-const generateTraits = (signId: ZodiacSignId): string[] => {
-  const traitsMap: Record<ZodiacSignId, string[]> = {
-    aries: ['Corajoso', 'Energetico', 'Lider nato', 'Impulsivo', 'Aventureiro'],
-    taurus: ['Determinado', 'Leal', 'Paciente', 'Sensual', 'Pratico'],
-    gemini: ['Comunicativo', 'Curioso', 'Versatil', 'Inteligente', 'Adaptavel'],
-    cancer: ['Sensivel', 'Protetor', 'Intuitivo', 'Carinhoso', 'Familiar'],
-    leo: ['Carismatico', 'Generoso', 'Criativo', 'Dramatico', 'Lider'],
-    virgo: ['Analitico', 'Perfeccionista', 'Prestativo', 'Organizado', 'Pratico'],
-    libra: ['Diplomatico', 'Harmonioso', 'Justo', 'Social', 'Romantico'],
-    scorpio: ['Intenso', 'Misterioso', 'Passional', 'Estrategico', 'Leal'],
-    sagittarius: ['Otimista', 'Aventureiro', 'Filosofico', 'Honesto', 'Livre'],
-    capricorn: ['Ambicioso', 'Disciplinado', 'Responsavel', 'Tradicional', 'Paciente'],
-    aquarius: ['Inovador', 'Independente', 'Humanitario', 'Original', 'Rebelde'],
-    pisces: ['Sonhador', 'Compassivo', 'Artistico', 'Intuitivo', 'Romantico'],
-  };
+export const getAllProfiles = async (): Promise<Profile[]> => {
+  const response = await fetch(`${API_BASE_URL}/profiles`, {
+    method: 'GET',
+    headers: getAuthHeaders(),
+  });
 
-  return traitsMap[signId] || [];
-};
-
-/**
- * Get all profiles from localStorage
- */
-export const getAllProfiles = (): Profile[] => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
+  return handleResponse<Profile[]>(response);
 };
 
 /**
  * Get main profile
  */
-export const getMainProfile = (): Profile | null => {
-  try {
-    const stored = localStorage.getItem(MAIN_PROFILE_KEY);
-    return stored ? JSON.parse(stored) : null;
-  } catch {
+export const getMainProfile = async (): Promise<Profile | null> => {
+  const response = await fetch(`${API_BASE_URL}/profiles/main`, {
+    method: 'GET',
+    headers: getAuthHeaders(),
+  });
+
+  if (response.status === 404) {
     return null;
   }
+
+  return handleResponse<Profile>(response);
 };
 
 /**
  * Get profile by ID
  */
-export const getProfileById = (id: string): Profile | null => {
-  const profiles = getAllProfiles();
-  return profiles.find((p) => p.id === id) || getMainProfile();
+export const getProfileById = async (id: string): Promise<Profile | null> => {
+  const response = await fetch(`${API_BASE_URL}/profiles/${id}`, {
+    method: 'GET',
+    headers: getAuthHeaders(),
+  });
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  return handleResponse<Profile>(response);
 };
 
 /**
  * Create a new profile
  */
-export const createProfile = (data: ProfileFormData): Profile => {
-  const now = new Date().toISOString();
-  const sunSign = getZodiacSignFromDate(data.birthDate);
+export const createProfile = async (data: ProfileFormData): Promise<Profile> => {
+  const response = await fetch(`${API_BASE_URL}/profiles`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
 
-  const profile: Profile = {
-    id: generateId(),
-    type: data.type,
-    name: data.name,
-    avatarUrl: data.avatarUrl,
-    birthDate: data.birthDate,
-    birthTime: data.birthTime,
-    birthPlace: data.birthPlace,
-    sunSign,
-    traits: generateTraits(sunSign),
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  if (data.type === 'main') {
-    localStorage.setItem(MAIN_PROFILE_KEY, JSON.stringify(profile));
-  } else {
-    const profiles = getAllProfiles();
-    profiles.push(profile);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
-  }
-
-  return profile;
+  return handleResponse<Profile>(response);
 };
 
 /**
  * Update a profile
  */
-export const updateProfile = (id: string, data: Partial<ProfileFormData>): Profile | null => {
-  const mainProfile = getMainProfile();
+export const updateProfile = async (id: string, data: Partial<ProfileFormData>): Promise<Profile> => {
+  const response = await fetch(`${API_BASE_URL}/profiles/${id}`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
 
-  if (mainProfile && mainProfile.id === id) {
-    const updated: Profile = {
-      ...mainProfile,
-      ...data,
-      sunSign: data.birthDate ? getZodiacSignFromDate(data.birthDate) : mainProfile.sunSign,
-      traits: data.birthDate ? generateTraits(getZodiacSignFromDate(data.birthDate)) : mainProfile.traits,
-      updatedAt: new Date().toISOString(),
-    };
-    localStorage.setItem(MAIN_PROFILE_KEY, JSON.stringify(updated));
-    return updated;
-  }
-
-  const profiles = getAllProfiles();
-  const index = profiles.findIndex((p) => p.id === id);
-
-  if (index === -1) return null;
-
-  const updated: Profile = {
-    ...profiles[index],
-    ...data,
-    sunSign: data.birthDate ? getZodiacSignFromDate(data.birthDate) : profiles[index].sunSign,
-    traits: data.birthDate
-      ? generateTraits(getZodiacSignFromDate(data.birthDate))
-      : profiles[index].traits,
-    updatedAt: new Date().toISOString(),
-  };
-
-  profiles[index] = updated;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
-
-  return updated;
+  return handleResponse<Profile>(response);
 };
 
 /**
  * Delete a profile (cannot delete main profile)
  */
-export const deleteProfile = (id: string): boolean => {
-  const mainProfile = getMainProfile();
-  if (mainProfile && mainProfile.id === id) {
-    return false; // Cannot delete main profile
+export const deleteProfile = async (id: string): Promise<boolean> => {
+  const response = await fetch(`${API_BASE_URL}/profiles/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({
+      message: 'Erro ao excluir perfil',
+    }));
+    throw new Error(error.message);
   }
 
-  const profiles = getAllProfiles();
-  const filtered = profiles.filter((p) => p.id !== id);
-
-  if (filtered.length === profiles.length) return false;
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
   return true;
 };
 
 /**
  * Get profiles by type
  */
-export const getProfilesByType = (type: ProfileType): Profile[] => {
-  if (type === 'main') {
-    const main = getMainProfile();
-    return main ? [main] : [];
-  }
-  return getAllProfiles().filter((p) => p.type === type);
+export const getProfilesByType = async (type: ProfileType): Promise<Profile[]> => {
+  const response = await fetch(`${API_BASE_URL}/profiles/type/${type}`, {
+    method: 'GET',
+    headers: getAuthHeaders(),
+  });
+
+  return handleResponse<Profile[]>(response);
 };
 
 /**
- * Search celebrities (mock data for now)
+ * Search celebrities
  */
-export const searchCelebrities = (query: string): Profile[] => {
-  const celebrities: Profile[] = [
-    {
-      id: 'celeb_1',
-      type: 'celebrity',
-      name: 'Anitta',
-      birthDate: '1993-03-30',
-      sunSign: 'aries',
-      traits: ['Ousada', 'Determinada', 'Carismatica'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'celeb_2',
-      type: 'celebrity',
-      name: 'Neymar Jr',
-      birthDate: '1992-02-05',
-      sunSign: 'aquarius',
-      traits: ['Criativo', 'Ousado', 'Talentoso'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'celeb_3',
-      type: 'celebrity',
-      name: 'Gisele Bundchen',
-      birthDate: '1980-07-20',
-      sunSign: 'cancer',
-      traits: ['Sensivel', 'Determinada', 'Elegante'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'celeb_4',
-      type: 'celebrity',
-      name: 'Xuxa',
-      birthDate: '1963-03-27',
-      sunSign: 'aries',
-      traits: ['Energetica', 'Carismatica', 'Generosa'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'celeb_5',
-      type: 'celebrity',
-      name: 'Ivete Sangalo',
-      birthDate: '1972-05-27',
-      sunSign: 'gemini',
-      traits: ['Comunicativa', 'Alegre', 'Versatil'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ];
+export const searchCelebrities = async (query?: string): Promise<Profile[]> => {
+  const url = query
+    ? `${API_BASE_URL}/profiles/celebrities/search?q=${encodeURIComponent(query)}`
+    : `${API_BASE_URL}/profiles/celebrities/search`;
 
-  if (!query) return celebrities;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: getAuthHeaders(),
+  });
 
-  const lowerQuery = query.toLowerCase();
-  return celebrities.filter((c) => c.name.toLowerCase().includes(lowerQuery));
+  return handleResponse<Profile[]>(response);
 };
 
 export default {

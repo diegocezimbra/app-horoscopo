@@ -137,91 +137,42 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
  * Login user with email and password
  */
 export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(credentials),
-    });
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  });
 
-    const data = await handleResponse<AuthResponse>(response);
+  const data = await handleResponse<AuthResponse>(response);
 
-    // Store tokens and user
-    setTokens(data.token, data.refreshToken);
-    setStoredUser(data.user);
+  // Store tokens and user
+  setTokens(data.token, data.refreshToken);
+  setStoredUser(data.user);
 
-    return data;
-  } catch (error) {
-    // For development: simulate successful login
-    if (import.meta.env.DEV) {
-      console.log('Using mock login');
-      const mockUser: User = {
-        id: 'user_' + Date.now(),
-        email: credentials.email,
-        name: credentials.email.split('@')[0],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      const mockToken = 'mock_token_' + Date.now();
-
-      setTokens(mockToken);
-      setStoredUser(mockUser);
-
-      return {
-        user: mockUser,
-        token: mockToken,
-      };
-    }
-    throw error;
-  }
+  return data;
 };
 
 /**
  * Register new user
  */
 export const register = async (data: RegisterData): Promise<AuthResponse> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
 
-    const result = await handleResponse<AuthResponse>(response);
+  const result = await handleResponse<AuthResponse>(response);
 
-    // Store tokens and user
-    setTokens(result.token, result.refreshToken);
-    setStoredUser(result.user);
+  // Store tokens and user
+  setTokens(result.token, result.refreshToken);
+  setStoredUser(result.user);
 
-    return result;
-  } catch (error) {
-    // For development: simulate successful registration
-    if (import.meta.env.DEV) {
-      console.log('Using mock registration');
-      const mockUser: User = {
-        id: 'user_' + Date.now(),
-        email: data.email,
-        name: data.name,
-        birthDate: data.birthDate,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      const mockToken = 'mock_token_' + Date.now();
-
-      setTokens(mockToken);
-      setStoredUser(mockUser);
-
-      return {
-        user: mockUser,
-        token: mockToken,
-      };
-    }
-    throw error;
-  }
+  return result;
 };
 
 /**
@@ -235,35 +186,16 @@ export const logout = (): void => {
  * Update user profile (calls /users/profile endpoint)
  */
 export const updateProfile = async (data: UpdateProfileData): Promise<User> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/users/profile`, {
-      method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+  const response = await fetch(`${API_BASE_URL}/users/profile`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
 
-    const user = await handleResponse<User>(response);
-    setStoredUser(user);
+  const user = await handleResponse<User>(response);
+  setStoredUser(user);
 
-    return user;
-  } catch (error) {
-    // For development: simulate profile update
-    if (import.meta.env.DEV) {
-      console.log('Using mock profile update');
-      const currentUser = getStoredUser();
-      if (!currentUser) throw new Error('No user logged in');
-
-      const updatedUser: User = {
-        ...currentUser,
-        ...data,
-        updatedAt: new Date().toISOString(),
-      };
-
-      setStoredUser(updatedUser);
-      return updatedUser;
-    }
-    throw error;
-  }
+  return user;
 };
 
 /**
@@ -325,11 +257,9 @@ export const verifyToken = async (): Promise<User | null> => {
     setStoredUser(user);
     return user;
   } catch {
-    // For development: return stored user if available
-    if (import.meta.env.DEV) {
-      return getStoredUser();
-    }
-    return null;
+    // Network error, try to refresh session
+    const refreshResult = await refreshSession();
+    return refreshResult?.user || null;
   }
 };
 

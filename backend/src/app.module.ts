@@ -15,6 +15,10 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { BiorhythmModule } from './biorhythm/biorhythm.module';
 import { LunarModule } from './lunar/lunar.module';
 import { TarotModule } from './tarot/tarot.module';
+import { ProfilesModule } from './profiles/profiles.module';
+import { GamificationModule } from './gamification/gamification.module';
+import { NumerologyModule } from './numerology/numerology.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 /**
  * Main application module for the Horoscope API
@@ -59,6 +63,10 @@ import { TarotModule } from './tarot/tarot.module';
     BiorhythmModule,
     LunarModule,
     TarotModule,
+    ProfilesModule,
+    GamificationModule,
+    NumerologyModule,
+    DashboardModule,
 
     // Utility modules
     HealthModule,
