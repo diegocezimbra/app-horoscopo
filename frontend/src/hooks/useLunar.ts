@@ -1,16 +1,19 @@
 /**
  * useLunar Hook
- * Manages lunar data and calendar state
+ * Manages lunar data and calendar state via backend API
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  getCurrentMoon,
-  getLunarCalendar,
-  getUpcomingEvents,
-  CurrentMoonData,
+  getCurrentPhase,
+  getMonthlyCalendar,
+  getNextFullMoon,
+  getNextNewMoon,
   LunarDayInfo,
   LunarEvent,
+  CurrentMoonData,
+  convertToLunarDayInfo,
+  convertToCurrentMoonData,
 } from '../services/lunar.service';
 
 export interface LunarState {
@@ -40,24 +43,56 @@ export const useLunar = (): UseLunarReturn => {
     calendar: [],
     upcomingEvents: [],
     selectedDay: null,
-    currentMonth: today.getMonth(),
+    currentMonth: today.getMonth() + 1, // API uses 1-12
     currentYear: today.getFullYear(),
     isLoading: true,
     error: null,
   });
 
-  const loadData = useCallback(() => {
+  const loadData = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const currentMoon = getCurrentMoon();
-      const calendar = getLunarCalendar(state.currentYear, state.currentMonth);
-      const upcomingEvents = getUpcomingEvents();
+      const [currentMoonData, calendarData, nextFull, nextNew] = await Promise.all([
+        getCurrentPhase(),
+        getMonthlyCalendar(state.currentMonth, state.currentYear),
+        getNextFullMoon(),
+        getNextNewMoon(),
+      ]);
+
+      const upcomingEvents: LunarEvent[] = [
+        {
+          id: 'next-full-moon',
+          type: 'full-moon' as const,
+          name: 'Lua Cheia',
+          emoji: '\uD83C\uDF15',
+          date: new Date(nextFull.date),
+          daysUntil: nextFull.daysUntil,
+          whatToDo: [
+            'Celebrar conquistas',
+            'Rituais de agradecimento',
+            'Carregar cristais na luz da lua',
+          ],
+        },
+        {
+          id: 'next-new-moon',
+          type: 'new-moon' as const,
+          name: 'Lua Nova',
+          emoji: '\uD83C\uDF11',
+          date: new Date(nextNew.date),
+          daysUntil: nextNew.daysUntil,
+          whatToDo: [
+            'Definir novas intencoes',
+            'Comecar novos projetos',
+            'Meditacao e introspeccao',
+          ],
+        },
+      ].sort((a, b) => a.daysUntil - b.daysUntil);
 
       setState((prev) => ({
         ...prev,
-        currentMoon,
-        calendar,
+        currentMoon: convertToCurrentMoonData(currentMoonData),
+        calendar: calendarData.days.map(convertToLunarDayInfo),
         upcomingEvents,
         isLoading: false,
       }));
@@ -65,7 +100,7 @@ export const useLunar = (): UseLunarReturn => {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: 'Erro ao carregar dados lunares',
+        error: err instanceof Error ? err.message : 'Erro ao carregar dados lunares',
       }));
     }
   }, [state.currentMonth, state.currentYear]);
@@ -83,8 +118,8 @@ export const useLunar = (): UseLunarReturn => {
       let newMonth = prev.currentMonth + 1;
       let newYear = prev.currentYear;
 
-      if (newMonth > 11) {
-        newMonth = 0;
+      if (newMonth > 12) {
+        newMonth = 1;
         newYear += 1;
       }
 
@@ -102,8 +137,8 @@ export const useLunar = (): UseLunarReturn => {
       let newMonth = prev.currentMonth - 1;
       let newYear = prev.currentYear;
 
-      if (newMonth < 0) {
-        newMonth = 11;
+      if (newMonth < 1) {
+        newMonth = 12;
         newYear -= 1;
       }
 
@@ -120,7 +155,7 @@ export const useLunar = (): UseLunarReturn => {
     const today = new Date();
     setState((prev) => ({
       ...prev,
-      currentMonth: today.getMonth(),
+      currentMonth: today.getMonth() + 1,
       currentYear: today.getFullYear(),
       selectedDay: null,
     }));

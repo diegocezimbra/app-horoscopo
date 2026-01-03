@@ -20,13 +20,13 @@ import {
 } from '../services/profiles.service';
 
 export interface UseProfilesReturn extends ProfilesState {
-  getAllProfilesList: () => Profile[];
-  getProfile: (id: string) => Profile | null;
-  addProfile: (data: ProfileFormData) => Profile;
-  editProfile: (id: string, data: Partial<ProfileFormData>) => Profile | null;
-  removeProfile: (id: string) => boolean;
-  searchCelebs: (query: string) => Profile[];
-  refreshProfiles: () => void;
+  getAllProfilesList: () => Promise<Profile[]>;
+  getProfile: (id: string) => Promise<Profile | null>;
+  addProfile: (data: ProfileFormData) => Promise<Profile>;
+  editProfile: (id: string, data: Partial<ProfileFormData>) => Promise<Profile | null>;
+  removeProfile: (id: string) => Promise<boolean>;
+  searchCelebs: (query: string) => Promise<Profile[]>;
+  refreshProfiles: () => Promise<void>;
 }
 
 export const useProfiles = (): UseProfilesReturn => {
@@ -37,11 +37,13 @@ export const useProfiles = (): UseProfilesReturn => {
     error: null,
   });
 
-  const loadProfiles = useCallback(() => {
+  const loadProfiles = useCallback(async () => {
     try {
       setState((prev) => ({ ...prev, isLoading: true, error: null }));
-      const profiles = getAllProfiles();
-      const mainProfile = getMainProfile();
+      const [profiles, mainProfile] = await Promise.all([
+        getAllProfiles(),
+        getMainProfile(),
+      ]);
       setState({
         profiles,
         mainProfile,
@@ -52,7 +54,7 @@ export const useProfiles = (): UseProfilesReturn => {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: 'Erro ao carregar perfis',
+        error: err instanceof Error ? err.message : 'Erro ao carregar perfis',
       }));
     }
   }, []);
@@ -61,50 +63,58 @@ export const useProfiles = (): UseProfilesReturn => {
     loadProfiles();
   }, [loadProfiles]);
 
-  const getAllProfilesList = useCallback((): Profile[] => {
-    const main = getMainProfile();
-    const others = getAllProfiles();
+  const getAllProfilesList = useCallback(async (): Promise<Profile[]> => {
+    const [main, others] = await Promise.all([
+      getMainProfile(),
+      getAllProfiles(),
+    ]);
     return main ? [main, ...others] : others;
   }, []);
 
-  const getProfile = useCallback((id: string): Profile | null => {
+  const getProfile = useCallback(async (id: string): Promise<Profile | null> => {
     return getProfileById(id);
   }, []);
 
-  const addProfile = useCallback((data: ProfileFormData): Profile => {
-    const profile = createProfile(data);
-    loadProfiles();
+  const addProfile = useCallback(async (data: ProfileFormData): Promise<Profile> => {
+    const profile = await createProfile(data);
+    await loadProfiles();
     return profile;
   }, [loadProfiles]);
 
   const editProfile = useCallback(
-    (id: string, data: Partial<ProfileFormData>): Profile | null => {
-      const profile = updateProfile(id, data);
-      if (profile) {
-        loadProfiles();
+    async (id: string, data: Partial<ProfileFormData>): Promise<Profile | null> => {
+      try {
+        const profile = await updateProfile(id, data);
+        await loadProfiles();
+        return profile;
+      } catch {
+        return null;
       }
-      return profile;
     },
     [loadProfiles]
   );
 
   const removeProfile = useCallback(
-    (id: string): boolean => {
-      const success = deleteProfile(id);
-      if (success) {
-        loadProfiles();
+    async (id: string): Promise<boolean> => {
+      try {
+        const success = await deleteProfile(id);
+        if (success) {
+          await loadProfiles();
+        }
+        return success;
+      } catch {
+        return false;
       }
-      return success;
     },
     [loadProfiles]
   );
 
-  const searchCelebs = useCallback((query: string): Profile[] => {
+  const searchCelebs = useCallback(async (query: string): Promise<Profile[]> => {
     return searchCelebrities(query);
   }, []);
 
-  const refreshProfiles = useCallback(() => {
-    loadProfiles();
+  const refreshProfiles = useCallback(async () => {
+    await loadProfiles();
   }, [loadProfiles]);
 
   return {

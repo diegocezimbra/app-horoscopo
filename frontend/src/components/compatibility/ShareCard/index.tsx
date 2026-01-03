@@ -4,11 +4,21 @@
  */
 
 import React, { useRef, useCallback } from 'react';
-import { CompatibilityResult, ZODIAC_SIGNS, ZodiacSignId } from '../../../types/profiles';
+import { ZODIAC_SIGNS, ZodiacSignId } from '../../../types/profiles';
 import './ShareCard.css';
 
+// Flexible result type that works with both page and hook results
+export interface ShareableResult {
+  sign1: ZodiacSignId;
+  sign2: ZodiacSignId;
+  name1: string;
+  name2: string;
+  overallScore: number;
+  categories: { id: string; icon: string; score: number }[];
+}
+
 export interface ShareCardProps {
-  result: CompatibilityResult;
+  result: ShareableResult;
   onShare?: () => void;
   onDownload?: () => void;
 }
@@ -20,20 +30,9 @@ export const ShareCard: React.FC<ShareCardProps> = ({
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const getName = (profile: typeof result.profile1): string => {
-    if ('name' in profile) return profile.name;
-    return 'Perfil';
-  };
-
-  const getSign = (profile: typeof result.profile1): ZodiacSignId => {
-    if ('sunSign' in profile) return profile.sunSign;
-    return profile.sign;
-  };
-
-  const name1 = getName(result.profile1);
-  const name2 = getName(result.profile2);
-  const sign1 = ZODIAC_SIGNS[getSign(result.profile1)];
-  const sign2 = ZODIAC_SIGNS[getSign(result.profile2)];
+  const { name1, name2 } = result;
+  const sign1 = ZODIAC_SIGNS[result.sign1];
+  const sign2 = ZODIAC_SIGNS[result.sign2];
 
   const getScoreEmoji = (score: number): string => {
     if (score >= 90) return '\uD83D\uDC96';

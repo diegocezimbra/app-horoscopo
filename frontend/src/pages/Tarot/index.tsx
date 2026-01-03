@@ -9,10 +9,28 @@ import { useTarot } from '../../hooks/useTarot';
 import { DailyCard } from './DailyCard';
 import { DrawCards } from './DrawCards';
 import { CardDetail } from './CardDetail';
-import { ReadingType, TarotCard } from '../../services/tarot.service';
+import { ReadingType, TarotCard, TarotSuit } from '../../services/tarot.service';
 import './Tarot.css';
 
 type TabType = 'daily' | 'draw' | 'history';
+
+// Generate gradient colors based on suit
+const getSuitGradient = (suit: TarotSuit = 'major'): [string, string] => {
+  switch (suit) {
+    case 'major':
+      return ['#7C3AED', '#4C1D95'];
+    case 'wands':
+      return ['#DC2626', '#991B1B'];
+    case 'cups':
+      return ['#2563EB', '#1D4ED8'];
+    case 'swords':
+      return ['#64748B', '#475569'];
+    case 'pentacles':
+      return ['#16A34A', '#166534'];
+    default:
+      return ['#7C3AED', '#4C1D95'];
+  }
+};
 
 export const TarotHome: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +51,7 @@ export const TarotHome: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<TabType>('daily');
   const [selectedCard, setSelectedCard] = useState<TarotCard | null>(null);
+  const [selectedIsReversed, setSelectedIsReversed] = useState(false);
   const [showCardDetail, setShowCardDetail] = useState(false);
 
   const handleStartReading = (type: ReadingType) => {
@@ -44,14 +63,16 @@ export const TarotHome: React.FC = () => {
     }, 2000);
   };
 
-  const handleCardClick = (card: TarotCard) => {
+  const handleCardClick = (card: TarotCard, isReversed = false) => {
     setSelectedCard(card);
+    setSelectedIsReversed(isReversed);
     setShowCardDetail(true);
   };
 
   const handleCloseCardDetail = () => {
     setShowCardDetail(false);
     setSelectedCard(null);
+    setSelectedIsReversed(false);
   };
 
   const formatDate = (dateString: string) => {
@@ -137,7 +158,7 @@ export const TarotHome: React.FC = () => {
         {activeTab === 'daily' && dailyCard && (
           <DailyCard
             dailyCard={dailyCard}
-            onCardClick={() => handleCardClick(dailyCard.card)}
+            onCardClick={() => handleCardClick(dailyCard.card, dailyCard.isReversed)}
           />
         )}
 
@@ -176,41 +197,44 @@ export const TarotHome: React.FC = () => {
             ) : (
               <div className="tarot-history__list">
                 {recentReadings.map((reading) => {
-                  const info = getReadingTypeInfo(reading.type);
+                  const spreadType = reading.spreadType as ReadingType;
+                  const info = getReadingTypeInfo(spreadType);
                   return (
-                    <div key={reading.id} className="tarot-history__item">
+                    <div key={reading.timestamp} className="tarot-history__item">
                       <div className="tarot-history__item-header">
-                        <span className="tarot-history__item-type">{info.name}</span>
+                        <span className="tarot-history__item-type">{reading.spreadName || info.name}</span>
                         <span className="tarot-history__item-date">
-                          {formatDate(reading.createdAt)}
+                          {formatDate(reading.timestamp)}
                         </span>
                       </div>
                       <div className="tarot-history__item-cards">
-                        {reading.positions.slice(0, 3).map((pos) => (
-                          <div
-                            key={pos.id}
-                            className="tarot-history__mini-card"
-                            style={{
-                              background: pos.card
-                                ? `linear-gradient(135deg, ${pos.card.imageGradient[0]}, ${pos.card.imageGradient[1]})`
-                                : undefined,
-                            }}
-                          >
-                            {pos.card?.number !== null && (
-                              <span className="tarot-history__mini-number">
-                                {pos.card?.number}
-                              </span>
-                            )}
-                          </div>
-                        ))}
-                        {reading.positions.length > 3 && (
+                        {reading.cards.slice(0, 3).map((drawnCard) => {
+                          const suit = drawnCard.card.suit || 'major';
+                          const gradient = getSuitGradient(suit);
+                          return (
+                            <div
+                              key={drawnCard.position}
+                              className="tarot-history__mini-card"
+                              style={{
+                                background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
+                              }}
+                            >
+                              {drawnCard.card.number !== null && (
+                                <span className="tarot-history__mini-number">
+                                  {drawnCard.card.number}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                        {reading.cards.length > 3 && (
                           <span className="tarot-history__more">
-                            +{reading.positions.length - 3}
+                            +{reading.cards.length - 3}
                           </span>
                         )}
                       </div>
                       <p className="tarot-history__item-interpretation">
-                        {reading.interpretation.substring(0, 100)}...
+                        {reading.overallGuidance.substring(0, 100)}...
                       </p>
                     </div>
                   );
@@ -223,7 +247,11 @@ export const TarotHome: React.FC = () => {
 
       {/* Card Detail Modal */}
       {showCardDetail && selectedCard && (
-        <CardDetail card={selectedCard} onClose={handleCloseCardDetail} />
+        <CardDetail
+          card={selectedCard}
+          isReversed={selectedIsReversed}
+          onClose={handleCloseCardDetail}
+        />
       )}
     </div>
   );

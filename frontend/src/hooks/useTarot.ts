@@ -1,37 +1,81 @@
 /**
  * useTarot Hook
- * Manages tarot readings and daily card state
+ * Manages tarot readings and daily card state via backend API
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  TarotState,
   TarotReading,
+  DailyCard,
   ReadingType,
   tarotService,
 } from '../services/tarot.service';
 
-export interface UseTarotReturn extends TarotState {
-  // Daily card actions
-  loadDailyCard: () => void;
+const READINGS_HISTORY_KEY = 'horoscope_tarot_readings';
+const MAX_READINGS = 10;
 
-  // Reading actions
-  startReading: (type: ReadingType) => TarotReading;
-  revealCard: (positionId: string) => void;
+export interface TarotState {
+  dailyCard: DailyCard | null;
+  currentReading: TarotReading | null;
+  recentReadings: TarotReading[];
+  isLoading: boolean;
+  isShuffling: boolean;
+  error: string | null;
+}
+
+export interface UseTarotReturn extends TarotState {
+  loadDailyCard: () => Promise<void>;
+  startReading: (type: ReadingType, question?: string) => Promise<TarotReading>;
+  revealCard: (position: number) => void;
   revealAllCards: () => void;
   clearCurrentReading: () => void;
-
-  // Shuffle animation
   startShuffle: () => void;
   stopShuffle: () => void;
-
-  // History actions
   loadRecentReadings: () => void;
   clearHistory: () => void;
-
-  // Utility
   getReadingTypeInfo: (type: ReadingType) => { name: string; description: string; cardCount: number };
 }
+
+const getStoredReadings = (): TarotReading[] => {
+  try {
+    const stored = localStorage.getItem(READINGS_HISTORY_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveReading = (reading: TarotReading): void => {
+  try {
+    const readings = getStoredReadings();
+    const updated = [reading, ...readings].slice(0, MAX_READINGS);
+    localStorage.setItem(READINGS_HISTORY_KEY, JSON.stringify(updated));
+  } catch {
+    // Ignore storage errors
+  }
+};
+
+const clearStoredReadings = (): void => {
+  localStorage.removeItem(READINGS_HISTORY_KEY);
+};
+
+const READING_TYPE_INFO: Record<ReadingType, { name: string; description: string; cardCount: number }> = {
+  single: {
+    name: 'Carta Unica',
+    description: 'Uma carta para uma resposta direta',
+    cardCount: 1,
+  },
+  'past-present-future': {
+    name: 'Passado, Presente e Futuro',
+    description: 'Tres cartas para ver sua jornada',
+    cardCount: 3,
+  },
+  'celtic-cross': {
+    name: 'Cruz Celta',
+    description: 'Leitura completa e detalhada',
+    cardCount: 10,
+  },
+};
 
 export const useTarot = (): UseTarotReturn => {
   const [state, setState] = useState<TarotState>({
@@ -43,10 +87,10 @@ export const useTarot = (): UseTarotReturn => {
     error: null,
   });
 
-  // Load initial data
-  const loadDailyCard = useCallback(() => {
+  const loadDailyCard = useCallback(async () => {
     try {
-      const dailyCard = tarotService.getOrGenerateDailyCard();
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
+      const dailyCard = await tarotService.getDailyCard();
       setState((prev) => ({
         ...prev,
         dailyCard,
@@ -57,24 +101,21 @@ export const useTarot = (): UseTarotReturn => {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: 'Erro ao carregar carta do dia',
+        error: err instanceof Error ? err.message : 'Erro ao carregar carta do dia',
       }));
     }
   }, []);
 
   const loadRecentReadings = useCallback(() => {
     try {
-      const recentReadings = tarotService.getRecentReadings();
+      const recentReadings = getStoredReadings();
       setState((prev) => ({
         ...prev,
         recentReadings,
-        isLoading: false,
-        error: null,
       }));
     } catch (err) {
       setState((prev) => ({
         ...prev,
-        isLoading: false,
         error: 'Erro ao carregar historico',
       }));
     }
@@ -85,16 +126,24 @@ export const useTarot = (): UseTarotReturn => {
     loadRecentReadings();
   }, [loadDailyCard, loadRecentReadings]);
 
-  // Start a new reading
-  const startReading = useCallback((type: ReadingType): TarotReading => {
-    setState((prev) => ({ ...prev, isLoading: true, error: null }));
+  const startReading = useCallback(async (type: ReadingType, question?: string): Promise<TarotReading> => {
+    setState((prev) => ({ ...prev, isLoading: true, error: null, isShuffling: false }));
 
     try {
-      const reading = tarotService.createReading(type);
+      const cardCount = READING_TYPE_INFO[type].cardCount as 1 | 3 | 10;
+      const reading = await tarotService.drawCards({
+        numberOfCards: cardCount,
+        spreadType: type,
+        includeReversed: true,
+        question,
+      });
+
+      saveReading(reading);
+
       setState((prev) => ({
         ...prev,
         currentReading: reading,
-        recentReadings: tarotService.getRecentReadings(),
+        recentReadings: getStoredReadings(),
         isLoading: false,
         isShuffling: false,
         error: null,
@@ -105,38 +154,36 @@ export const useTarot = (): UseTarotReturn => {
         ...prev,
         isLoading: false,
         isShuffling: false,
-        error: 'Erro ao criar tiragem',
+        error: err instanceof Error ? err.message : 'Erro ao criar tiragem',
       }));
       throw err;
     }
   }, []);
 
-  // Reveal a single card
-  const revealCard = useCallback((positionId: string) => {
+  const revealCard = useCallback((position: number) => {
     setState((prev) => {
       if (!prev.currentReading) return prev;
 
-      const updatedPositions = prev.currentReading.positions.map((pos) =>
-        pos.id === positionId ? { ...pos, isRevealed: true } : pos
+      const updatedCards = prev.currentReading.cards.map((card) =>
+        card.position === position ? { ...card, isRevealed: true } : card
       );
 
       return {
         ...prev,
         currentReading: {
           ...prev.currentReading,
-          positions: updatedPositions,
+          cards: updatedCards,
         },
       };
     });
   }, []);
 
-  // Reveal all cards at once
   const revealAllCards = useCallback(() => {
     setState((prev) => {
       if (!prev.currentReading) return prev;
 
-      const updatedPositions = prev.currentReading.positions.map((pos) => ({
-        ...pos,
+      const updatedCards = prev.currentReading.cards.map((card) => ({
+        ...card,
         isRevealed: true,
       }));
 
@@ -144,13 +191,12 @@ export const useTarot = (): UseTarotReturn => {
         ...prev,
         currentReading: {
           ...prev.currentReading,
-          positions: updatedPositions,
+          cards: updatedCards,
         },
       };
     });
   }, []);
 
-  // Clear current reading
   const clearCurrentReading = useCallback(() => {
     setState((prev) => ({
       ...prev,
@@ -158,7 +204,6 @@ export const useTarot = (): UseTarotReturn => {
     }));
   }, []);
 
-  // Shuffle animation controls
   const startShuffle = useCallback(() => {
     setState((prev) => ({
       ...prev,
@@ -173,18 +218,16 @@ export const useTarot = (): UseTarotReturn => {
     }));
   }, []);
 
-  // Clear history
   const clearHistory = useCallback(() => {
-    tarotService.clearReadingsHistory();
+    clearStoredReadings();
     setState((prev) => ({
       ...prev,
       recentReadings: [],
     }));
   }, []);
 
-  // Get reading type info
   const getReadingTypeInfo = useCallback(
-    (type: ReadingType) => tarotService.getReadingTypeInfo(type),
+    (type: ReadingType) => READING_TYPE_INFO[type],
     []
   );
 

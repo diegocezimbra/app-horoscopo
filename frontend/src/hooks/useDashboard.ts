@@ -56,7 +56,7 @@ function setCachedData(data: DashboardData): void {
   }
 }
 
-export function useDashboard(userId: string = 'default-user') {
+export function useDashboard() {
   const [state, setState] = useState<DashboardState>({
     data: null,
     isLoading: true,
@@ -85,10 +85,10 @@ export function useDashboard(userId: string = 'default-user') {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const data = await dashboardApi.getDailyData(userId);
+      const data = await dashboardApi.getDailyData();
 
       // Record visit for streak
-      const streakInfo = await dashboardApi.recordVisit(userId);
+      const streakInfo = await dashboardApi.recordVisit();
       data.streak = streakInfo;
 
       setCachedData(data);
@@ -106,12 +106,12 @@ export function useDashboard(userId: string = 'default-user') {
         error: error instanceof Error ? error.message : 'Erro ao carregar dados',
       }));
     }
-  }, [userId]);
+  }, []);
 
   // Regenerate lucky numbers
   const regenerateLuckyNumbers = useCallback(async (): Promise<LuckyNumbersData | null> => {
     try {
-      const luckyNumbers = await dashboardApi.regenerateLuckyNumbers(userId);
+      const luckyNumbers = await dashboardApi.regenerateLuckyNumbers();
 
       setState(prev => {
         if (!prev.data) return prev;
@@ -134,7 +134,7 @@ export function useDashboard(userId: string = 'default-user') {
       console.error('Error regenerating lucky numbers:', error);
       return null;
     }
-  }, [userId]);
+  }, []);
 
   // Toggle horoscope expanded state
   const toggleHoroscope = useCallback(() => {

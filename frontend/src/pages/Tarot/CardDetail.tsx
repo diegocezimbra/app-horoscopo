@@ -3,22 +3,68 @@
  * Modal showing full tarot card details
  */
 
-import React from 'react';
-import { TarotCard, tarotService } from '../../services/tarot.service';
+import React, { useState, useEffect } from 'react';
+import { TarotCard, TarotSuit, SuitInfo, tarotService } from '../../services/tarot.service';
 
 interface CardDetailProps {
   card: TarotCard;
+  isReversed?: boolean;
   onClose: () => void;
 }
 
-export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
-  const suitInfo = tarotService.getSuitInfo(card.suit);
+// Fallback suit info for when API is unavailable
+const FALLBACK_SUIT_INFO: Record<TarotSuit, { icon: string; name: string }> = {
+  major: { icon: '★', name: 'Arcanos Maiores' },
+  wands: { icon: '🪄', name: 'Paus' },
+  cups: { icon: '🏆', name: 'Copas' },
+  swords: { icon: '⚔️', name: 'Espadas' },
+  pentacles: { icon: '⭐', name: 'Ouros' },
+};
+
+// Generate gradient colors based on suit
+const getSuitGradient = (suit: TarotSuit = 'major'): [string, string] => {
+  switch (suit) {
+    case 'major':
+      return ['#7C3AED', '#4C1D95'];
+    case 'wands':
+      return ['#DC2626', '#991B1B'];
+    case 'cups':
+      return ['#2563EB', '#1D4ED8'];
+    case 'swords':
+      return ['#64748B', '#475569'];
+    case 'pentacles':
+      return ['#16A34A', '#166534'];
+    default:
+      return ['#7C3AED', '#4C1D95'];
+  }
+};
+
+export const CardDetail: React.FC<CardDetailProps> = ({ card, isReversed = false, onClose }) => {
+  const [suitInfo, setSuitInfo] = useState<SuitInfo | null>(null);
+  const suit = card.suit || 'major';
+  const fallbackInfo = FALLBACK_SUIT_INFO[suit];
+  const gradient = getSuitGradient(suit);
+
+  useEffect(() => {
+    const loadSuitInfo = async () => {
+      try {
+        const info = await tarotService.getSuitInfo(suit);
+        setSuitInfo(info);
+      } catch {
+        // Use fallback
+      }
+    };
+    loadSuitInfo();
+  }, [suit]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+
+  const suitIcon = suitInfo?.name ? '✨' : fallbackInfo.icon;
+  const suitName = suitInfo?.name || fallbackInfo.name;
 
   return (
     <div className="card-detail" onClick={handleBackdropClick}>
@@ -31,9 +77,9 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
         {/* Card Visual */}
         <div className="card-detail__card-container">
           <div
-            className={`card-detail__card ${card.isReversed ? 'card-detail__card--reversed' : ''}`}
+            className={`card-detail__card ${isReversed ? 'card-detail__card--reversed' : ''}`}
             style={{
-              background: `linear-gradient(135deg, ${card.imageGradient[0]}, ${card.imageGradient[1]})`,
+              background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
             }}
           >
             {/* Glow Effect */}
@@ -46,12 +92,12 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
 
             {/* Suit Badge */}
             <div className="card-detail__card-suit">
-              <span>{suitInfo.icon}</span>
+              <span>{suitIcon}</span>
             </div>
 
             {/* Symbol */}
             <div className="card-detail__card-symbol">
-              {card.suit === 'major' ? '★' : suitInfo.icon}
+              {suit === 'major' ? '★' : suitIcon}
             </div>
 
             {/* Name */}
@@ -61,7 +107,7 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
             <div className="card-detail__card-name-en">{card.nameEn}</div>
 
             {/* Reversed Indicator */}
-            {card.isReversed && (
+            {isReversed && (
               <div className="card-detail__card-reversed-badge">
                 ↓ Invertida
               </div>
@@ -89,7 +135,7 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
           {/* Title */}
           <h2 className="card-detail__title">{card.name}</h2>
           <p className="card-detail__subtitle">
-            {suitInfo.name}
+            {suitName}
             {card.number !== null && ` - ${card.number}`}
           </p>
 
@@ -106,10 +152,10 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
           <div className="card-detail__section">
             <h3 className="card-detail__section-title">
               <span>✨</span>
-              {card.isReversed ? 'Significado (Invertida)' : 'Significado'}
+              {isReversed ? 'Significado (Invertida)' : 'Significado'}
             </h3>
             <p className="card-detail__section-text">
-              {card.isReversed ? card.meaningReversed : card.meaningUpright}
+              {isReversed ? card.meaningReversed : card.meaningUpright}
             </p>
           </div>
 
@@ -137,12 +183,12 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
                 <span className="card-detail__area-icon">💼</span>
                 <h4>Trabalho</h4>
               </div>
-              <p>{card.workAdvice}</p>
+              <p>{card.careerAdvice}</p>
             </div>
           </div>
 
           {/* Reversed Meaning (if upright, show what reversed would mean) */}
-          {!card.isReversed && (
+          {!isReversed && (
             <div className="card-detail__section card-detail__section--reversed">
               <h3 className="card-detail__section-title">
                 <span>↓</span>
@@ -153,7 +199,7 @@ export const CardDetail: React.FC<CardDetailProps> = ({ card, onClose }) => {
           )}
 
           {/* Upright Meaning (if reversed, show what upright would mean) */}
-          {card.isReversed && (
+          {isReversed && (
             <div className="card-detail__section card-detail__section--upright">
               <h3 className="card-detail__section-title">
                 <span>↑</span>

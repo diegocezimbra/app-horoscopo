@@ -4,13 +4,19 @@
  */
 
 import React, { useMemo } from 'react';
-import { DailyBiorhythm, formatBiorhythmDate } from '../../services/biorhythm.service';
+import { BiorhythmDay, formatBiorhythmDate } from '../../services/biorhythm.service';
 
 interface BioChartProps {
-  data: DailyBiorhythm[];
+  data: BiorhythmDay[];
   onDayClick?: (date: string) => void;
   selectedDate?: string | null;
 }
+
+// Helper to get cycle value by type
+const getCycleValue = (day: BiorhythmDay, type: 'physical' | 'emotional' | 'intellectual'): number => {
+  const cycle = day.cycles.find(c => c.type === type);
+  return cycle?.value ?? 0;
+};
 
 const CHART_CONFIG = {
   width: 600,
@@ -47,7 +53,7 @@ export const BioChart: React.FC<BioChartProps> = ({ data, onDayClick, selectedDa
       return data
         .map((d, i) => {
           const x = padding.left + i * xStep;
-          const y = yScale(d[key]);
+          const y = yScale(getCycleValue(d, key));
           return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
         })
         .join(' ');
@@ -72,7 +78,7 @@ export const BioChart: React.FC<BioChartProps> = ({ data, onDayClick, selectedDa
     const createSmoothPath = (key: 'physical' | 'emotional' | 'intellectual') => {
       const pts = data.map((d, i) => ({
         x: padding.left + i * xStep,
-        y: yScale(d[key]),
+        y: yScale(getCycleValue(d, key)),
       }));
 
       if (pts.length < 2) return '';
@@ -112,15 +118,20 @@ export const BioChart: React.FC<BioChartProps> = ({ data, onDayClick, selectedDa
       return padding.top + chartHeight / 2 - (value / 100) * (chartHeight / 2);
     };
 
-    return data.map((d, i) => ({
-      date: d.date,
-      x: padding.left + i * xStep,
-      physical: { y: yScale(d.physical), value: d.physical },
-      emotional: { y: yScale(d.emotional), value: d.emotional },
-      intellectual: { y: yScale(d.intellectual), value: d.intellectual },
-      isToday: d.date === today,
-      isSelected: d.date === selectedDate,
-    }));
+    return data.map((d, i) => {
+      const physicalVal = getCycleValue(d, 'physical');
+      const emotionalVal = getCycleValue(d, 'emotional');
+      const intellectualVal = getCycleValue(d, 'intellectual');
+      return {
+        date: d.date,
+        x: padding.left + i * xStep,
+        physical: { y: yScale(physicalVal), value: physicalVal },
+        emotional: { y: yScale(emotionalVal), value: emotionalVal },
+        intellectual: { y: yScale(intellectualVal), value: intellectualVal },
+        isToday: d.date === today,
+        isSelected: d.date === selectedDate,
+      };
+    });
   }, [data, chartWidth, chartHeight, padding, today, selectedDate]);
 
   // Grid lines

@@ -16,11 +16,10 @@ type SelectionMode = 'profiles' | 'signs';
 export const CompatibilityHome: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { getAllProfilesList, mainProfile } = useProfiles();
+  const { profiles, mainProfile } = useProfiles();
   const { recentComparisons, compare } = useCompatibility();
 
   const preselectedId = searchParams.get('profile1');
-  const profiles = getAllProfilesList();
 
   const [mode, setMode] = useState<SelectionMode>('profiles');
   const [selectedProfile1, setSelectedProfile1] = useState<Profile | null>(
@@ -57,25 +56,25 @@ export const CompatibilityHome: React.FC = () => {
     }
   };
 
-  const handleCompare = () => {
+  const handleCompare = async () => {
     if (mode === 'profiles' && selectedProfile1 && selectedProfile2) {
-      const result = compare(selectedProfile1, selectedProfile2);
-      navigate(`/compatibility/result/${result.id}`);
+      const result = await compare(selectedProfile1, selectedProfile2);
+      navigate(`/compatibility/result/${result.sign1}-${result.sign2}`);
     } else if (mode === 'signs' && selectedSign1 && selectedSign2) {
-      const result = compare(
+      const result = await compare(
         { name: name1 || ZODIAC_SIGNS[selectedSign1].name, sign: selectedSign1 },
         { name: name2 || ZODIAC_SIGNS[selectedSign2].name, sign: selectedSign2 }
       );
-      navigate(`/compatibility/result/${result.id}`);
+      navigate(`/compatibility/result/${result.sign1}-${result.sign2}`);
     }
   };
 
-  const handleRecentClick = (comparison: typeof recentComparisons[0]) => {
-    const result = compare(
+  const handleRecentClick = async (comparison: typeof recentComparisons[0]) => {
+    const result = await compare(
       { name: comparison.name1, sign: comparison.sign1 },
       { name: comparison.name2, sign: comparison.sign2 }
     );
-    navigate(`/compatibility/result/${result.id}`);
+    navigate(`/compatibility/result/${result.sign1}-${result.sign2}`);
   };
 
   const canCompare =

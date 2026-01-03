@@ -4,13 +4,19 @@
  */
 
 import React from 'react';
-import { DailyBiorhythm, formatBiorhythmDate } from '../../services/biorhythm.service';
+import { BiorhythmDay, formatBiorhythmDate } from '../../services/biorhythm.service';
 
 interface DayDetailProps {
   date: string;
-  data?: DailyBiorhythm;
+  data?: BiorhythmDay;
   onClose: () => void;
 }
+
+// Helper to get cycle value by type
+const getCycleValue = (day: BiorhythmDay, type: 'physical' | 'emotional' | 'intellectual'): number => {
+  const cycle = day.cycles.find(c => c.type === type);
+  return cycle?.value ?? 0;
+};
 
 interface ValueBarProps {
   label: string;
@@ -127,28 +133,28 @@ export const DayDetail: React.FC<DayDetailProps> = ({ date, data, onClose }) => 
         <div className="day-detail__values">
           <ValueBar
             label="Fisico"
-            value={data.physical}
+            value={getCycleValue(data, 'physical')}
             color="#FF6B6B"
-            description={getPhysicalDescription(data.physical)}
+            description={getPhysicalDescription(getCycleValue(data, 'physical'))}
           />
           <ValueBar
             label="Emocional"
-            value={data.emotional}
+            value={getCycleValue(data, 'emotional')}
             color="#4ECDC4"
-            description={getEmotionalDescription(data.emotional)}
+            description={getEmotionalDescription(getCycleValue(data, 'emotional'))}
           />
           <ValueBar
             label="Intelectual"
-            value={data.intellectual}
+            value={getCycleValue(data, 'intellectual')}
             color="#45B7D1"
-            description={getIntellectualDescription(data.intellectual)}
+            description={getIntellectualDescription(getCycleValue(data, 'intellectual'))}
           />
         </div>
 
         <div className="day-detail__advice">
           <h3 className="day-detail__advice-title">Conselho do Dia</h3>
           <p className="day-detail__advice-text">
-            {getOverallAdvice(data.physical, data.emotional, data.intellectual)}
+            {getOverallAdvice(getCycleValue(data, 'physical'), getCycleValue(data, 'emotional'), getCycleValue(data, 'intellectual'))}
           </p>
         </div>
 
@@ -156,15 +162,15 @@ export const DayDetail: React.FC<DayDetailProps> = ({ date, data, onClose }) => 
           <div className="day-detail__summary-item">
             <span className="day-detail__summary-label">Media Geral</span>
             <span className="day-detail__summary-value">
-              {Math.round((data.physical + data.emotional + data.intellectual) / 3)}
+              {Math.round((getCycleValue(data, 'physical') + getCycleValue(data, 'emotional') + getCycleValue(data, 'intellectual')) / 3)}
             </span>
           </div>
           <div className="day-detail__summary-item">
             <span className="day-detail__summary-label">Melhor Ciclo</span>
             <span className="day-detail__summary-value">
-              {data.physical >= data.emotional && data.physical >= data.intellectual
+              {getCycleValue(data, 'physical') >= getCycleValue(data, 'emotional') && getCycleValue(data, 'physical') >= getCycleValue(data, 'intellectual')
                 ? 'Fisico'
-                : data.emotional >= data.intellectual
+                : getCycleValue(data, 'emotional') >= getCycleValue(data, 'intellectual')
                   ? 'Emocional'
                   : 'Intelectual'}
             </span>

@@ -82,34 +82,6 @@ export class OnboardingStepConfig {
 }
 
 /**
- * DTO for saving onboarding progress
- */
-export class OnboardingProgressDto {
-  @ApiProperty({
-    description: 'Session ID',
-    example: 'session-uuid-12345',
-  })
-  @IsString()
-  sessionId: string;
-
-  @ApiProperty({
-    description: 'Current step being completed',
-    example: 2,
-  })
-  @IsNumber()
-  @Min(1)
-  @Max(10)
-  step: number;
-
-  @ApiProperty({
-    description: 'Step data to save',
-  })
-  @ValidateNested()
-  @Type(() => OnboardingStepData)
-  data: OnboardingStepData;
-}
-
-/**
  * Data collected during each onboarding step
  */
 export class OnboardingStepData {
@@ -175,6 +147,34 @@ export class OnboardingStepData {
   })
   @IsOptional()
   quizAnswers?: Record<string, string>;
+}
+
+/**
+ * DTO for saving onboarding progress
+ */
+export class OnboardingProgressDto {
+  @ApiProperty({
+    description: 'Session ID',
+    example: 'session-uuid-12345',
+  })
+  @IsString()
+  sessionId: string;
+
+  @ApiProperty({
+    description: 'Current step being completed',
+    example: 2,
+  })
+  @IsNumber()
+  @Min(1)
+  @Max(10)
+  step: number;
+
+  @ApiProperty({
+    description: 'Step data to save',
+  })
+  @ValidateNested()
+  @Type(() => OnboardingStepData)
+  data: OnboardingStepData;
 }
 
 /**

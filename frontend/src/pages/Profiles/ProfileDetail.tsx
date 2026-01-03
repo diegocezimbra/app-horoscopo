@@ -17,10 +17,13 @@ export const ProfileDetail: React.FC = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      const p = getProfile(id);
-      setProfile(p);
-    }
+    const loadProfile = async () => {
+      if (id) {
+        const p = await getProfile(id);
+        setProfile(p);
+      }
+    };
+    loadProfile();
   }, [id, getProfile]);
 
   const handleBack = () => {
@@ -35,9 +38,12 @@ export const ProfileDetail: React.FC = () => {
     navigate(`/compatibility?profile1=${id}`);
   };
 
-  const handleDelete = () => {
-    if (id && removeProfile(id)) {
-      navigate('/profiles');
+  const handleDelete = async () => {
+    if (id) {
+      const success = await removeProfile(id);
+      if (success) {
+        navigate('/profiles');
+      }
     }
   };
 

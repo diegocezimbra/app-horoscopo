@@ -7,14 +7,12 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Profile,
   ZodiacSignId,
-  CompatibilityState,
   RecentComparison,
 } from '../types/profiles';
 import {
   calculateCompatibility,
   getRecentComparisons,
   clearRecentComparisons,
-  CompatibilityResponse,
 } from '../services/compatibility.service';
 
 export interface CompatibilityResultDisplay {

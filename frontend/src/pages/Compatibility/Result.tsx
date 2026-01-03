@@ -5,34 +5,66 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCompatibility } from '../../hooks/useCompatibility';
+import { useCompatibility, CompatibilityResultDisplay } from '../../hooks/useCompatibility';
 import { CompatibilityMeter } from '../../components/compatibility/CompatibilityMeter';
 import { CategoryBar } from '../../components/compatibility/CategoryBar';
 import { ShareCard } from '../../components/compatibility/ShareCard';
-import { CompatibilityResult as CompatibilityResultType, ZODIAC_SIGNS, ZodiacSignId } from '../../types/profiles';
+import { ZODIAC_SIGNS, ZodiacSignId } from '../../types/profiles';
 import './Compatibility.css';
+
+// Local result type for page display
+interface DisplayResult {
+  sign1: ZodiacSignId;
+  sign2: ZodiacSignId;
+  name1: string;
+  name2: string;
+  overallScore: number;
+  categories: { id: string; name: string; icon: string; score: number; description?: string }[];
+  strengths: { id: string; text: string }[];
+  challenges: { id: string; text: string }[];
+  advice: string;
+}
+
+// Convert hook result to display result
+const toDisplayResult = (result: CompatibilityResultDisplay): DisplayResult => ({
+  sign1: result.sign1,
+  sign2: result.sign2,
+  name1: result.name1,
+  name2: result.name2,
+  overallScore: result.overallScore,
+  categories: [
+    { id: 'love', name: 'Amor', icon: '\uD83D\uDC95', score: result.loveScore },
+    { id: 'communication', name: 'Comunicacao', icon: '\uD83D\uDCAC', score: result.communicationScore },
+    { id: 'friendship', name: 'Amizade', icon: '\uD83E\uDD1D', score: result.friendshipScore },
+    { id: 'trust', name: 'Confianca', icon: '\uD83D\uDD12', score: result.trustScore },
+    { id: 'activities', name: 'Atividades', icon: '\uD83C\uDFAF', score: result.sharedActivitiesScore },
+  ],
+  strengths: result.strengths.map((text, i) => ({ id: `s${i}`, text })),
+  challenges: result.challenges.map((text, i) => ({ id: `c${i}`, text })),
+  advice: result.advice,
+});
 
 export const CompatibilityResult: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { currentResult, recentComparisons } = useCompatibility();
-  const [result, setResult] = useState<CompatibilityResultType | null>(null);
+  const [result, setResult] = useState<DisplayResult | null>(null);
   const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
-    // Try to get result from current state or recent comparisons
-    if (currentResult && currentResult.id === id) {
-      setResult(currentResult);
-    } else {
-      // For now, just redirect if no result found
-      // In a real app, you might fetch from an API
+    // Try to get result from current state
+    if (currentResult) {
+      setResult(toDisplayResult(currentResult));
+    } else if (id) {
+      // Try to find in recent comparisons
       const recent = recentComparisons.find((r) => r.id === id);
       if (recent) {
         // Reconstruct minimal result for display
         setResult({
-          id: recent.id,
-          profile1: { name: recent.name1, sign: recent.sign1 },
-          profile2: { name: recent.name2, sign: recent.sign2 },
+          sign1: recent.sign1,
+          sign2: recent.sign2,
+          name1: recent.name1,
+          name2: recent.name2,
           overallScore: recent.score,
           categories: [
             { id: 'love', name: 'Amor', icon: '\uD83D\uDC95', score: Math.min(100, recent.score + 5) },
@@ -49,7 +81,6 @@ export const CompatibilityResult: React.FC = () => {
             { id: 'c1', text: 'Comunicacao requer atencao' },
           ],
           advice: 'Mantenham o dialogo aberto e celebrem as diferencas!',
-          createdAt: recent.createdAt,
         });
       }
     }
@@ -87,20 +118,8 @@ export const CompatibilityResult: React.FC = () => {
     );
   }
 
-  const getName = (profile: typeof result.profile1): string => {
-    if ('name' in profile) return profile.name;
-    return 'Perfil';
-  };
-
-  const getSign = (profile: typeof result.profile1): ZodiacSignId => {
-    if ('sunSign' in profile) return profile.sunSign;
-    return profile.sign;
-  };
-
-  const name1 = getName(result.profile1);
-  const name2 = getName(result.profile2);
-  const sign1 = ZODIAC_SIGNS[getSign(result.profile1)];
-  const sign2 = ZODIAC_SIGNS[getSign(result.profile2)];
+  const sign1 = ZODIAC_SIGNS[result.sign1];
+  const sign2 = ZODIAC_SIGNS[result.sign2];
 
   return (
     <div className="compatibility-result">
@@ -119,7 +138,7 @@ export const CompatibilityResult: React.FC = () => {
       <section className="compatibility-result__profiles">
         <div className="compatibility-result__profile">
           <span className="compatibility-result__sign-emoji">{sign1.emoji}</span>
-          <span className="compatibility-result__name">{name1}</span>
+          <span className="compatibility-result__name">{result.name1}</span>
           <span className="compatibility-result__sign-name">{sign1.name}</span>
         </div>
 
@@ -129,7 +148,7 @@ export const CompatibilityResult: React.FC = () => {
 
         <div className="compatibility-result__profile">
           <span className="compatibility-result__sign-emoji">{sign2.emoji}</span>
-          <span className="compatibility-result__name">{name2}</span>
+          <span className="compatibility-result__name">{result.name2}</span>
           <span className="compatibility-result__sign-name">{sign2.name}</span>
         </div>
       </section>

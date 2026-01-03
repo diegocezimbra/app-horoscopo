@@ -3,12 +3,14 @@
  * Interactive tarot card drawing with animations
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TarotReading,
   ReadingType,
   TarotCard,
-  CardPosition,
+  DrawnCard,
+  TarotSuit,
+  SuitInfo,
   tarotService,
 } from '../../services/tarot.service';
 
@@ -16,14 +18,41 @@ interface DrawCardsProps {
   currentReading: TarotReading | null;
   isShuffling: boolean;
   onStartReading: (type: ReadingType) => void;
-  onRevealCard: (positionId: string) => void;
+  onRevealCard: (position: number) => void;
   onRevealAll: () => void;
   onClearReading: () => void;
-  onCardClick: (card: TarotCard) => void;
+  onCardClick: (card: TarotCard, isReversed: boolean) => void;
   getReadingTypeInfo: (type: ReadingType) => { name: string; description: string; cardCount: number };
 }
 
-const READING_TYPES: ReadingType[] = ['single', 'three-card', 'celtic-cross'];
+const READING_TYPES: ReadingType[] = ['single', 'past-present-future', 'celtic-cross'];
+
+// Fallback suit info for when API is unavailable
+const FALLBACK_SUIT_INFO: Record<TarotSuit, { icon: string; name: string }> = {
+  major: { icon: '★', name: 'Arcanos Maiores' },
+  wands: { icon: '🪄', name: 'Paus' },
+  cups: { icon: '🏆', name: 'Copas' },
+  swords: { icon: '⚔️', name: 'Espadas' },
+  pentacles: { icon: '⭐', name: 'Ouros' },
+};
+
+// Generate gradient colors based on suit
+const getSuitGradient = (suit: TarotSuit = 'major'): [string, string] => {
+  switch (suit) {
+    case 'major':
+      return ['#7C3AED', '#4C1D95'];
+    case 'wands':
+      return ['#DC2626', '#991B1B'];
+    case 'cups':
+      return ['#2563EB', '#1D4ED8'];
+    case 'swords':
+      return ['#64748B', '#475569'];
+    case 'pentacles':
+      return ['#16A34A', '#166534'];
+    default:
+      return ['#7C3AED', '#4C1D95'];
+  }
+};
 
 export const DrawCards: React.FC<DrawCardsProps> = ({
   currentReading,
@@ -36,6 +65,30 @@ export const DrawCards: React.FC<DrawCardsProps> = ({
   getReadingTypeInfo,
 }) => {
   const [selectedType, setSelectedType] = useState<ReadingType | null>(null);
+  const [revealedPositions, setRevealedPositions] = useState<Set<number>>(new Set());
+  const [suitsInfo, setSuitsInfo] = useState<Record<string, SuitInfo>>({});
+
+  // Load suits info
+  useEffect(() => {
+    const loadSuitsInfo = async () => {
+      try {
+        const suits = await tarotService.getSuitsInfo();
+        const suitsMap: Record<string, SuitInfo> = {};
+        suits.forEach((suit) => {
+          suitsMap[suit.id] = suit;
+        });
+        setSuitsInfo(suitsMap);
+      } catch {
+        // Use fallback
+      }
+    };
+    loadSuitsInfo();
+  }, []);
+
+  // Reset revealed positions when reading changes
+  useEffect(() => {
+    setRevealedPositions(new Set());
+  }, [currentReading?.timestamp]);
 
   const handleSelectType = (type: ReadingType) => {
     setSelectedType(type);
@@ -47,16 +100,31 @@ export const DrawCards: React.FC<DrawCardsProps> = ({
     }
   };
 
-  const handleCardReveal = (position: CardPosition) => {
-    if (!position.isRevealed) {
-      onRevealCard(position.id);
-    } else if (position.card) {
-      onCardClick(position.card);
+  const handleCardReveal = (drawnCard: DrawnCard) => {
+    if (!revealedPositions.has(drawnCard.position)) {
+      setRevealedPositions((prev) => new Set([...prev, drawnCard.position]));
+      onRevealCard(drawnCard.position);
+    } else {
+      onCardClick(drawnCard.card, drawnCard.isReversed);
     }
   };
 
-  const allRevealed = currentReading?.positions.every((p) => p.isRevealed);
-  const revealedCount = currentReading?.positions.filter((p) => p.isRevealed).length || 0;
+  const handleRevealAll = () => {
+    if (currentReading) {
+      const allPositions = new Set(currentReading.cards.map((c) => c.position));
+      setRevealedPositions(allPositions);
+    }
+    onRevealAll();
+  };
+
+  const allRevealed = currentReading?.cards.every((c) => revealedPositions.has(c.position));
+  const revealedCount = revealedPositions.size;
+
+  const getSuitIcon = (suit?: TarotSuit): string => {
+    if (!suit) return '★';
+    if (suitsInfo[suit]) return '✨';
+    return FALLBACK_SUIT_INFO[suit]?.icon || '★';
+  };
 
   // If no reading is in progress, show type selection
   if (!currentReading && !isShuffling) {
@@ -147,45 +215,46 @@ export const DrawCards: React.FC<DrawCardsProps> = ({
 
   // Reading in progress
   if (currentReading) {
-    const info = getReadingTypeInfo(currentReading.type);
+    const spreadType = currentReading.spreadType as ReadingType;
+    const info = getReadingTypeInfo(spreadType);
 
     return (
       <section className="draw-cards draw-cards--reading">
         <div className="draw-cards__reading-header">
-          <h2 className="draw-cards__reading-title">{info.name}</h2>
+          <h2 className="draw-cards__reading-title">{currentReading.spreadName || info.name}</h2>
           <span className="draw-cards__reading-progress">
-            {revealedCount}/{currentReading.positions.length} reveladas
+            {revealedCount}/{currentReading.cards.length} reveladas
           </span>
         </div>
 
         {/* Cards Layout */}
         <div
-          className={`draw-cards__layout draw-cards__layout--${currentReading.type}`}
+          className={`draw-cards__layout draw-cards__layout--${currentReading.spreadType}`}
         >
-          {currentReading.positions.map((position, index) => {
-            const suitInfo = position.card
-              ? tarotService.getSuitInfo(position.card.suit)
-              : null;
+          {currentReading.cards.map((drawnCard, index) => {
+            const suit = drawnCard.card.suit || 'major';
+            const gradient = getSuitGradient(suit);
+            const isRevealed = revealedPositions.has(drawnCard.position);
 
             return (
               <div
-                key={position.id}
-                className={`draw-cards__position draw-cards__position--${position.id}`}
+                key={drawnCard.position}
+                className={`draw-cards__position draw-cards__position--pos${drawnCard.position}`}
                 style={{
                   animationDelay: `${index * 0.1}s`,
                 }}
               >
                 {/* Position Label */}
                 <div className="draw-cards__position-label">
-                  <span className="draw-cards__position-name">{position.name}</span>
+                  <span className="draw-cards__position-name">{drawnCard.positionName}</span>
                 </div>
 
                 {/* Card */}
                 <div
                   className={`draw-cards__card ${
-                    position.isRevealed ? 'draw-cards__card--revealed' : ''
+                    isRevealed ? 'draw-cards__card--revealed' : ''
                   }`}
-                  onClick={() => handleCardReveal(position)}
+                  onClick={() => handleCardReveal(drawnCard)}
                 >
                   {/* Card Back */}
                   <div className="draw-cards__card-back">
@@ -198,35 +267,33 @@ export const DrawCards: React.FC<DrawCardsProps> = ({
                   </div>
 
                   {/* Card Front */}
-                  {position.card && (
-                    <div
-                      className="draw-cards__card-front"
-                      style={{
-                        background: `linear-gradient(135deg, ${position.card.imageGradient[0]}, ${position.card.imageGradient[1]})`,
-                      }}
-                    >
-                      {position.card.number !== null && (
-                        <div className="draw-cards__card-number">
-                          {position.card.number}
-                        </div>
-                      )}
-                      <div className="draw-cards__card-symbol">
-                        {suitInfo?.icon}
+                  <div
+                    className="draw-cards__card-front"
+                    style={{
+                      background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
+                    }}
+                  >
+                    {drawnCard.card.number !== null && (
+                      <div className="draw-cards__card-number">
+                        {drawnCard.card.number}
                       </div>
-                      <div className="draw-cards__card-name">
-                        {position.card.name}
-                      </div>
-                      {position.card.isReversed && (
-                        <div className="draw-cards__card-reversed">↓</div>
-                      )}
+                    )}
+                    <div className="draw-cards__card-symbol">
+                      {getSuitIcon(suit)}
                     </div>
-                  )}
+                    <div className="draw-cards__card-name">
+                      {drawnCard.card.name}
+                    </div>
+                    {drawnCard.isReversed && (
+                      <div className="draw-cards__card-reversed">↓</div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Position Description */}
-                {position.isRevealed && (
+                {isRevealed && (
                   <div className="draw-cards__position-desc">
-                    {position.description}
+                    {drawnCard.positionInterpretation}
                   </div>
                 )}
               </div>
@@ -237,7 +304,7 @@ export const DrawCards: React.FC<DrawCardsProps> = ({
         {/* Actions */}
         <div className="draw-cards__actions">
           {!allRevealed && (
-            <button className="draw-cards__action-btn" onClick={onRevealAll}>
+            <button className="draw-cards__action-btn" onClick={handleRevealAll}>
               <span>👁️</span>
               Revelar Todas
             </button>
@@ -250,7 +317,7 @@ export const DrawCards: React.FC<DrawCardsProps> = ({
                 <h3>
                   <span>🌟</span> Interpretacao
                 </h3>
-                <p>{currentReading.interpretation}</p>
+                <p>{currentReading.overallGuidance}</p>
               </div>
 
               <button

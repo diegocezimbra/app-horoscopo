@@ -115,7 +115,7 @@ const CompatibilityInput: React.FC<CompatibilityInputProps> = ({ onCalculate, co
         <div className="biorhythm-compatibility__result">
           <div className="biorhythm-compatibility__overall">
             <div className="biorhythm-compatibility__overall-value">
-              {compatibility.overall}%
+              {compatibility.compatibility.overall}%
             </div>
             <div className="biorhythm-compatibility__overall-label">
               Sincronia Geral
@@ -126,13 +126,13 @@ const CompatibilityInput: React.FC<CompatibilityInputProps> = ({ onCalculate, co
             <div className="biorhythm-compatibility__bar">
               <div className="biorhythm-compatibility__bar-label">
                 <span style={{ color: '#FF6B6B' }}>Fisico</span>
-                <span>{compatibility.physical}%</span>
+                <span>{compatibility.compatibility.physical}%</span>
               </div>
               <div className="biorhythm-compatibility__bar-track">
                 <div
                   className="biorhythm-compatibility__bar-fill"
                   style={{
-                    width: `${compatibility.physical}%`,
+                    width: `${compatibility.compatibility.physical}%`,
                     background: '#FF6B6B',
                   }}
                 />
@@ -142,13 +142,13 @@ const CompatibilityInput: React.FC<CompatibilityInputProps> = ({ onCalculate, co
             <div className="biorhythm-compatibility__bar">
               <div className="biorhythm-compatibility__bar-label">
                 <span style={{ color: '#4ECDC4' }}>Emocional</span>
-                <span>{compatibility.emotional}%</span>
+                <span>{compatibility.compatibility.emotional}%</span>
               </div>
               <div className="biorhythm-compatibility__bar-track">
                 <div
                   className="biorhythm-compatibility__bar-fill"
                   style={{
-                    width: `${compatibility.emotional}%`,
+                    width: `${compatibility.compatibility.emotional}%`,
                     background: '#4ECDC4',
                   }}
                 />
@@ -158,13 +158,13 @@ const CompatibilityInput: React.FC<CompatibilityInputProps> = ({ onCalculate, co
             <div className="biorhythm-compatibility__bar">
               <div className="biorhythm-compatibility__bar-label">
                 <span style={{ color: '#45B7D1' }}>Intelectual</span>
-                <span>{compatibility.intellectual}%</span>
+                <span>{compatibility.compatibility.intellectual}%</span>
               </div>
               <div className="biorhythm-compatibility__bar-track">
                 <div
                   className="biorhythm-compatibility__bar-fill"
                   style={{
-                    width: `${compatibility.intellectual}%`,
+                    width: `${compatibility.compatibility.intellectual}%`,
                     background: '#45B7D1',
                   }}
                 />

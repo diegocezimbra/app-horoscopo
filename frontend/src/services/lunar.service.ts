@@ -64,6 +64,81 @@ export interface NextMoonEvent {
   daysUntil: number;
 }
 
+// Type aliases for page components compatibility
+// LunarDayInfo - extends calendar day with Date object for UI
+export interface LunarDayInfo {
+  date: Date;
+  dayOfWeek: string;
+  phase: LunarPhaseData;
+  illumination: number;
+  isToday: boolean;
+  isNewMoon: boolean;
+  isFullMoon: boolean;
+  // Convenience accessors
+  emoji: string;
+  energy: string;
+  rituals: string[];
+  crystals: string[];
+  colors: string[];
+}
+
+// Helper to convert API day to UI day
+export const convertToLunarDayInfo = (day: LunarCalendarDay): LunarDayInfo => ({
+  date: new Date(day.date),
+  dayOfWeek: day.dayOfWeek,
+  phase: day.phase,
+  illumination: day.illumination,
+  isToday: day.isToday,
+  isNewMoon: day.isNewMoon,
+  isFullMoon: day.isFullMoon,
+  emoji: day.phase.emoji,
+  energy: day.phase.energy,
+  rituals: day.phase.rituals,
+  crystals: day.phase.crystals,
+  colors: day.phase.colors,
+});
+
+// LunarEvent - for upcoming moon events display
+export interface LunarEvent {
+  id: string;
+  type: 'full-moon' | 'new-moon';
+  name: string;
+  emoji: string;
+  date: Date;
+  daysUntil: number;
+  whatToDo: string[];
+}
+
+// CurrentMoonData - for current phase display
+export interface CurrentMoonData {
+  phase: string;
+  name: string;
+  emoji: string;
+  illumination: number;
+  signName: string;
+  energy: string;
+  description: string;
+  rituals: string[];
+  crystals: string[];
+  colors: string[];
+  colorHexes: string[];
+}
+
+// Helper to convert API current phase to UI current moon
+export const convertToCurrentMoonData = (data: CurrentLunarPhase): CurrentMoonData => ({
+  phase: data.phase.id,
+  name: data.phase.name,
+  emoji: data.phase.emoji,
+  illumination: data.illumination,
+  signName: data.moonSignName,
+  energy: data.phase.energy,
+  description: data.phase.description,
+  rituals: data.phase.rituals,
+  crystals: data.phase.crystals,
+  colors: data.phase.colors,
+  colorHexes: data.phase.colorHexes,
+});
+
 export interface TodayAdvice {
   phase: LunarPhaseData;
   advice: string;

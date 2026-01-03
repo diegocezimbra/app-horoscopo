@@ -33,12 +33,15 @@ export const AddProfile: React.FC = () => {
 
   // Search celebrities when query changes
   useEffect(() => {
-    if (formData.type === 'celebrity' && celebritySearch.length >= 2) {
-      const results = searchCelebs(celebritySearch);
-      setCelebrityResults(results);
-    } else {
-      setCelebrityResults([]);
-    }
+    const searchCelebrities = async () => {
+      if (formData.type === 'celebrity' && celebritySearch.length >= 2) {
+        const results = await searchCelebs(celebritySearch);
+        setCelebrityResults(results);
+      } else {
+        setCelebrityResults([]);
+      }
+    };
+    searchCelebrities();
   }, [celebritySearch, formData.type, searchCelebs]);
 
   const handleTypeChange = (type: ProfileType) => {
@@ -89,7 +92,7 @@ export const AddProfile: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const profile = addProfile(formData);
+      const profile = await addProfile(formData);
       navigate(`/profiles/${profile.id}`);
     } catch (error) {
       console.error('Error creating profile:', error);

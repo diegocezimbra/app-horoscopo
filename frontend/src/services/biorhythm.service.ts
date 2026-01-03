@@ -25,6 +25,29 @@ export interface BiorhythmDay {
   advice: string;
 }
 
+// Legacy flat format for UI compatibility
+export interface DailyBiorhythm {
+  date: string;
+  physical: number;
+  emotional: number;
+  intellectual: number;
+}
+
+// Helper to convert BiorhythmDay to DailyBiorhythm
+export const convertToDailyBiorhythm = (day: BiorhythmDay): DailyBiorhythm => {
+  const getCycleValue = (type: BiorhythmType): number => {
+    const cycle = day.cycles.find((c) => c.type === type);
+    return cycle?.value ?? 0;
+  };
+
+  return {
+    date: day.date,
+    physical: getCycleValue('physical'),
+    emotional: getCycleValue('emotional'),
+    intellectual: getCycleValue('intellectual'),
+  };
+};
+
 export interface BiorhythmPeriodResponse {
   startDate: string;
   endDate: string;
