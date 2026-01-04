@@ -1,8 +1,8 @@
 # =============================================================================
-# CARDAPIO DIGITAL - Terraform Configuration
+# HOROSCOPO APP - Terraform Configuration
 # =============================================================================
 
-project_name = "app-cardapio-digital"
+project_name = "app-horoscopo"
 aws_region   = "us-east-1"
 environment  = "prod"
 
@@ -12,36 +12,43 @@ environment  = "prod"
 backend_port      = 3030
 backend_cpu       = "512"
 backend_memory    = "1024"
-cors_origin       = "https://menu.ohanax.com,https://menu.ohanax.com,https://www.menu.ohanax.com"
+cors_origin       = "https://horoscopo.ohanax.com,https://www.horoscopo.ohanax.com"
 health_check_path = "/health"
 
 # =============================================================================
 # AMPLIFY CONFIGURATION
 # =============================================================================
-github_repo  = "Metav-dev/cardapio-digital"
-frontend_url = "https://www.menu.ohanax.com"
+github_repo  = "Metav-dev/app-horoscopo"
+frontend_url = "https://horoscopo.ohanax.com"
 
 # =============================================================================
 # DATABASE (PostgreSQL - Hetzner/Coolify)
+# TODO: Criar database separado para horoscopo no Coolify
 # =============================================================================
-database_url = "postgres://postgres:Emtpqwe46JQHwVeYidAtQ2eobr6QXqhf5IsSLFt89ktxRUD5Xybo2EC5T76qTlvb@5.161.213.157:5434/postgres"
+db_host     = "5.161.213.157"
+db_port     = 5435
+db_user     = "postgres"
+db_password = "CHANGE_ME_HOROSCOPO_DB_PASSWORD"
+db_name     = "horoscopo"
+db_ssl      = "false"
 
 # =============================================================================
 # AUTH SERVICE INTEGRATION (Authify)
 # =============================================================================
 authify_url          = "https://p9mmmtfmim.us-east-1.awsapprunner.com"
 authify_frontend_url = "https://auth.ohanax.com"
-authify_api_key      = "ak_b6f9a4f48ebda4944a399c3ed0692f22aeeae1b7467a53d8"
+authify_api_key      = "CHANGE_ME_HOROSCOPO_AUTHIFY_API_KEY"
 
 # =============================================================================
-# JWT (same as Auth service for token validation)
+# JWT Configuration
 # =============================================================================
-jwt_secret = "authify-jwt-secret-prod-change-me"
+jwt_secret     = "CHANGE_ME_JWT_SECRET_PROD"
+jwt_expires_in = 86400
 
 # =============================================================================
 # BILLING SERVICE INTEGRATION
 # =============================================================================
 billing_api_url      = "https://fax3cspfgv.us-east-1.awsapprunner.com"
 billing_frontend_url = "https://billing.ohanax.com"
-billing_project_id   = "a76752e3-b598-44c6-8e2a-e0e8eca2dfc5"
-billing_api_key      = "bk_71b1e7013487fa532e58376cc4dae8630a792ec8f8fd5944"
+billing_project_id   = "CHANGE_ME_HOROSCOPO_BILLING_PROJECT_ID"
+billing_api_key      = "CHANGE_ME_HOROSCOPO_BILLING_API_KEY"

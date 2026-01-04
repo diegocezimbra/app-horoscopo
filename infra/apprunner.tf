@@ -14,8 +14,14 @@ resource "aws_apprunner_service" "backend" {
           NODE_ENV             = "production"
           PORT                 = tostring(var.backend_port)
           CORS_ORIGIN          = var.cors_origin
-          DATABASE_URL         = var.database_url
+          DB_HOST              = var.db_host
+          DB_PORT              = tostring(var.db_port)
+          DB_USER              = var.db_user
+          DB_PASSWORD          = var.db_password
+          DB_NAME              = var.db_name
+          DB_SSL               = var.db_ssl
           JWT_SECRET           = var.jwt_secret
+          JWT_EXPIRES_IN       = tostring(var.jwt_expires_in)
           AUTHIFY_API_KEY      = var.authify_api_key
           AUTHIFY_URL          = var.authify_url
           AUTHIFY_FRONTEND_URL = var.authify_frontend_url

@@ -14,6 +14,6 @@ provider "aws" {
 }
 
 locals {
-  backend_name  = "app-cardapio-backend"
-  frontend_name = "app-cardapio-frontend"
+  backend_name  = "app-horoscopo-backend"
+  frontend_name = "app-horoscopo-frontend"
 }

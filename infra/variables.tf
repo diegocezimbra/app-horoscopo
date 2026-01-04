@@ -57,17 +57,53 @@ variable "frontend_url" {
   type        = string
 }
 
-# Backend secrets
-variable "database_url" {
-  description = "PostgreSQL database URL"
+# Database Configuration
+variable "db_host" {
+  description = "PostgreSQL database host"
+  type        = string
+}
+
+variable "db_port" {
+  description = "PostgreSQL database port"
+  type        = number
+  default     = 5432
+}
+
+variable "db_user" {
+  description = "PostgreSQL database user"
+  type        = string
+  default     = "postgres"
+}
+
+variable "db_password" {
+  description = "PostgreSQL database password"
   type        = string
   sensitive   = true
 }
 
+variable "db_name" {
+  description = "PostgreSQL database name"
+  type        = string
+  default     = "horoscopo"
+}
+
+variable "db_ssl" {
+  description = "Enable SSL for database connection"
+  type        = string
+  default     = "false"
+}
+
+# JWT Configuration
 variable "jwt_secret" {
   description = "JWT secret for token validation"
   type        = string
   sensitive   = true
+}
+
+variable "jwt_expires_in" {
+  description = "JWT token expiration time in seconds"
+  type        = number
+  default     = 3600
 }
 
 # Authify Configuration
