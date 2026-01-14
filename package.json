@@ -4,7 +4,7 @@
   "description": "Personalized horoscope and astrology app with cosmic onboarding experience",
   "private": true,
   "scripts": {
-    "start": "concurrently -n \"backend,frontend\" -c \"bgBlue,bgGreen\" \"npm run start:backend\" \"npm run start:frontend\"",
+    "start": "concurrently -n \"backend,frontend\" -c \"bgBlue,bgGreen\" \"npm run start:backend\" \"sleep 3 && npm run start:frontend\"",
     "start:backend": "cd backend && npm run start:dev",
     "start:frontend": "cd frontend && npm run dev",
     "build": "npm run build:backend && npm run build:frontend",
